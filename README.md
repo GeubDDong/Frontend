@@ -43,7 +43,7 @@ npm run dev
     git config --local commit.template .gitmessage.txt
     ```
 - 적용 결과
-![gitMessage](https://github.com/user-attachments/assets/63a3c3c0-025c-4249-96d2-afdcbb3d1729)
+![gitMessage](https://github.com/user-attachments/assets/88ab46c7-f463-4a1d-a6da-45d16d515b54)
 
 #### Issue(이슈)
 - 개발, 수정 등 작업에 들어가기 전 이슈 생성
