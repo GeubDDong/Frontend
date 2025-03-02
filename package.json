@@ -10,6 +10,7 @@
     "lint": "eslint --cache src/**/*.{ts,tsx}",
     "preview": "vite preview",
     "prepare": "husky",
+    "test" : "",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
