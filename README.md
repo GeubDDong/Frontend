@@ -9,7 +9,7 @@ npm run dev
 ## Project Structure (프로젝트 구조)
 ## Cooperation (협업 방식)
 ### Branch Strategy(브렌치 전략)
-### Development Workflow (개발 워크플로우)
+### Setting (협업 환경 설정)
 #### Commit(커밋)
 - 커밋 메시지 통일을 위해 템플릿 적용
   ```
@@ -123,7 +123,7 @@ npm run dev
 
     ```
 - 적용 결과
-![Image](https://github.com/user-attachments/assets/a18f3060-24c6-4c89-95bd-913947c4e89d)
+![issue](https://github.com/user-attachments/assets/a18f3060-24c6-4c89-95bd-913947c4e89d)
 #### Pull Request(풀 리퀘스트)
 - Pull Request 형식 통일을 위해 템플릿 적용
   ```md
@@ -144,6 +144,7 @@ npm run dev
   > ex) 메서드 XXX의 이름을 더 잘 짓고 싶은데 혹시 좋은 명칭이 있을까요?
   ```
 - 적용 결과
+![pr](https://github.com/user-attachments/assets/93e0f182-bc97-4ec6-bd80-e385d4398f5b)
 ### Coding Convention(코딩 컨벤션)
 #### Naming Convention(네이밍 컨벤션)
 #### Prettier
