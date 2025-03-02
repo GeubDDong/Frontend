@@ -148,8 +148,17 @@ npm run dev
 ### Coding Convention(코딩 컨벤션)
 #### Naming Convention(네이밍 컨벤션)
 #### Prettier
-```
-```
+- 코드 스타일 통일을 위해 코드 포멧터인 Prettier를 적용
+  ```
+  {
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "trailingComma": "all",
+    "arrowParens": "always"
+  }
+  ```
 #### ESLint
-```
-```
+- 코드 품질을 위해 ESLint 적용
+- (2025.02 기준) Airbnb 규칙을 적용하려 했으나 React 19와 호환이 되지 않아 프로젝트 생성 시 함께 만들어지는 기본 설정만을 적용
