@@ -170,3 +170,71 @@ npm run dev
 #### ESLint
 - 코드 품질을 위해 ESLint 적용
 - (2025.02 기준) Airbnb 규칙을 적용하려 했으나 React 19와 호환이 되지 않아 프로젝트 생성 시 함께 만들어지는 기본 설정만을 적용
+## CI/CD
+### Github Action
+- 코드 변경사항의 통합, 빌드, 테스트등에 대한 자동화를 위하여 Github Action 적용
+  - 적용 시점 : main, develop 브렌치에 pr을 할 때
+  - 적용 사항 : 린트 검사, 빌드 검사, 테스트 검사
+  ```yml
+  name: CI
+
+  on:
+    pull_request:
+      branches:
+        - main
+        - develop
+
+  jobs:
+    lint:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '22'
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Run linter
+          run: npm run lint
+    build:
+      runs-on: ubuntu-latest
+      needs: lint
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '22'
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Build project
+          run: npm run build
+
+    test:
+      runs-on: ubuntu-latest
+      needs: build
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '22'
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Run tests
+          run: npm test
+
+  ```
