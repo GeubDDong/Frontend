@@ -153,6 +153,10 @@ npm run dev
   npx husky install
   git config --local core.hooksPath .husky/_
   ```
+#### 기타 설정 사항
+- 브렌치 ruleset 적용
+  - git flow 방식의 협업에서 실수를 방지하기 위하여 main, develop 브렌치에 push 비활성화
+  - Pull Request 시 다른 한 명의 팀원의 approve가 있어야 merge 가능
 ### Coding Convention(코딩 컨벤션)
 #### Naming Convention(네이밍 컨벤션)
 #### Prettier
