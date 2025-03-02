@@ -12,7 +12,7 @@ npm run dev
 ### Setting (협업 환경 설정)
 #### Commit(커밋)
 - 커밋 메시지 통일을 위해 템플릿 적용
-  ```
+  ```bash
   ################
   # <타입> : <제목> 의 형식으로 제목을 아래 공백줄에 작성
   # 제목은 50자 이내 / 변경사항이 "무엇"인지 명확히 작성 / 끝에 마침표 금지
@@ -148,11 +148,21 @@ npm run dev
 #### Husky(허스키)
 - 코드 커밋 전 코드 품질에 이상이 없는지 확인하기 위해 허스키 적용
 - 커밋 단계에서 lint 검사 수행
-- 적용 방법
-  ```bash
-  npx husky install
-  git config --local core.hooksPath .husky/_
-  ```
+  - 커밋 전 husky pre-commit 훅 실행
+    ```bash
+    # .husky/pre-commit
+    npx lint-staged
+    ```
+  - lint-staged 실행(스테이징된 파일만 eslint, prettier 검사 진행)
+    ```json
+    // package.json
+    "lint-staged": {
+      "*.{ts,tsx}": [
+        "eslint --fix",
+        "prettier --write"
+      ]
+    }
+    ```
 #### 기타 설정 사항
 - 브렌치 ruleset 적용
   - git flow 방식의 협업에서 실수를 방지하기 위하여 main, develop 브렌치에 push 비활성화
@@ -161,7 +171,7 @@ npm run dev
 #### Naming Convention(네이밍 컨벤션)
 #### Prettier
 - 코드 스타일 통일을 위해 코드 포멧터인 Prettier를 적용
-  ```
+  ```json
   {
     "tabWidth": 2,
     "semi": true,
@@ -173,7 +183,7 @@ npm run dev
   ```
 #### ESLint
 - 코드 품질을 위해 ESLint 적용
-- (2025.02 기준) Airbnb 규칙을 적용하려 했으나 React 19와 호환이 되지 않아 프로젝트 생성 시 함께 만들어지는 기본 설정만을 적용
+- (2025.02 기준) Airbnb 규칙을 적용하려 했으나 eslint-config-airbnb의 의존성 모듈 간 버전 충돌 이슈에 의해 프로젝트 생성 시 함께 만들어지는 기본 설정만을 적용
 ## CI/CD
 ### Github Action
 - 코드 변경사항의 통합, 빌드, 테스트등에 대한 자동화를 위하여 Github Action 적용
