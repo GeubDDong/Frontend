@@ -46,9 +46,82 @@ npm run dev
 ![gitMessage](https://github.com/user-attachments/assets/63a3c3c0-025c-4249-96d2-afdcbb3d1729)
 
 #### Issue(이슈)
-##### Issue Template(이슈 템플릿)
-```
-```
+- 개발, 수정 등 작업에 들어가기 전 이슈 생성
+- 이슈 템플릿
+  - 기능 개발 이슈 템플릿
+    ```md
+    ---
+    name: 기능 개발
+    about: 기능 개발 이슈 템플릿
+    title: "[Feat]"
+    labels: feature
+    assignees: ''
+
+    ---
+
+    ## 어떤 기능인가요?
+
+    > 추가하려는 기능에 대해 간결하게 설명해주세요
+
+    ## 작업 상세 내용
+
+    - [ ] TODO
+    - [ ] TODO
+    - [ ] TODO
+
+    ## 참고할만한 자료(선택)
+
+    ```
+  - 오류 수정 이슈 템플릿
+    ```md
+    ---
+    name: 오류 수정
+    about: 오류 수정 이슈 템플릿
+    title: "[Bug]"
+    labels: bug
+    assignees: ''
+
+    ---
+
+    ## 어떤 버그인가요?
+
+    > 어떤 버그인지 간결하게 설명해주세요
+
+    ## 어떤 상황에서 발생한 버그인가요?
+
+    > (가능하면) Given-When-Then 형식으로 서술해주세요
+
+    ## 예상 결과
+
+    > 예상했던 정상적인 결과가 어떤 것이었는지 설명해주세요
+
+    ## 참고할만한 자료(선택)
+
+    ```
+  - 코드 리팩토링 이슈 템플릿
+    ```md
+    ---
+    name: 코드 리팩토링
+    about: 코드 리팩토링 이슈 템플릿
+    title: "[Refactor]"
+    labels: 'refactor'
+    assignees: ''
+
+    ---
+
+    ## 어떤 코드인가요?
+
+    > 리팩토링하려는 코드와 이유에 대해 간결하게 설명해주세요
+
+    ## 작업 상세 내용
+
+    - [ ] TODO
+    - [ ] TODO
+    - [ ] TODO
+
+    ## 참고할만한 자료(선택)
+
+    ```
 #### Pull Request(풀 리퀘스트)
 ##### Pull Request Template(풀 리퀘스트 템플릿)
 ```
