@@ -145,6 +145,14 @@ npm run dev
   ```
 - 적용 결과
 ![pr](https://github.com/user-attachments/assets/93e0f182-bc97-4ec6-bd80-e385d4398f5b)
+#### Husky(허스키)
+- 코드 커밋 전 코드 품질에 이상이 없는지 확인하기 위해 허스키 적용
+- 커밋 단계에서 lint 검사 수행
+- 적용 방법
+  ```bash
+  npx husky install
+  git config --local core.hooksPath .husky/_
+  ```
 ### Coding Convention(코딩 컨벤션)
 #### Naming Convention(네이밍 컨벤션)
 #### Prettier
