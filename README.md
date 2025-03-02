@@ -42,7 +42,7 @@ npm run dev
     ```bash
     git config --local commit.template .gitmessage.txt
     ```
-##### 적용 결과
+- 적용 결과
 ![gitMessage](https://github.com/user-attachments/assets/63a3c3c0-025c-4249-96d2-afdcbb3d1729)
 
 #### Issue(이슈)
@@ -122,6 +122,8 @@ npm run dev
     ## 참고할만한 자료(선택)
 
     ```
+- 적용 결과
+![Image](https://github.com/user-attachments/assets/a18f3060-24c6-4c89-95bd-913947c4e89d)
 #### Pull Request(풀 리퀘스트)
 ##### Pull Request Template(풀 리퀘스트 템플릿)
 ```
