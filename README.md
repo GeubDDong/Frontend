@@ -125,9 +125,25 @@ npm run dev
 - 적용 결과
 ![Image](https://github.com/user-attachments/assets/a18f3060-24c6-4c89-95bd-913947c4e89d)
 #### Pull Request(풀 리퀘스트)
-##### Pull Request Template(풀 리퀘스트 템플릿)
-```
-```
+- Pull Request 형식 통일을 위해 템플릿 적용
+  ```md
+  ## #️⃣연관된 이슈
+
+  > ex) #이슈번호, #이슈번호
+
+  ## 📝작업 내용
+
+  > 이번 PR에서 작업한 내용을 간략히 설명해주세요(이미지 첨부 가능)
+
+  ### 스크린샷 (선택)
+
+  ## 💬리뷰 요구사항(선택)
+
+  > 리뷰어가 특별히 봐주었으면 하는 부분이 있다면 작성해주세요
+  >
+  > ex) 메서드 XXX의 이름을 더 잘 짓고 싶은데 혹시 좋은 명칭이 있을까요?
+  ```
+- 적용 결과
 ### Coding Convention(코딩 컨벤션)
 #### Naming Convention(네이밍 컨벤션)
 #### Prettier
