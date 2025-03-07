@@ -1,5 +1,19 @@
+import { GlobalStyle } from './style/GlobalStyle';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+  },
+]);
+
 function App() {
-  return <h1>Project GeubDDong</h1>;
+  return (
+    <>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
