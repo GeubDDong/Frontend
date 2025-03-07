@@ -20,8 +20,10 @@
     ]
   },
   "dependencies": {
+    "axios": "^1.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-query": "^3.39.3",
     "react-router-dom": "^7.3.0",
     "styled-components": "^6.1.15",
     "styled-normalize": "^8.1.1"
