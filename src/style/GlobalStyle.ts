@@ -5,10 +5,10 @@ export const GlobalStyle = createGlobalStyle`
 ${normalize}
 
 #root {
-    width: 100%;
+    width: 100vw;
     min-width: 300px;
     max-width: 767px;
-    height: 100%;
+    height: 100vh;
     margin: 0 auto;
   }
   
