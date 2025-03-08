@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import InfoIcon from './InfoIcon';
-import BackButton from '../Common/BackButton';
 import LikeButton from './LikeButton';
 
 const DetailView = () => {
   return (
     <>
-      <p>
-        <BackButton />
-      </p>
       <DetailViewStyle>
         <div className="title">
           <div className="name">화장실 이름</div>
