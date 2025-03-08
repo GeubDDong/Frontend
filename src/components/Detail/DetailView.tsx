@@ -1,17 +1,10 @@
 import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import InfoIcon from './InfoIcon';
-import { FaRegHeart, FaHeart } from 'react-icons/fa6';
-import { useState } from 'react';
 import BackButton from '../Common/BackButton';
+import LikeButton from './LikeButton';
 
 const DetailView = () => {
-  const [isLike, setIsLike] = useState(false);
-
-  const handleClickLike = () => {
-    setIsLike(!isLike);
-  };
-
   return (
     <>
       <p>
@@ -21,21 +14,7 @@ const DetailView = () => {
         <div className="title">
           <div className="name">화장실 이름</div>
           <div className="like">
-            {isLike ? (
-              <FaHeart
-                size="1.5rem"
-                color="#FE8286" // FF4033
-                onClick={handleClickLike}
-                style={{ cursor: 'pointer' }}
-              />
-            ) : (
-              <FaRegHeart
-                size="1.5rem"
-                color={`${Theme.colors.subText}`}
-                onClick={handleClickLike}
-                style={{ cursor: 'pointer' }}
-              />
-            )}
+            <LikeButton />
           </div>
         </div>
         <div className="address">화장실 주소</div>
