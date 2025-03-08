@@ -1,7 +1,7 @@
 import { Theme } from '@/style/Theme';
 import { IconContext } from 'react-icons';
 import { FaChildren, FaCircle } from 'react-icons/fa6';
-import { FaWheelchair, FaBaby } from 'react-icons/fa';
+import { FaWheelchair, FaBaby, FaRegClock } from 'react-icons/fa';
 import { IoIosWoman, IoIosMan } from 'react-icons/io';
 import { LuBellRing, LuCctv } from 'react-icons/lu';
 import { styled } from 'styled-components';
@@ -20,20 +20,17 @@ const ICONS: Record<string, JSX.Element> = {
   wheelchair: <FaWheelchair />,
   cctv: <LuCctv />,
   bell: <LuBellRing />,
+  clock: <FaRegClock />,
 };
 
 const InfoIcon = ({ iconName, active, text }: Props) => {
   return (
     <InfoIconStyle>
       <div className="circle">
-        <IconContext.Provider
-          value={{
-            size: '3rem',
-            color: active ? `${Theme.colors.primary}` : '#d8dfe0',
-          }}
-        >
-          <FaCircle />
-        </IconContext.Provider>
+        <FaCircle
+          size="3rem"
+          color={active ? `${Theme.colors.primary}` : '#d8dfe0'}
+        />
         <div className="info">
           <IconContext.Provider
             value={{
@@ -56,7 +53,7 @@ const InfoIconStyle = styled.div`
   width: 3rem;
 
   span {
-    font-size: ${Theme.fontSize.md};
+    font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.mainText};
     text-align: center;
   }
