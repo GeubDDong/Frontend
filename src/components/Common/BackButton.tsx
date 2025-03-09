@@ -18,7 +18,7 @@ const BackButton = () => {
   );
 };
 
-const BackButtonStyle = styled(FaArrowLeftLong)`
+const BackButtonStyle = styled.div`
   margin-top: 10px;
   margin-left: 10px;
   cursor: pointer;
