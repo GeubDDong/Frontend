@@ -5,8 +5,8 @@ import BackButton from '@/components/Common/BackButton';
 const Detail = () => {
   return (
     <>
+      <BackButton />
       <DetailStyle>
-        <BackButton />
         <DetailView />
         <Divider />
         <Comments />
@@ -20,7 +20,7 @@ import styled from 'styled-components';
 const DetailStyle = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 20px 10px;
+  padding: 20px 10px; // margin: 20px 10px;
   gap: 20px;
 `;
 
