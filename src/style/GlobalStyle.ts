@@ -2,9 +2,9 @@ import { createGlobalStyle } from 'styled-components';
 import { normalize } from 'styled-normalize';
 
 export const GlobalStyle = createGlobalStyle`
-${normalize}
+  ${normalize}
 
-#root {
+  #root {
     width: 100vw;
     min-width: 300px;
     max-width: 767px;
@@ -12,9 +12,19 @@ ${normalize}
     margin: 0 auto;
   }
   
-body {
+  body {
     margin: 0;
     padding: 0;
     font-family: 'Work Sans', sans-serif;
+  }
+
+  
+  .Toastify__toast.Toastify__toast-theme--colored.Toastify__toast--default {
+    background-color: #3191ff;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
