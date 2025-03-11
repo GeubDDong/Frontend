@@ -66,7 +66,8 @@ const ProfileSetupStyle = styled.div`
   .input input:focus {
     outline: none;
     border-color: ${Theme.colors.mainText};
-    border-width: 0 0 1.8px;
+    /* border-width: 0 0 2px; */
+    box-shadow: 0 0.3px 0 ${Theme.colors.mainText};
   }
 
   .input input:focus::placeholder {
