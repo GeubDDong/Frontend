@@ -55,7 +55,7 @@ const CommentsStyle = styled.div`
     border: 1px solid #afb1b6;
     border-radius: 8px;
     padding: 0 10px;
-    font-size: ${Theme.fontSize.xs};
+    font-size: ${Theme.fontSize.sm};
   }
 
   .comments {
