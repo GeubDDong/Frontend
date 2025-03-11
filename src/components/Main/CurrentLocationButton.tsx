@@ -14,14 +14,16 @@ const CurrentLocationButton: React.FC<ICurrentLocationButtonProps> = ({
   setCenter,
 }) => {
   const { getLocation } = useCurrentLocation();
-  const handleClick = async () => {
-    await getLocation();
-    const errorCode = useLocationStore.getState().errorCode;
-    if (errorCode !== null) {
-      return;
-    }
-    const location = useLocationStore.getState().location;
-    setCenter(location);
+  const handleClick = () => {
+    getLocation();
+    setTimeout(() => {
+      const errorCode = useLocationStore.getState().errorCode;
+      if (errorCode !== null) {
+        return;
+      }
+      const location = useLocationStore.getState().location;
+      setCenter(location);
+    }, 100);
   };
 
   return (

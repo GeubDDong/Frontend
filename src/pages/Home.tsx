@@ -6,22 +6,21 @@ import { ILocation } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Main/MyLocation';
 import useLocationStore from '@/store/locationStore';
-import useCurrentLocation from '@/hooks/useCurrentLocation';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
   const location = useLocationStore.getState().location;
   const errorCode = useLocationStore((state) => state.errorCode);
-  const { getLocation } = useCurrentLocation();
   const [center, setCenter] = useState<ILocation>(location);
 
   useKakaoLoader();
 
   useEffect(() => {
-    const getInitialLocation = async () => {
-      await getLocation();
-      const location = useLocationStore.getState().location;
-      setCenter(location);
+    const getInitialLocation = () => {
+      setTimeout(() => {
+        const location = useLocationStore.getState().location;
+        setCenter(location);
+      }, 100);
     };
     getInitialLocation();
   }, []);
