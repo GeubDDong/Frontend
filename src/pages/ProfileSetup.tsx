@@ -59,12 +59,18 @@ const ProfileSetupStyle = styled.div`
   .input input {
     border-color: ${Theme.colors.subText};
     border-width: 0 0 1px;
+    text-align: center;
+    width: 300px;
   }
 
   .input input:focus {
     outline: none;
     border-color: ${Theme.colors.mainText};
     border-width: 0 0 1.8px;
+  }
+
+  .input input:focus::placeholder {
+    color: transparent;
   }
 
   .content {
@@ -75,7 +81,7 @@ const ProfileSetupStyle = styled.div`
   }
 
   .content button {
-    width: 70%;
+    width: 60%;
     padding: 10px 15px;
     color: ${Theme.colors.mainText};
     font-size: ${Theme.fontSize.sm};
