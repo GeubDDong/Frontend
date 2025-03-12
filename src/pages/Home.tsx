@@ -6,23 +6,31 @@ import { ILocation } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Main/MyLocation';
 import useLocationStore from '@/store/locationStore';
+import useCurrentLocation from '@/hooks/useCurrentLocation';
+import { toast } from 'react-toastify';
+import { ERROR_MESSAGE } from '@/constants/errorMessage';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
-  const location = useLocationStore.getState().location;
   const errorCode = useLocationStore((state) => state.errorCode);
-  const [center, setCenter] = useState<ILocation>(location);
+  const { getLocation } = useCurrentLocation();
+  const [center, setCenter] = useState<ILocation>(
+    useLocationStore((state) => state.location),
+  );
 
   useKakaoLoader();
 
   useEffect(() => {
-    const getInitialLocation = () => {
-      setTimeout(() => {
-        const location = useLocationStore.getState().location;
-        setCenter(location);
-      }, 100);
+    const setInitialLocation = async () => {
+      await getLocation()
+        .then((location) => {
+          setCenter(location);
+        })
+        .catch((errorCode) => {
+          toast(ERROR_MESSAGE[errorCode]);
+        });
     };
-    getInitialLocation();
+    setInitialLocation();
   }, []);
 
   const handleIdle = (map: kakao.maps.Map) => {
@@ -51,7 +59,7 @@ const Home = () => {
       >
         {errorCode === null && <MyLocation />}
       </Map>
-      <CurrentLocationButton setCenter={setCenter} />
+      <CurrentLocationButton onLocationChanged={setCenter} />
     </HomeStyle>
   );
 };
