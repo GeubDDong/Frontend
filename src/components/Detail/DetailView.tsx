@@ -58,6 +58,7 @@ const DetailViewStyle = styled.div`
   }
 
   .update {
+    margin-top: 5px;
     font-size: ${Theme.fontSize.md};
     color: ${Theme.colors.subText};
   }
@@ -65,8 +66,8 @@ const DetailViewStyle = styled.div`
   .detailInfoIcons {
     margin-top: 20px;
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px 0px;
   }
 
   .management {
