@@ -8,7 +8,7 @@ import MyLocation from '@/components/Main/MyLocation';
 import useLocationStore from '@/store/locationStore';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
-import { ERROR_MESSAGE } from '@/constants/errorMessage';
+import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -27,7 +27,7 @@ const Home = () => {
           setCenter(location);
         })
         .catch((errorCode) => {
-          toast(ERROR_MESSAGE[errorCode]);
+          toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
         });
     };
     setInitialLocation();

@@ -5,7 +5,7 @@ import { Theme } from '@/style/Theme';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
-import { ERROR_MESSAGE } from '@/constants/errorMessage';
+import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 
 interface ICurrentLocationButtonProps {
   onLocationChanged: React.Dispatch<React.SetStateAction<ILocation>>;
@@ -21,7 +21,7 @@ const CurrentLocationButton: React.FC<ICurrentLocationButtonProps> = ({
         onLocationChanged(location);
       })
       .catch((errorCode) => {
-        toast(ERROR_MESSAGE[errorCode]);
+        toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
       });
   };
 
