@@ -15,7 +15,7 @@ const Home = () => {
   const errorCode = useLocationStore((state) => state.errorCode);
   const { getLocation } = useCurrentLocation();
   const [center, setCenter] = useState<ILocation>(
-    useLocationStore((state) => state.location),
+    useLocationStore.getInitialState().location,
   );
 
   useKakaoLoader();
