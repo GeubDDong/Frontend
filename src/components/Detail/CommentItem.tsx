@@ -1,20 +1,25 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
+import { ICommentItem } from './Comments';
 
-const CommentItem = () => {
+interface CommentItemProps {
+  item: ICommentItem;
+}
+
+const CommentItem = ({ item }: CommentItemProps) => {
   return (
     <CommentItemStyle>
       <div className="profile"></div>
       <div className="content">
         <div className="top">
-          <div className="nickname">닉네임</div>
-          <div className="date">2024-01-01</div>
+          <div className="nickname">{item.nickname}</div>
+          <div className="date">{item.updated_at}</div>
           <div className="buttons">
             <div>수정</div>
             <div>삭제</div>
           </div>
         </div>
-        <div className="comment">댓글 내용</div>
+        <div className="comment">{item.comment}</div>
       </div>
     </CommentItemStyle>
   );
