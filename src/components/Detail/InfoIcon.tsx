@@ -29,7 +29,8 @@ const InfoIcon = ({ iconName, active, text }: Props) => {
       <div className="circle">
         <FaCircle
           size="3rem"
-          color={active ? `${Theme.colors.primary}` : '#d8dfe0'}
+          color={active ? '#205781' : '#d8dfe0'} //'#244fb1' #4F959D #205781 #80CBC4
+          style={{ opacity: active ? 1 : 0.5 }}
         />
         <div className="info">
           <IconContext.Provider
@@ -42,7 +43,7 @@ const InfoIcon = ({ iconName, active, text }: Props) => {
           </IconContext.Provider>
         </div>
       </div>
-      <span>{text}</span>
+      <span style={{ opacity: active ? 1 : 0.5 }}>{text}</span>
     </InfoIconStyle>
   );
 };
