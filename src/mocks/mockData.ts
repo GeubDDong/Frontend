@@ -1,4 +1,4 @@
-import { ICommentItem } from '@/components/Detail/CommentItem';
+import { ICommentItem } from '@/components/Detail/Comments';
 import { IDetailView } from '@/components/Detail/DetailView';
 
 export const mockToiletDetail: IDetailView = {
