@@ -27,8 +27,10 @@
     "react-kakao-maps-sdk": "^1.1.27",
     "react-query": "^3.39.3",
     "react-router-dom": "^7.3.0",
+    "react-toastify": "^11.0.5",
     "styled-components": "^6.1.15",
-    "styled-normalize": "^8.1.1"
+    "styled-normalize": "^8.1.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
