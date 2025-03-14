@@ -56,7 +56,9 @@ const DetailView = () => {
             <InfoIcon iconName="woman" active={true} text="여성용" />
             <InfoIcon
               iconName="children"
-              active={info.kids_toilet_female === 'Y'}
+              active={
+                info.kids_toilet_female === 'Y' || info.kids_toilet_male === 'Y'
+              }
               text="어린이 대변기"
             />
             <InfoIcon
@@ -66,7 +68,9 @@ const DetailView = () => {
             />
             <InfoIcon
               iconName="wheelchair"
-              active={info.disabled_female === 'Y'}
+              active={
+                info.disabled_female === 'Y' || info.disabled_male === 'Y'
+              }
               text="장애인"
             />
             <InfoIcon iconName="cctv" active={info.cctv === 'Y'} text="CCTV" />
