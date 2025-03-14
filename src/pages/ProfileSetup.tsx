@@ -33,7 +33,7 @@ const ProfileSetupStyle = styled.div`
   .logo {
     width: 200px;
     height: 200px;
-    background-color: ${Theme.colors.primary};
+    background-color: ${Theme.colors.logo};
     border-radius: 50%;
     position: relative;
     box-shadow: 5px 5px 5px #d8dfe0;
@@ -83,12 +83,11 @@ const ProfileSetupStyle = styled.div`
   .content button {
     width: 60%;
     padding: 10px 15px;
-    color: ${Theme.colors.mainText};
+    color: ${Theme.colors.buttonText};
     font-size: ${Theme.fontSize.sm};
-    background-color: ${Theme.colors.primary};
+    background-color: ${Theme.colors.secondary};
     border: none;
     border-radius: 8px;
-    font-weight: bold;
   }
 `;
 export default ProfileSetup;

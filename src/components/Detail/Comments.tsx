@@ -62,7 +62,7 @@ const CommentsStyle = styled.div`
   .input button {
     font-size: ${Theme.fontSize.sm};
     padding: 10px;
-    color: ${Theme.colors.mainText};
+    color: ${Theme.colors.buttonText};
     background-color: ${Theme.colors.primary};
     border: none;
     border-radius: 8px;

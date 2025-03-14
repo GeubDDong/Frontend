@@ -12,7 +12,7 @@ const LikeButton = () => {
       {isLike ? (
         <FaHeart
           size="1.5rem"
-          color="#FE8286" // FF4033
+          color="#eb3b41" // FF4033
           onClick={handleClickLike}
           style={{ cursor: 'pointer' }}
         />

@@ -43,7 +43,7 @@ const LoginStyle = styled.div`
   .logo {
     width: 200px;
     height: 200px;
-    background-color: ${Theme.colors.primary};
+    background-color: ${Theme.colors.logo};
     border-radius: 50%;
     position: relative;
     box-shadow: 5px 5px 5px #d8dfe0;
