@@ -1,12 +1,22 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import { ICommentItem } from './Comments';
+import { useState } from 'react';
 
 interface CommentItemProps {
   item: ICommentItem;
 }
 
 const CommentItem = ({ item }: CommentItemProps) => {
+  const [edit, setEdit] = useState<boolean>(false);
+  const [editText, setEditText] = useState('');
+
+  const handleClickEdit = () => {
+    setEdit(!edit);
+    setEditText(item.comment);
+  };
+  const handleClickDelete = () => {};
+
   return (
     <CommentItemStyle>
       <div className="profile"></div>
@@ -15,11 +25,23 @@ const CommentItem = ({ item }: CommentItemProps) => {
           <div className="nickname">{item.nickname}</div>
           <div className="date">{item.updated_at}</div>
           <div className="buttons">
-            <div>수정</div>
-            <div>삭제</div>
+            <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
+              {edit ? '취소' : '수정'}
+            </button>
+            <button style={{ cursor: 'pointer' }} onClick={handleClickDelete}>
+              {edit ? '확인' : '삭제'}
+            </button>
           </div>
         </div>
-        <div className="comment">{item.comment}</div>
+        {edit ? (
+          <input
+            type="text"
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+          />
+        ) : (
+          <div className="comment">{item.comment}</div>
+        )}
       </div>
     </CommentItemStyle>
   );
@@ -53,11 +75,16 @@ const CommentItemStyle = styled.div`
   .buttons {
     display: flex;
     gap: 10px;
-    font-size: ${Theme.fontSize.xs};
-    color: ${Theme.colors.subText};
     position: absolute;
     right: 10px;
     top: -5px;
+  }
+
+  .buttons button {
+    border: none;
+    background-color: transparent;
+    font-size: ${Theme.fontSize.xs};
+    color: ${Theme.colors.subText};
   }
 
   .date {
