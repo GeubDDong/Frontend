@@ -2,6 +2,7 @@ import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import { ICommentItem } from './Comments';
 import { useState } from 'react';
+import { IoPersonCircle } from 'react-icons/io5';
 
 interface CommentItemProps {
   item: ICommentItem;
@@ -19,7 +20,9 @@ const CommentItem = ({ item }: CommentItemProps) => {
 
   return (
     <CommentItemStyle>
-      <div className="profile"></div>
+      <div className="profile">
+        <IoPersonCircle size="3rem" style={{ color: Theme.colors.secondary }} />
+      </div>
       <div className="content">
         <div className="top">
           <div className="nickname">{item.nickname}</div>
@@ -49,14 +52,9 @@ const CommentItem = ({ item }: CommentItemProps) => {
 
 const CommentItemStyle = styled.div`
   display: flex;
-  gap: 10px;
-
-  .profile {
-    min-width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #d8dfe0;
-  }
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
 
   .content {
     display: flex;
