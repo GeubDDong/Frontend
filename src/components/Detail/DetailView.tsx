@@ -4,22 +4,18 @@ import InfoIcon from './InfoIcon';
 import LikeButton from './LikeButton';
 import { useEffect, useState } from 'react';
 import { mockToiletDetail } from '@/mocks/mockData';
+import { IToiletInfo } from '@/types';
+import useToiletInfoStore from '@/store/toiletInfoStore';
+import { StaticMap } from 'react-kakao-maps-sdk';
 
 type TAvailable = 'Y' | 'N';
-export interface IDetailView {
-  id: number;
-  name: string;
-  street_address: string;
-  lot_address: string;
+export interface IToiletDetailInfo extends IToiletInfo {
   disabled_male: TAvailable;
   kids_toilet_male: TAvailable;
   disabled_female: TAvailable;
   kids_toilet_female: TAvailable;
   management_agency: string;
   phone_number: string;
-  open_hour: string;
-  latitude: number;
-  longitude: number;
   emergency_bell: TAvailable;
   cctv: TAvailable;
   diaper_changing_station: TAvailable;
@@ -27,67 +23,103 @@ export interface IDetailView {
 }
 
 const DetailView = () => {
-  const [info, setInfo] = useState<IDetailView | null>(null);
+  const info = useToiletInfoStore((state) => state.info);
+  const [detailInfo, setDetailInfo] = useState<IToiletDetailInfo | null>(null);
+  const data = detailInfo || info;
   // TODO: api
 
   useEffect(() => {
     setTimeout(() => {
-      setInfo(mockToiletDetail);
+      setDetailInfo(mockToiletDetail);
     }, 500);
   }, []);
 
+  if (!data) return null;
   return (
     <>
-      {info && (
-        <DetailViewStyle>
-          <div className="title">
-            <div className="name">{info.name}</div>
-            <div className="like">
-              <LikeButton />
-            </div>
+      <DetailViewStyle>
+        <div className="title">
+          <div className="name">{data.name}</div>
+          <div className="like">
+            <LikeButton />
           </div>
-          <div className="address">
-            {info.street_address ? info.street_address : info.lot_address}
+        </div>
+        <div className="address">
+          {data.street_address ? data.street_address : data.lot_address}
+        </div>
+        {detailInfo && (
+          <div className="update">
+            데이터 기준일 {detailInfo.data_reference_date}
           </div>
-          <div className="update">데이터 기준일 {info.data_reference_date}</div>
-          <div className="detailInfoIcons">
-            <InfoIcon iconName="clock" active={true} text={info.open_hour} />
-            <InfoIcon iconName="man" active={true} text="남성용" />
-            <InfoIcon iconName="woman" active={true} text="여성용" />
-            <InfoIcon
-              iconName="children"
-              active={
-                info.kids_toilet_female === 'Y' || info.kids_toilet_male === 'Y'
-              }
-              text="어린이 대변기"
-            />
-            <InfoIcon
-              iconName="baby"
-              active={info.diaper_changing_station === 'Y'}
-              text="기저귀 교환대"
-            />
-            <InfoIcon
-              iconName="wheelchair"
-              active={
-                info.disabled_female === 'Y' || info.disabled_male === 'Y'
-              }
-              text="장애인"
-            />
-            <InfoIcon iconName="cctv" active={info.cctv === 'Y'} text="CCTV" />
-            <InfoIcon
-              iconName="bell"
-              active={info.emergency_bell === 'Y'}
-              text="비상벨"
-            />
-          </div>
-          <div className="management">
-            <div className="title">관리기관</div>
-            <span>{info.management_agency}</span>
-            <span>{info.phone_number}</span>
-          </div>
-          <div className="map"></div>
-        </DetailViewStyle>
-      )}
+        )}
+        <div className="detailInfoIcons">
+          {detailInfo && (
+            <>
+              <InfoIcon
+                iconName="clock"
+                active={true}
+                text={detailInfo.open_hours}
+              />
+              <InfoIcon iconName="man" active={true} text="남성용" />
+              <InfoIcon iconName="woman" active={true} text="여성용" />
+              <InfoIcon
+                iconName="children"
+                active={
+                  detailInfo.kids_toilet_female === 'Y' ||
+                  detailInfo.kids_toilet_male === 'Y'
+                }
+                text="어린이 대변기"
+              />
+              <InfoIcon
+                iconName="baby"
+                active={detailInfo.diaper_changing_station === 'Y'}
+                text="기저귀 교환대"
+              />
+              <InfoIcon
+                iconName="wheelchair"
+                active={
+                  detailInfo.disabled_female === 'Y' ||
+                  detailInfo.disabled_male === 'Y'
+                }
+                text="장애인"
+              />
+              <InfoIcon
+                iconName="cctv"
+                active={detailInfo.cctv === 'Y'}
+                text="CCTV"
+              />
+              <InfoIcon
+                iconName="bell"
+                active={detailInfo.emergency_bell === 'Y'}
+                text="비상벨"
+              />
+            </>
+          )}
+        </div>
+        <div className="management">
+          <div className="title">관리기관</div>
+          {detailInfo && (
+            <>
+              <span>{detailInfo.management_agency}</span>
+              <span>{detailInfo.phone_number}</span>
+            </>
+          )}
+        </div>
+        <div className="map">
+          <StaticMap
+            center={{
+              lat: data.location.latitude,
+              lng: data.location.longitude,
+            }}
+            style={{
+              width: '100%',
+              height: '200px',
+            }}
+            level={3}
+            marker
+          />
+        </div>
+      </DetailViewStyle>
     </>
   );
 };
@@ -144,6 +176,10 @@ const DetailViewStyle = styled.div`
   .management span {
     font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.mainText};
+  }
+
+  .map {
+    margin-top: 10px;
   }
 `;
 export default DetailView;
