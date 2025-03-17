@@ -1,4 +1,4 @@
-import { mockToiletInfo } from '@/mocks/mockData';
+import { mockToiletBasicInfo } from '@/mocks/mockData';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { Theme } from '@/style/Theme';
 import { IToiletInfo } from '@/types';
@@ -29,7 +29,7 @@ const ToiletBasicInfo = () => {
   // TODO: api
 
   useEffect(() => {
-    setInfo(mockToiletInfo);
+    setInfo(mockToiletBasicInfo);
     setTimeout(() => {
       setIsOpen(true);
     }, 1000);
