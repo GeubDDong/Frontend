@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import { IToiletInfo } from '@/types';
+import { IToiletBasicInfo } from '@/components/Main/ToiletBasicInfo';
 
 interface IUseToiletInfoStore {
-  info: IToiletInfo | null;
-  setInfo: (info: IToiletInfo) => void;
+  info: IToiletBasicInfo | null;
+  setInfo: (info: IToiletBasicInfo) => void;
 }
 
 const useToiletInfoStore = create<IUseToiletInfoStore>((set) => ({
