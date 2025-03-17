@@ -21,8 +21,11 @@ const LikeButton = () => {
         {isLike ? (
           <FaHeart
             size="1.5rem"
-            color="#eb3b41" // FF4033
+            color="#eb3b41"
             onPointerDown={handleClickLike}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
             style={{
               cursor: 'pointer',
             }}
@@ -32,6 +35,9 @@ const LikeButton = () => {
             size="1.5rem"
             color={`${Theme.colors.subText}`}
             onPointerDown={handleClickLike}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
             style={{ cursor: 'pointer' }}
           />
         )}
