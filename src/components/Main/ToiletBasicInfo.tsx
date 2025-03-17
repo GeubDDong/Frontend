@@ -13,7 +13,7 @@ export interface IToiletBasicInfo extends IToiletInfo {
 }
 
 interface BasicInfoStyleProps {
-  isOpen: boolean;
+  $isOpen: boolean;
 }
 
 const ToiletBasicInfo = () => {
@@ -38,7 +38,7 @@ const ToiletBasicInfo = () => {
   return (
     <>
       {info && (
-        <ToiletBasicInfoStyle isOpen={isOpen}>
+        <ToiletBasicInfoStyle $isOpen={isOpen}>
           <div onClick={handleClick}>
             <div className="title">
               <div className="name">{info.name}</div>
@@ -70,7 +70,7 @@ const ToiletBasicInfoStyle = styled.div<BasicInfoStyleProps>`
   border-radius: 20px 20px 0 0;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
   transform: translateX(-50%)
-    translateY(${({ isOpen }) => (isOpen ? '0%' : '100%')});
+    translateY(${({ $isOpen }) => ($isOpen ? '0%' : '100%')});
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
 
