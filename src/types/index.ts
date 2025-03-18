@@ -11,3 +11,7 @@ export interface IToiletInfo {
   lot_address: string;
   open_hours: string;
 }
+
+export interface IUserProfile {
+  nickname: string;
+}
