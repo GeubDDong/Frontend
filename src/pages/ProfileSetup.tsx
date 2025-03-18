@@ -3,15 +3,25 @@ import styled from 'styled-components';
 import logo from '@/assets/logo.png';
 import { Theme } from '@/style/Theme';
 import { useState } from 'react';
-
-const MAX_LENGTH = 10;
+import { useNavigate } from 'react-router-dom';
+import { fetchSetNickname } from '@/api/auth.api';
+import { NICKNAME_MAX_LENGTH } from '@/constants/common';
 
 const ProfileSetup = () => {
   const [value, setValue] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value.slice(0, MAX_LENGTH);
+    const inputValue = e.target.value.slice(0, NICKNAME_MAX_LENGTH);
     setValue(inputValue);
+  };
+
+  const handleClick = () => {
+    if (!value) return;
+
+    fetchSetNickname({ nickname: value }).then(() => {
+      navigate('/login');
+    });
   };
 
   return (
@@ -29,9 +39,9 @@ const ProfileSetup = () => {
               onChange={handleChange}
               placeholder="닉네임을 입력하세요."
             />
-            <span>{`${value.length}/${MAX_LENGTH}`}</span>
+            <span>{`${value.length}/${NICKNAME_MAX_LENGTH}`}</span>
           </div>
-          <button>설정하기</button>
+          <button onClick={handleClick}>설정하기</button>
         </div>
       </ProfileSetupStyle>
     </>
