@@ -103,6 +103,11 @@ const ProfileSetupStyle = styled.div`
     background-color: ${Theme.colors.secondary};
     border: none;
     border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 `;
 export default ProfileSetup;
