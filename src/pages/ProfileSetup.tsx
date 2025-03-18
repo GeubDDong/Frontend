@@ -20,7 +20,7 @@ const ProfileSetup = () => {
     if (!value) return;
 
     fetchSetNickname({ nickname: value }).then(() => {
-      navigate('/login');
+      navigate('/');
     });
   };
 
