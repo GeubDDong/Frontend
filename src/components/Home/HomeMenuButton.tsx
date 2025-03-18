@@ -16,9 +16,9 @@ const HomeMenuButtonStyle = styled.div`
   z-index: 9999;
   cursor: pointer;
 
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
   background-color: ${Theme.colors.background};
 
   position: absolute;
@@ -37,16 +37,15 @@ const DropdownMenuContainer = styled.ul<DropdownMenuContainerProps>`
   cursor: pointer;
 
   width: 120px;
-  overflow-y: auto;
   border-radius: 5px;
   background-color: ${Theme.colors.background};
   position: absolute;
-  top: 40px;
+  top: 45px;
   right: 0;
 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   list-style-type: none;
-  padding: 0;
+  padding: ${({ $isOpen }) => ($isOpen ? '3px 0' : '0')};
   margin: 0;
 
   max-height: ${({ $isOpen }) => ($isOpen ? '200px' : '0')};
@@ -54,20 +53,21 @@ const DropdownMenuContainer = styled.ul<DropdownMenuContainerProps>`
   transform: ${({ $isOpen }) =>
     $isOpen ? 'translateY(0)' : 'translateY(-10px)'};
   transition:
-    max-height 0.5s ease,
-    transform 0.5s ease;
+    padding 0.2s ease,
+    max-height 0.2s ease,
+    transform 0.4s ease;
 `;
 
 const DropdownMenuItemContainer = styled.li`
   height: 30px;
-  width: 100%;
-  margin: 5px 0;
+  width: 90%;
+  margin: 2px 0;
   border-radius: 3px;
 
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: #bbbbbb;
+    background-color: #e4e4e4;
   }
 `;
 
@@ -104,7 +104,9 @@ const MenuContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 5;
+  flex: 7;
+
+  font-size: ${Theme.fontSize.sm};
 `;
 
 const menuItemsByLoginStatus = {
@@ -149,7 +151,7 @@ const menuItemsByLoginStatus = {
 
 const HomeMenuButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isLogin = false;
+  const isLogin = true;
 
   const loginStatus = isLogin ? 'login' : 'logout';
 
