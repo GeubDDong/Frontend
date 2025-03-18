@@ -10,6 +10,7 @@ import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
+import HomeMenuButton from '@/components/Home/HomeMenuButton';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -61,6 +62,7 @@ const Home = () => {
       >
         {errorCode === null && <MyLocation />}
       </Map>
+      <HomeMenuButton />
       <CurrentLocationButton onLocationChanged={setCenter} />
     </HomeStyle>
   );
