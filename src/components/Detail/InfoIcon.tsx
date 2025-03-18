@@ -29,7 +29,7 @@ const InfoIcon = ({ iconName, active, text }: Props) => {
       <div className="circle">
         <FaCircle
           size="3rem"
-          color={active ? '#205781' : '#d8dfe0'} //'#244fb1' #4F959D #205781 #80CBC4
+          color={active ? `${Theme.colors.primary}` : '#d8dfe0'}
           style={{ opacity: active ? 1 : 0.5 }}
         />
         <div className="info">

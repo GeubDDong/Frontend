@@ -1,9 +1,12 @@
 export const Theme = {
   colors: {
-    primary: '#B4EBE6', // 포인트 컬러 mint
+    primary: '#205781',
+    secondary: '#4F959D',
+    logo: '#B4EBE6',
     background: 'white',
     mainText: 'black',
     subText: '#999999',
+    buttonText: 'white',
   },
   fontSize: {
     xs: '10px',

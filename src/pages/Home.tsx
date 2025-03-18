@@ -9,6 +9,7 @@ import useLocationStore from '@/store/locationStore';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
+import ToiletBasicInfo from '@/components/Main/ToiletBasicInfo';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -42,6 +43,7 @@ const Home = () => {
 
   return (
     <HomeStyle>
+      <ToiletBasicInfo />
       <Map
         id="map"
         center={{
@@ -70,4 +72,5 @@ const HomeStyle = styled.div`
   height: 100%;
   width: 100%;
   position: relative;
+  overflow-y: hidden;
 `;

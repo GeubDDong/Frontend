@@ -1,11 +1,30 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
+import { useEffect, useState } from 'react';
+import { mockComments } from '@/mocks/mockData';
+
+export interface ICommentItem {
+  id: number;
+  user_email: string;
+  nickname: string;
+  comment: string;
+  updated_at: string;
+}
 
 const Comments = () => {
+  const [comments, setComments] = useState<ICommentItem[]>([]);
+  // TODO: api
+
+  useEffect(() => {
+    setTimeout(() => {
+      setComments(mockComments);
+    }, 500);
+  }, []);
+
   return (
     <CommentsStyle>
-      <div className="title">{`댓글 ${4}`}</div>
+      <div className="title">{`댓글 ${comments.length}`}</div>
       <div className="input">
         <input
           type="text"
@@ -14,8 +33,9 @@ const Comments = () => {
         <button style={{ cursor: 'pointer' }}>등록</button>
       </div>
       <div className="comments">
-        <CommentItem />
-        <CommentItem />
+        {comments.map((item) => (
+          <CommentItem key={item.id} item={item} />
+        ))}
       </div>
     </CommentsStyle>
   );
@@ -42,7 +62,7 @@ const CommentsStyle = styled.div`
   .input button {
     font-size: ${Theme.fontSize.sm};
     padding: 10px;
-    color: ${Theme.colors.mainText};
+    color: ${Theme.colors.buttonText};
     background-color: ${Theme.colors.primary};
     border: none;
     border-radius: 8px;

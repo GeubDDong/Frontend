@@ -1,20 +1,50 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
+import { ICommentItem } from './Comments';
+import { useState } from 'react';
+import { IoPersonCircle } from 'react-icons/io5';
 
-const CommentItem = () => {
+interface CommentItemProps {
+  item: ICommentItem;
+}
+
+const CommentItem = ({ item }: CommentItemProps) => {
+  const [edit, setEdit] = useState<boolean>(false);
+  const [editText, setEditText] = useState('');
+
+  const handleClickEdit = () => {
+    setEdit(!edit);
+    setEditText(item.comment);
+  };
+  const handleClickDelete = () => {};
+
   return (
     <CommentItemStyle>
-      <div className="profile"></div>
+      <div className="profile">
+        <IoPersonCircle size="3rem" style={{ color: Theme.colors.secondary }} />
+      </div>
       <div className="content">
         <div className="top">
-          <div className="nickname">닉네임</div>
-          <div className="date">2024-01-01</div>
+          <div className="nickname">{item.nickname}</div>
+          <div className="date">{item.updated_at}</div>
           <div className="buttons">
-            <div>수정</div>
-            <div>삭제</div>
+            <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
+              {edit ? '취소' : '수정'}
+            </button>
+            <button style={{ cursor: 'pointer' }} onClick={handleClickDelete}>
+              {edit ? '확인' : '삭제'}
+            </button>
           </div>
         </div>
-        <div className="comment">댓글 내용</div>
+        {edit ? (
+          <input
+            type="text"
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+          />
+        ) : (
+          <div className="comment">{item.comment}</div>
+        )}
       </div>
     </CommentItemStyle>
   );
@@ -22,14 +52,9 @@ const CommentItem = () => {
 
 const CommentItemStyle = styled.div`
   display: flex;
-  gap: 10px;
-
-  .profile {
-    min-width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #d8dfe0;
-  }
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
 
   .content {
     display: flex;
@@ -48,11 +73,16 @@ const CommentItemStyle = styled.div`
   .buttons {
     display: flex;
     gap: 10px;
-    font-size: ${Theme.fontSize.xs};
-    color: ${Theme.colors.subText};
     position: absolute;
     right: 10px;
     top: -5px;
+  }
+
+  .buttons button {
+    border: none;
+    background-color: transparent;
+    font-size: ${Theme.fontSize.xs};
+    color: ${Theme.colors.subText};
   }
 
   .date {
