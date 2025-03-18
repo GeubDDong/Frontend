@@ -2,8 +2,18 @@ import BackButton from '@/components/Common/BackButton';
 import styled from 'styled-components';
 import logo from '@/assets/logo.png';
 import { Theme } from '@/style/Theme';
+import { useState } from 'react';
+
+const MAX_LENGTH = 10;
 
 const ProfileSetup = () => {
+  const [value, setValue] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.slice(0, MAX_LENGTH);
+    setValue(inputValue);
+  };
+
   return (
     <>
       <BackButton />
@@ -13,8 +23,13 @@ const ProfileSetup = () => {
         </div>
         <div className="content">
           <div className="input">
-            <input type="form" placeholder="닉네임을 입력하세요." />
-            <span>0/10</span>
+            <input
+              type="form"
+              value={value}
+              onChange={handleChange}
+              placeholder="닉네임을 입력하세요."
+            />
+            <span>{`${value.length}/${MAX_LENGTH}`}</span>
           </div>
           <button>설정하기</button>
         </div>
