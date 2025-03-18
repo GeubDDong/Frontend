@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '@/hooks/useKakaoLoader';
-import CurrentLocationButton from '@/components/Main/CurrentLocationButton';
+import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { ILocation } from '@/types';
 import styled from 'styled-components';
-import MyLocation from '@/components/Main/MyLocation';
+import MyLocation from '@/components/Home/MyLocation';
 import useLocationStore from '@/store/locationStore';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
-import ToiletBasicInfo from '@/components/Main/ToiletBasicInfo';
+import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
+import HomeMenuButton from '@/components/Home/HomeMenuButton';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -61,6 +62,7 @@ const Home = () => {
       >
         {errorCode === null && <MyLocation />}
       </Map>
+      <HomeMenuButton />
       <CurrentLocationButton onLocationChanged={setCenter} />
     </HomeStyle>
   );

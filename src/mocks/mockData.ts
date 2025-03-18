@@ -1,6 +1,6 @@
 import { ICommentItem } from '@/components/Detail/Comments';
 import { IToiletDetailInfo } from '@/components/Detail/DetailView';
-import { IToiletBasicInfo } from '@/components/Main/ToiletBasicInfo';
+import { IToiletBasicInfo } from '@/components/Home/ToiletBasicInfo';
 
 export const mockToiletBasicInfo: IToiletBasicInfo = {
   id: 1,
