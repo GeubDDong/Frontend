@@ -10,5 +10,13 @@ export interface IToiletDetailInfo extends IToiletInfo {
   emergency_bell: TAvailable;
   cctv: TAvailable;
   diaper_changing_station: TAvailable;
-  data_reference_date: string;
+  data_reference_date: Date;
+}
+
+export interface ICommentItem {
+  id: number;
+  user_email: string;
+  nickname: string;
+  comment: string;
+  updated_at: Date;
 }

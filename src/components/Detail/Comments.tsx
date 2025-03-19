@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import { useEffect, useState } from 'react';
 import { mockComments } from '@/mocks/mockData';
-
-export interface ICommentItem {
-  id: number;
-  user_email: string;
-  nickname: string;
-  comment: string;
-  updated_at: string;
-}
+import { ICommentItem } from '@/models/detail.model';
 
 const Comments = () => {
   const [comments, setComments] = useState<ICommentItem[]>([]);

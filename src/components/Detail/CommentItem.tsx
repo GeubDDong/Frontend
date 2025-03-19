@@ -1,8 +1,9 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
-import { ICommentItem } from './Comments';
 import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
+import { ICommentItem } from '@/models/detail.model';
+import { formatDateToString } from '@/utils/dateUtil';
 
 interface CommentItemProps {
   item: ICommentItem;
@@ -26,7 +27,7 @@ const CommentItem = ({ item }: CommentItemProps) => {
       <div className="content">
         <div className="top">
           <div className="nickname">{item.nickname}</div>
-          <div className="date">{item.updated_at}</div>
+          <div className="date">{formatDateToString(item.updated_at)}</div>
           <div className="buttons">
             <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
               {edit ? '취소' : '수정'}

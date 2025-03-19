@@ -1,6 +1,5 @@
-import { ICommentItem } from '@/components/Detail/Comments';
-import { IToiletDetailInfo } from '@/components/Detail/DetailView';
 import { IToiletBasicInfo } from '@/components/Home/ToiletBasicInfo';
+import { ICommentItem, IToiletDetailInfo } from '@/models/detail.model';
 
 export const mockToiletBasicInfo: IToiletBasicInfo = {
   id: 1,
@@ -35,7 +34,7 @@ export const mockToiletDetail: IToiletDetailInfo = {
   emergency_bell: 'N',
   cctv: 'Y',
   diaper_changing_station: 'N',
-  data_reference_date: '2025-03-05',
+  data_reference_date: new Date('2025-03-05'),
 };
 
 export const mockComment: ICommentItem = {
@@ -43,7 +42,7 @@ export const mockComment: ICommentItem = {
   user_email: 'user123@naver.com',
   nickname: '철수짱',
   comment: '깨끗한 화장실이에요!',
-  updated_at: '2025-03-06T12:34:56Z',
+  updated_at: new Date('2025-03-06T12:34:56Z'),
 };
 
 export const mockComments: ICommentItem[] = [
@@ -52,7 +51,7 @@ export const mockComments: ICommentItem[] = [
     user_email: 'user123@naver.com',
     nickname: '철수짱',
     comment: '깨끗한 화장실이에요!',
-    updated_at: '2025-03-06T12:34:56Z',
+    updated_at: new Date('2025-03-06T12:34:56Z'),
   },
   // {
   //   id: 2,

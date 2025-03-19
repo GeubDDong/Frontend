@@ -7,6 +7,7 @@ import { mockToiletDetail } from '@/mocks/mockData';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
 import { IToiletDetailInfo } from '@/models/detail.model';
+import { formatDateToString } from '@/utils/dateUtil';
 
 const DetailView = () => {
   const info = useToiletInfoStore((state) => state.info);
@@ -35,7 +36,7 @@ const DetailView = () => {
         </div>
         {detailInfo && (
           <div className="update">
-            데이터 기준일 {detailInfo.data_reference_date}
+            데이터 기준일 {formatDateToString(detailInfo.data_reference_date)}
           </div>
         )}
         <div className="detailInfoIcons">
