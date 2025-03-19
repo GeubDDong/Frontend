@@ -65,7 +65,7 @@ const CommentItemStyle = styled.div`
 
   .top {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     align-items: center;
     position: relative;
   }
@@ -86,8 +86,8 @@ const CommentItemStyle = styled.div`
   }
 
   .date {
-    font-size: ${Theme.fontSize.sm};
-    color: ${Theme.colors.mainText};
+    font-size: ${Theme.fontSize.xs};
+    color: ${Theme.colors.subText};
   }
 
   .nickname {
