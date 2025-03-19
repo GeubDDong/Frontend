@@ -4,7 +4,7 @@ import logo from '@/assets/logo.png';
 import { Theme } from '@/style/Theme';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchSetNickname } from '@/api/auth.api';
+import { setNickname } from '@/api/auth.api';
 import { NICKNAME_MAX_LENGTH } from '@/constants/common';
 
 const ProfileSetup = () => {
@@ -19,7 +19,7 @@ const ProfileSetup = () => {
   const handleClick = () => {
     if (!value) return;
 
-    fetchSetNickname({ nickname: value }).then(() => {
+    setNickname({ nickname: value }).then(() => {
       navigate('/');
     });
   };
