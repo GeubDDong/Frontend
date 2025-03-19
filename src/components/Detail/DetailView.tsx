@@ -4,23 +4,9 @@ import InfoIcon from './InfoIcon';
 import LikeButton from './LikeButton';
 import { useEffect, useState } from 'react';
 import { mockToiletDetail } from '@/mocks/mockData';
-import { IToiletInfo } from '@/types';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
-
-type TAvailable = 'Y' | 'N';
-export interface IToiletDetailInfo extends IToiletInfo {
-  disabled_male: TAvailable;
-  kids_toilet_male: TAvailable;
-  disabled_female: TAvailable;
-  kids_toilet_female: TAvailable;
-  management_agency: string;
-  phone_number: string;
-  emergency_bell: TAvailable;
-  cctv: TAvailable;
-  diaper_changing_station: TAvailable;
-  data_reference_date: string;
-}
+import { IToiletDetailInfo } from '@/models/detail.model';
 
 const DetailView = () => {
   const info = useToiletInfoStore((state) => state.info);

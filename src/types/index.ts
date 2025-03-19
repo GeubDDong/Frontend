@@ -3,6 +3,8 @@ export interface ILocation {
   longitude: number;
 }
 
+export type TAvailable = 'Y' | 'N';
+
 export interface IToiletInfo {
   id: number;
   name: string;
