@@ -5,7 +5,6 @@ import { IToiletInfo } from '@/types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import LikeButton from '../Detail/LikeButton';
 
 export interface IToiletBasicInfo extends IToiletInfo {
   liked: boolean;
@@ -42,14 +41,17 @@ const ToiletBasicInfo = () => {
           <div onClick={handleClick}>
             <div className="title">
               <div className="name">{info.name}</div>
-              <div className="like">
+              {/* <div className="like">
                 <LikeButton />
-              </div>
+              </div> */}
             </div>
             <div className="address">
               {info.street_address ? info.street_address : info.lot_address}
             </div>
-            <div className="openHours">{info.open_hours}</div>
+            <div className="bottom">
+              <div className="openHours">{info.open_hours}</div>
+              <div className="like">❤️100</div>
+            </div>
           </div>
         </ToiletBasicInfoStyle>
       )}
@@ -60,24 +62,28 @@ const ToiletBasicInfo = () => {
 const ToiletBasicInfoStyle = styled.div<BasicInfoStyleProps>`
   position: absolute;
   z-index: 1000;
-  width: 95%;
-  bottom: 0;
+  width: 90%;
+  bottom: 10px;
   left: 50%;
-  padding: 20px 0 20px 20px;
+  padding: 16px 20px;
   background-color: white;
-  min-height: 70px;
-  height: '12vh';
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  min-height: 80px;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   transform: translateX(-50%)
     translateY(${({ $isOpen }) => ($isOpen ? '0%' : '100%')});
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
-
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  &:hover {
+    background-color: #fdfefe;
+  }
   .title {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
   }
 
   .name {
@@ -87,15 +93,33 @@ const ToiletBasicInfoStyle = styled.div<BasicInfoStyleProps>`
   }
 
   .address {
-    margin-top: 10px;
     font-size: ${Theme.fontSize.md};
-    color: ${Theme.colors.mainText};
+    color: ${Theme.colors.subText};
+    margin-top: 4px;
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
   }
 
   .openHours {
-    margin-top: 10px;
-    font-size: ${Theme.fontSize.md};
+    font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.mainText};
+    font-weight: 500;
   }
+
+  .like {
+    font-size: ${Theme.fontSize.md};
+    font-weight: bold;
+    color: ${Theme.colors.subText};
+    margin-right: 10px;
+  }
+
+  /* .like svg {
+    font-size: 18px;
+  } */
 `;
 export default ToiletBasicInfo;
