@@ -1,20 +1,39 @@
+import { addLike, fetchLike, removeLike } from '@/api/detail.api';
+import { useAuth } from '@/hooks/useAuth';
 import { Theme } from '@/style/Theme';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import styled from 'styled-components';
 
 const LikeButton = () => {
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const { isLogin } = useAuth();
 
   const handleClickLike = () => {
+    if (!isLogin) {
+      window.alert('로그인이 필요한 기능입니다.');
+      return;
+    }
+
     if (isLike) {
+      removeLike(2, { user_email: 'userEmail' }).then();
       setLikeCount(likeCount - 1);
     } else {
+      addLike(2, { user_email: 'userEmail' }).then();
       setLikeCount(likeCount + 1);
     }
+
     setIsLike(!isLike);
   };
+
+  useEffect(() => {
+    fetchLike(2).then((res) => {
+      setIsLike(res.like);
+      setLikeCount(res.count);
+    });
+  }, []);
+
   return (
     <>
       <LikeButtonStyle>

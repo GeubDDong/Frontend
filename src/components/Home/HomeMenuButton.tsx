@@ -1,3 +1,6 @@
+import { logout } from '@/api/auth.api';
+import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/authStore';
 import { Theme } from '@/style/Theme';
 import { useState } from 'react';
 import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
@@ -138,7 +141,14 @@ const menuItemsByLoginStatus = {
     {
       key: 'menu_3',
       element: (
-        <DropdownMenuItemDiv onClick={() => {}}>
+        <DropdownMenuItemDiv
+          onClick={() => {
+            logout().then(() => {
+              useAuthStore.getState().logout();
+              window.alert('로그아웃되었습니다.');
+            });
+          }}
+        >
           <IconContainer>
             <FaSignOutAlt />
           </IconContainer>
@@ -151,7 +161,7 @@ const menuItemsByLoginStatus = {
 
 const HomeMenuButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isLogin = true;
+  const { isLogin } = useAuth();
 
   const loginStatus = isLogin ? 'login' : 'logout';
 
