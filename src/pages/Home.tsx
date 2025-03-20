@@ -23,10 +23,9 @@ const Home = () => {
   const setSelectedToiletDataInfo = useToiletInfoStore(
     (state) => state.setInfo,
   );
+  const center = useLocationStore((state) => state.center);
+  const setCenter = useLocationStore((store) => store.setCenter);
   const { getLocation } = useCurrentLocation();
-  const [center, setCenter] = useState<ILocation>(
-    useLocationStore.getInitialState().location,
-  );
   const [bound, setBound] = useState<IBound>({
     top: INITIAL_BOUNDS.TOP,
     left: INITIAL_BOUNDS.LEFT,
@@ -107,7 +106,7 @@ const Home = () => {
         ))}
       </Map>
       <HomeMenuButton />
-      <CurrentLocationButton onLocationChanged={setCenter} />
+      <CurrentLocationButton />
     </HomeStyle>
   );
 };

@@ -1,24 +1,18 @@
-import React from 'react';
-import { ILocation } from '@/types';
 import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
+import useLocationStore from '@/store/locationStore';
 
-interface ICurrentLocationButtonProps {
-  onLocationChanged: React.Dispatch<React.SetStateAction<ILocation>>;
-}
-
-const CurrentLocationButton: React.FC<ICurrentLocationButtonProps> = ({
-  onLocationChanged,
-}) => {
+const CurrentLocationButton = () => {
+  const setCenter = useLocationStore((state) => state.setCenter);
   const { getLocation } = useCurrentLocation();
   const handleClick = async () => {
     await getLocation()
       .then((location) => {
-        onLocationChanged(location);
+        setCenter(location);
       })
       .catch((errorCode) => {
         toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
