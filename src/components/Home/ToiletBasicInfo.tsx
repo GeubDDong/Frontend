@@ -1,14 +1,8 @@
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { Theme } from '@/style/Theme';
-import { IToiletInfo } from '@/types';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-export interface IToiletBasicInfo extends IToiletInfo {
-  liked: boolean;
-  nearest: boolean;
-}
 
 interface BasicInfoStyleProps {
   $isOpen: boolean;
@@ -45,7 +39,7 @@ const ToiletBasicInfo = () => {
               {info.street_address ? info.street_address : info.lot_address}
             </div>
             <div className="bottom">
-              <div className="openHours">{info.open_hour}</div>
+              <div className="openHours">{info.open_hours}</div>
               <div className="like">❤️100</div>
             </div>
           </div>

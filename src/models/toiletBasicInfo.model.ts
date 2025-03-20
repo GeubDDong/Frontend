@@ -1,4 +1,4 @@
-export interface mainToiletInfoModel {
+export interface IToiletBasicInfo {
   id: number;
   latitude: number;
   longitude: number;

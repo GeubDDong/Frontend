@@ -13,7 +13,7 @@ import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
 import HomeMenuButton from '@/components/Home/HomeMenuButton';
 import { INITIAL_BOUNDS } from '@/constants/initialCoord';
 import { mainToiletInfo } from '@/api/mainToiletInfo.api';
-import { mainToiletInfoModel } from '@/model/mainToiletInfo.model';
+import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 
 const Home = () => {
@@ -29,7 +29,7 @@ const Home = () => {
     bottom: INITIAL_BOUNDS.BOTTOM,
     right: INITIAL_BOUNDS.RIGHT,
   });
-  const [data, setData] = useState<mainToiletInfoModel[]>([]);
+  const [data, setData] = useState<IToiletBasicInfo[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
 
   useKakaoLoader();
