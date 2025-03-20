@@ -49,7 +49,7 @@ const ToiletBasicInfo = () => {
               {info.street_address ? info.street_address : info.lot_address}
             </div>
             <div className="bottom">
-              <div className="openHours">{info.open_hours}</div>
+              <div className="openHours">{info.open_hour}</div>
               <div className="like">❤️100</div>
             </div>
           </div>
