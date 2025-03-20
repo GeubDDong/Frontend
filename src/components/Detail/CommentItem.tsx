@@ -23,7 +23,7 @@ const CommentItem = ({ item }: CommentItemProps) => {
     if (edit) {
       updateComment(2, { id: item.id, comment: editText }).then();
     } else {
-      removeComment(2, { id: item.id }).then();
+      removeComment(2, item.id).then();
     }
   };
 
