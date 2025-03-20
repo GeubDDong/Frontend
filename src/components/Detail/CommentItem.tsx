@@ -5,6 +5,7 @@ import { IoPersonCircle } from 'react-icons/io5';
 import { ICommentItem } from '@/models/detail.model';
 import { formatDateToString } from '@/utils/dateUtil';
 import { removeComment, updateComment } from '@/api/detail.api';
+import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 
 interface CommentItemProps {
   item: ICommentItem;
@@ -13,6 +14,7 @@ interface CommentItemProps {
 const CommentItem = ({ item }: CommentItemProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editText, setEditText] = useState('');
+  const { toiletId } = useCurrentToiletInfo();
 
   const handleClickEdit = () => {
     setEdit(!edit);
@@ -20,10 +22,12 @@ const CommentItem = ({ item }: CommentItemProps) => {
   };
 
   const handleClickDelete = () => {
+    if (!toiletId) return;
+
     if (edit) {
-      updateComment(2, { id: item.id, comment: editText }).then();
+      updateComment(toiletId, { id: item.id, comment: editText }).then();
     } else {
-      removeComment(2, item.id).then();
+      removeComment(toiletId, item.id).then();
     }
   };
 

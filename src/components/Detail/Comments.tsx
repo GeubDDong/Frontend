@@ -5,13 +5,17 @@ import { useEffect, useRef, useState } from 'react';
 import { ICommentItem } from '@/models/detail.model';
 import { addComment, fetchComments } from '@/api/detail.api';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 
 const Comments = () => {
   const [comments, setComments] = useState<ICommentItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isLogin } = useAuth();
+  const { toiletId } = useCurrentToiletInfo();
 
   const handleClick = () => {
+    if (!toiletId) return;
+
     if (!inputRef.current?.value.trim()) return;
 
     const newComment: ICommentItem = {
@@ -23,7 +27,7 @@ const Comments = () => {
       isMine: true,
     };
 
-    addComment(2, { comment: newComment.comment }).then(() =>
+    addComment(toiletId, { comment: newComment.comment }).then(() =>
       setComments((prevComments) => [newComment, ...prevComments]),
     );
 
@@ -31,7 +35,9 @@ const Comments = () => {
   };
 
   useEffect(() => {
-    fetchComments(2).then((res) => {
+    if (!toiletId) return;
+
+    fetchComments(toiletId).then((res) => {
       if ('comments' in res) {
         setComments(res.comments.reverse());
       } else {
