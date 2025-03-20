@@ -13,24 +13,26 @@ import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
 import HomeMenuButton from '@/components/Home/HomeMenuButton';
 import { INITIAL_BOUNDS } from '@/constants/initialCoord';
 import { mainToiletInfo } from '@/api/mainToiletInfo.api';
-import { mainToiletInfoModel } from '@/model/mainToiletInfo.model';
+import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 import ToiletMarker from '@/components/Home/ToiletMarker';
+import useToiletInfoStore from '@/store/toiletInfoStore';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
   const errorCode = useLocationStore((state) => state.errorCode);
-  const { getLocation } = useCurrentLocation();
-  const [center, setCenter] = useState<ILocation>(
-    useLocationStore.getInitialState().location,
+  const setSelectedToiletDataInfo = useToiletInfoStore(
+    (state) => state.setInfo,
   );
+  const center = useLocationStore((state) => state.center);
+  const setCenter = useLocationStore((store) => store.setCenter);
+  const { getLocation } = useCurrentLocation();
   const [bound, setBound] = useState<IBound>({
     top: INITIAL_BOUNDS.TOP,
     left: INITIAL_BOUNDS.LEFT,
     bottom: INITIAL_BOUNDS.BOTTOM,
     right: INITIAL_BOUNDS.RIGHT,
   });
-  const [data, setData] = useState<mainToiletInfoModel[]>([]);
-  const [selected, setSelected] = useState<number | null>(null);
+  const [data, setData] = useState<IToiletBasicInfo[]>([]);
 
   useKakaoLoader();
 
@@ -61,7 +63,7 @@ const Home = () => {
       await mainToiletInfo(center, bound)
         .then((data) => {
           setData(data);
-          setSelected(data[0]?.id);
+          setSelectedToiletDataInfo(data[0] || null);
         })
         .catch((err) => console.error(err));
     }
@@ -100,19 +102,11 @@ const Home = () => {
       >
         {errorCode === null && <MyLocation />}
         {data.map((item) => (
-          <ToiletMarker
-            key={item.id}
-            id={item.id}
-            latitude={item.latitude}
-            longitude={item.longitude}
-            isLiked={item.liked.like}
-            isSelected={item.id === selected}
-            onSelectedChange={setSelected}
-          />
+          <ToiletMarker key={item.id} info={item} />
         ))}
       </Map>
       <HomeMenuButton />
-      <CurrentLocationButton onLocationChanged={setCenter} />
+      <CurrentLocationButton />
     </HomeStyle>
   );
 };

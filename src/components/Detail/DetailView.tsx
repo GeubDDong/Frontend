@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
 import { IToiletDetailInfo } from '@/models/detail.model';
-import { fetchDeatilInfo } from '@/api/detail.api';
+import { fetchDetailInfo } from '@/api/detail.api';
 import { formatDateToString } from '@/utils/dateUtil';
 
 const DetailView = () => {
@@ -15,7 +15,16 @@ const DetailView = () => {
   const data = detailInfo || info;
 
   useEffect(() => {
-    fetchDeatilInfo(1).then((res) => setDetailInfo(res));
+    async function fetchAPI(id: number) {
+      await fetchDetailInfo(id)
+        .then((res) => setDetailInfo(res))
+        .catch((err) => {
+          setDetailInfo(null);
+          console.error(err);
+        });
+    }
+    if (!info || !info.id) return;
+    fetchAPI(info.id);
   }, []);
 
   if (!data) return null;
