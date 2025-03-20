@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/store/authStore';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const BASE_URL = '';
@@ -16,7 +17,7 @@ const createClient = (config?: AxiosRequestConfig) => {
 
   axiosInstance.interceptors.request.use(
     (config) => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = useAuthStore.getState().accessToken;
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
