@@ -1,4 +1,3 @@
-import { mockToiletBasicInfo } from '@/mocks/mockData';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { Theme } from '@/style/Theme';
 import { IToiletInfo } from '@/types';
@@ -17,7 +16,7 @@ interface BasicInfoStyleProps {
 
 const ToiletBasicInfo = () => {
   const info = useToiletInfoStore((state) => state.info);
-  const setInfo = useToiletInfoStore((state) => state.setInfo);
+  //const setInfo = useToiletInfoStore((state) => state.setInfo);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -25,10 +24,7 @@ const ToiletBasicInfo = () => {
     navigate('/detail');
   };
 
-  // TODO: api
-
   useEffect(() => {
-    setInfo(mockToiletBasicInfo);
     setTimeout(() => {
       setIsOpen(true);
     }, 1000);
