@@ -3,6 +3,7 @@ import { Theme } from '@/style/Theme';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaHeart } from 'react-icons/fa6';
 
 interface BasicInfoStyleProps {
   $isOpen: boolean;
@@ -10,7 +11,6 @@ interface BasicInfoStyleProps {
 
 const ToiletBasicInfo = () => {
   const info = useToiletInfoStore((state) => state.info);
-  //const setInfo = useToiletInfoStore((state) => state.setInfo);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -31,16 +31,16 @@ const ToiletBasicInfo = () => {
           <div onClick={handleClick}>
             <div className="title">
               <div className="name">{info.name}</div>
-              {/* <div className="like">
-                <LikeButton />
-              </div> */}
             </div>
             <div className="address">
               {info.street_address ? info.street_address : info.lot_address}
             </div>
             <div className="bottom">
               <div className="openHours">{info.open_hours}</div>
-              <div className="like">❤️{info.liked.count}</div>
+              <div className="like">
+                <FaHeart size="1rem" color="#eb3b41" />
+                {info.liked.count}
+              </div>
             </div>
           </div>
         </ToiletBasicInfoStyle>
@@ -102,14 +102,13 @@ const ToiletBasicInfoStyle = styled.div<BasicInfoStyleProps>`
   }
 
   .like {
-    font-size: ${Theme.fontSize.md};
-    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.subText};
     margin-right: 10px;
   }
-
-  /* .like svg {
-    font-size: 18px;
-  } */
 `;
 export default ToiletBasicInfo;

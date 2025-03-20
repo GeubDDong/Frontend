@@ -5,33 +5,37 @@ import { useEffect, useRef, useState } from 'react';
 import { ICommentItem } from '@/models/detail.model';
 import { addComment, fetchComments } from '@/api/detail.api';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 
 const Comments = () => {
   const [comments, setComments] = useState<ICommentItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isLogin } = useAuth();
+  const { toiletId } = useCurrentToiletInfo();
 
-  const handleClick = () => {
-    if (!inputRef.current?.value.trim()) return;
+  const handleClick = async () => {
+    if (!toiletId || !inputRef.current?.value.trim()) return;
 
-    const newComment: ICommentItem = {
-      id: comments.length + 1,
-      user_email: 'user@example.com',
-      nickname: '사용자 닉네임',
-      comment: inputRef.current.value.trim(),
-      updated_at: new Date(),
-      isMine: true,
-    };
+    const newCommentText = inputRef.current.value.trim();
 
-    addComment(2, { comment: newComment.comment }).then(() =>
-      setComments((prevComments) => [newComment, ...prevComments]),
-    );
+    try {
+      await addComment(toiletId, { comment: newCommentText });
 
-    inputRef.current.value = '';
+      const res = await fetchComments(toiletId);
+      if ('comments' in res) {
+        setComments(res.comments.reverse());
+      }
+
+      inputRef.current.value = '';
+    } catch (error) {
+      console.error('댓글 등록 실패:', error);
+    }
   };
 
   useEffect(() => {
-    fetchComments(2).then((res) => {
+    if (!toiletId) return;
+
+    fetchComments(toiletId).then((res) => {
       if ('comments' in res) {
         setComments(res.comments.reverse());
       } else {
@@ -60,7 +64,7 @@ const Comments = () => {
       </div>
       <div className="comments">
         {comments.map((item) => (
-          <CommentItem key={item.id} item={item} />
+          <CommentItem key={item.id} item={item} setComments={setComments} />
         ))}
       </div>
     </CommentsStyle>

@@ -4,26 +4,52 @@ import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
 import { ICommentItem } from '@/models/detail.model';
 import { formatDateToString } from '@/utils/dateUtil';
-import { removeComment, updateComment } from '@/api/detail.api';
+import { fetchComments, removeComment, updateComment } from '@/api/detail.api';
+import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 
 interface CommentItemProps {
   item: ICommentItem;
+  setComments: React.Dispatch<React.SetStateAction<ICommentItem[]>>;
 }
 
-const CommentItem = ({ item }: CommentItemProps) => {
+const CommentItem = ({ item, setComments }: CommentItemProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editText, setEditText] = useState('');
+  const { toiletId } = useCurrentToiletInfo();
 
-  const handleClickEdit = () => {
+  const handleClickEdit = async () => {
     setEdit(!edit);
     setEditText(item.comment);
   };
 
-  const handleClickDelete = () => {
+  const handleClickDelete = async () => {
+    if (!toiletId) return;
+
     if (edit) {
-      updateComment(2, { id: item.id, comment: editText }).then();
+      try {
+        await updateComment(toiletId, { id: item.id, comment: editText });
+
+        const res = await fetchComments(toiletId);
+        if ('comments' in res) {
+          setComments(res.comments.reverse());
+        }
+
+        setEdit(false);
+      } catch (error) {
+        console.error('댓글 수정 실패:', error);
+      }
     } else {
-      removeComment(2, item.id).then();
+      if (!toiletId) return;
+
+      try {
+        await removeComment(toiletId, item.id);
+
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.id !== item.id),
+        );
+      } catch (error) {
+        console.error('댓글 삭제 실패:', error);
+      }
     }
   };
 
