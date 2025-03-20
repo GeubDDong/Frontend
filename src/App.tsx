@@ -7,6 +7,7 @@ import Home from '@/pages/Home';
 import Detail from '@/pages/Detail';
 import Login from '@/pages/Login';
 import ProfileSetup from '@/pages/ProfileSetup';
+import AuthCallback from '@/pages/AuthCallbackPage';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: '/profileSetup',
     element: <ProfileSetup />,
+  },
+  {
+    path: '/auth/callback',
+    element: <AuthCallback />,
   },
 ]);
 
