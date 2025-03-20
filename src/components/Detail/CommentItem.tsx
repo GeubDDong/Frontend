@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
 import { ICommentItem } from '@/models/detail.model';
 import { formatDateToString } from '@/utils/dateUtil';
+import { removeComment, updateComment } from '@/api/detail.api';
 
 interface CommentItemProps {
   item: ICommentItem;
@@ -17,7 +18,14 @@ const CommentItem = ({ item }: CommentItemProps) => {
     setEdit(!edit);
     setEditText(item.comment);
   };
-  const handleClickDelete = () => {};
+
+  const handleClickDelete = () => {
+    if (edit) {
+      updateComment(2, { id: item.id, comment: editText }).then();
+    } else {
+      removeComment(2, { id: item.id }).then();
+    }
+  };
 
   return (
     <CommentItemStyle>
@@ -28,14 +36,16 @@ const CommentItem = ({ item }: CommentItemProps) => {
         <div className="top">
           <div className="nickname">{item.nickname}</div>
           <div className="date">{formatDateToString(item.updated_at)}</div>
-          <div className="buttons">
-            <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
-              {edit ? '취소' : '수정'}
-            </button>
-            <button style={{ cursor: 'pointer' }} onClick={handleClickDelete}>
-              {edit ? '확인' : '삭제'}
-            </button>
-          </div>
+          {item.isMine && (
+            <div className="buttons">
+              <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
+                {edit ? '취소' : '수정'}
+              </button>
+              <button style={{ cursor: 'pointer' }} onClick={handleClickDelete}>
+                {edit ? '확인' : '삭제'}
+              </button>
+            </div>
+          )}
         </div>
         {edit ? (
           <input
