@@ -8,11 +8,24 @@ const createClient = (config?: AxiosRequestConfig) => {
     baseURL: BASE_URL,
     timeout: DEFAULT_TIMEOUT,
     headers: {
-      'content-type': 'application/json',
+      'Content-Type': 'application/json',
     },
     withCredentials: true,
     ...config,
   });
+
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    },
+  );
 
   axiosInstance.interceptors.response.use(
     (response) => {
