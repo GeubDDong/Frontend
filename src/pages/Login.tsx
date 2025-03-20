@@ -6,7 +6,7 @@ import BackButton from '@/components/Common/BackButton';
 
 const Login = () => {
   const handleClick = () => {
-    window.location.href = 'http://localhost:8080/auth/login/kakao';
+    window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login/kakao`;
   };
 
   return (
