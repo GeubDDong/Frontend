@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
 import axios, { AxiosRequestConfig } from 'axios';
+import { refreshToken } from './auth.api';
 
 const BASE_URL = '';
 const DEFAULT_TIMEOUT = 3000;
@@ -32,7 +33,26 @@ const createClient = (config?: AxiosRequestConfig) => {
     (response) => {
       return response;
     },
-    (error) => {
+    async (error) => {
+      const originalRequest = error.config;
+
+      if (error.response?.status === 401 && !originalRequest.retry) {
+        originalRequest.retry = true;
+
+        try {
+          const res = await refreshToken();
+          const newAccessToken = res.accessToken;
+
+          useAuthStore.getState().setAccessToken(newAccessToken);
+
+          // 재요청
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axiosInstance(originalRequest);
+        } catch (refreshError) {
+          useAuthStore.getState().logout();
+          return Promise.reject(refreshError);
+        }
+      }
       return Promise.reject(error);
     },
   );
