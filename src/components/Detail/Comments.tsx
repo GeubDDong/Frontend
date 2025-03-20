@@ -13,25 +13,23 @@ const Comments = () => {
   const { isLogin } = useAuth();
   const { toiletId } = useCurrentToiletInfo();
 
-  const handleClick = () => {
-    if (!toiletId) return;
+  const handleClick = async () => {
+    if (!toiletId || !inputRef.current?.value.trim()) return;
 
-    if (!inputRef.current?.value.trim()) return;
+    const newCommentText = inputRef.current.value.trim();
 
-    const newComment: ICommentItem = {
-      id: comments.length + 1,
-      user_email: 'user@example.com',
-      nickname: '사용자 닉네임',
-      comment: inputRef.current.value.trim(),
-      updated_at: new Date(),
-      isMine: true,
-    };
+    try {
+      await addComment(toiletId, { comment: newCommentText });
 
-    addComment(toiletId, { comment: newComment.comment }).then(() =>
-      setComments((prevComments) => [newComment, ...prevComments]),
-    );
+      const res = await fetchComments(toiletId);
+      if ('comments' in res) {
+        setComments(res.comments.reverse());
+      }
 
-    inputRef.current.value = '';
+      inputRef.current.value = '';
+    } catch (error) {
+      console.error('댓글 등록 실패:', error);
+    }
   };
 
   useEffect(() => {
@@ -66,7 +64,7 @@ const Comments = () => {
       </div>
       <div className="comments">
         {comments.map((item) => (
-          <CommentItem key={item.id} item={item} />
+          <CommentItem key={item.id} item={item} setComments={setComments} />
         ))}
       </div>
     </CommentsStyle>
