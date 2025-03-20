@@ -25,7 +25,6 @@ const useLocationStore = create<IUseLocationStore>((set) => ({
     set(() => ({ location: location }));
   },
   setCenter: (location: ILocation) => {
-    console.log(location);
     set(() => ({ center: location }));
   },
   setErrorCode: (errorCode: number | null) => {
