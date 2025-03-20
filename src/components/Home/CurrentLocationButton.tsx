@@ -37,14 +37,17 @@ const CurrentLocationButtonStyle = styled.div`
 
   width: 45px;
   height: 45px;
-  background-color: #3191ff;
+  background-color: #ffffff;
   border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   position: absolute;
   bottom: 200px;
   right: 30px;
 
   svg {
-    fill: ${Theme.colors.background};
+    fill: ${Theme.colors.primary};
+    height: 50%;
+    width: 50%;
   }
 `;
