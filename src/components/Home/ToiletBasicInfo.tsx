@@ -40,7 +40,7 @@ const ToiletBasicInfo = () => {
             </div>
             <div className="bottom">
               <div className="openHours">{info.open_hours}</div>
-              <div className="like">❤️100</div>
+              <div className="like">❤️{info.liked.count}</div>
             </div>
           </div>
         </ToiletBasicInfoStyle>

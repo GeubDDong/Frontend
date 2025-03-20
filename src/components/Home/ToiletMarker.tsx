@@ -1,34 +1,29 @@
 import { MapMarker } from 'react-kakao-maps-sdk';
 import locationPin_liked from '@/assets/locationPin_liked.svg';
 import locationPin_normal from '@/assets/locationPin_normal.svg';
+import useToiletInfoStore from '@/store/toiletInfoStore';
+import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 
 interface IToiletMarkerProps {
-  id: number;
-  latitude: number;
-  longitude: number;
-  isLiked: boolean;
-  isSelected: boolean;
-  onSelectedChange: React.Dispatch<React.SetStateAction<number | null>>;
+  info: IToiletBasicInfo;
 }
 
-const ToiletMarker = ({
-  id,
-  latitude,
-  longitude,
-  isLiked,
-  isSelected,
-  onSelectedChange,
-}: IToiletMarkerProps) => {
+const ToiletMarker = ({ info }: IToiletMarkerProps) => {
+  const selectedToiletDataInfo = useToiletInfoStore((state) => state.info);
+  const setSelectedToiletDataInfo = useToiletInfoStore(
+    (state) => state.setInfo,
+  );
   return (
     <MapMarker
       image={{
-        src: isLiked ? locationPin_liked : locationPin_normal,
-        size: isSelected
-          ? { width: 40, height: 40 }
-          : { width: 30, height: 30 },
+        src: info.liked.like ? locationPin_liked : locationPin_normal,
+        size:
+          selectedToiletDataInfo && selectedToiletDataInfo.id === info.id
+            ? { width: 40, height: 40 }
+            : { width: 30, height: 30 },
       }}
-      position={{ lat: latitude, lng: longitude }}
-      onClick={() => onSelectedChange(id)}
+      position={{ lat: info.latitude, lng: info.longitude }}
+      onClick={() => setSelectedToiletDataInfo(info)}
     />
   );
 };

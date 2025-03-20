@@ -15,10 +15,14 @@ import { INITIAL_BOUNDS } from '@/constants/initialCoord';
 import { mainToiletInfo } from '@/api/mainToiletInfo.api';
 import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 import ToiletMarker from '@/components/Home/ToiletMarker';
+import useToiletInfoStore from '@/store/toiletInfoStore';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
   const errorCode = useLocationStore((state) => state.errorCode);
+  const setSelectedToiletDataInfo = useToiletInfoStore(
+    (state) => state.setInfo,
+  );
   const { getLocation } = useCurrentLocation();
   const [center, setCenter] = useState<ILocation>(
     useLocationStore.getInitialState().location,
@@ -30,7 +34,6 @@ const Home = () => {
     right: INITIAL_BOUNDS.RIGHT,
   });
   const [data, setData] = useState<IToiletBasicInfo[]>([]);
-  const [selected, setSelected] = useState<number | null>(null);
 
   useKakaoLoader();
 
@@ -61,7 +64,7 @@ const Home = () => {
       await mainToiletInfo(center, bound)
         .then((data) => {
           setData(data);
-          setSelected(data[0]?.id);
+          setSelectedToiletDataInfo(data[0] || null);
         })
         .catch((err) => console.error(err));
     }
@@ -100,15 +103,7 @@ const Home = () => {
       >
         {errorCode === null && <MyLocation />}
         {data.map((item) => (
-          <ToiletMarker
-            key={item.id}
-            id={item.id}
-            latitude={item.latitude}
-            longitude={item.longitude}
-            isLiked={item.liked.like}
-            isSelected={item.id === selected}
-            onSelectedChange={setSelected}
-          />
+          <ToiletMarker key={item.id} info={item} />
         ))}
       </Map>
       <HomeMenuButton />
