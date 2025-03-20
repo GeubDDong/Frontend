@@ -1,8 +1,6 @@
 import { IUserProfile } from '@/types';
 import requestHandler from '@/api/requestHandler';
 
-export const fetchSetNickname = async (data: IUserProfile) => {
-  const response = await requestHandler('post', '/auth/nickname', data);
-
-  return response.data;
+export const setNickname = async (data: Pick<IUserProfile, 'nickname'>) => {
+  return requestHandler('post', '/auth/nickname', data);
 };
