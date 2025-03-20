@@ -13,6 +13,8 @@ const LikeButton = () => {
   const { toiletId } = useCurrentToiletInfo();
 
   const handleClickLike = () => {
+    if (!toiletId) return;
+
     if (!isLogin) {
       window.alert('로그인이 필요한 기능입니다.');
       return;
@@ -30,6 +32,8 @@ const LikeButton = () => {
   };
 
   useEffect(() => {
+    if (!toiletId) return;
+
     fetchLike(toiletId).then((res) => {
       setIsLike(res.like);
       setLikeCount(res.count);

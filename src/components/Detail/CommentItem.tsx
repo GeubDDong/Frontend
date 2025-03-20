@@ -22,6 +22,8 @@ const CommentItem = ({ item }: CommentItemProps) => {
   };
 
   const handleClickDelete = () => {
+    if (!toiletId) return;
+
     if (edit) {
       updateComment(toiletId, { id: item.id, comment: editText }).then();
     } else {

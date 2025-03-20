@@ -14,6 +14,8 @@ const Comments = () => {
   const { toiletId } = useCurrentToiletInfo();
 
   const handleClick = () => {
+    if (!toiletId) return;
+
     if (!inputRef.current?.value.trim()) return;
 
     const newComment: ICommentItem = {
@@ -33,6 +35,8 @@ const Comments = () => {
   };
 
   useEffect(() => {
+    if (!toiletId) return;
+
     fetchComments(toiletId).then((res) => {
       if ('comments' in res) {
         setComments(res.comments.reverse());
