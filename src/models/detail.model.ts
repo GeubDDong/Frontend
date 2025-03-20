@@ -19,4 +19,5 @@ export interface ICommentItem {
   nickname: string;
   comment: string;
   updated_at: Date;
+  isMine: boolean;
 }

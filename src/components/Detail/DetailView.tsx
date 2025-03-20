@@ -3,22 +3,19 @@ import { Theme } from '@/style/Theme';
 import InfoIcon from './InfoIcon';
 import LikeButton from './LikeButton';
 import { useEffect, useState } from 'react';
-import { mockToiletDetail } from '@/mocks/mockData';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
 import { IToiletDetailInfo } from '@/models/detail.model';
+import { fetchDeatilInfo } from '@/api/detail.api';
 import { formatDateToString } from '@/utils/dateUtil';
 
 const DetailView = () => {
   const info = useToiletInfoStore((state) => state.info);
   const [detailInfo, setDetailInfo] = useState<IToiletDetailInfo | null>(null);
   const data = detailInfo || info;
-  // TODO: api
 
   useEffect(() => {
-    setTimeout(() => {
-      setDetailInfo(mockToiletDetail);
-    }, 500);
+    fetchDeatilInfo(1).then((res) => setDetailInfo(res));
   }, []);
 
   if (!data) return null;
@@ -45,7 +42,7 @@ const DetailView = () => {
               <InfoIcon
                 iconName="clock"
                 active={true}
-                text={detailInfo.open_hours}
+                text={detailInfo.open_hour}
               />
               <InfoIcon iconName="man" active={true} text="남성용" />
               <InfoIcon iconName="woman" active={true} text="여성용" />
@@ -93,18 +90,20 @@ const DetailView = () => {
           )}
         </div>
         <div className="map">
-          <StaticMap
-            center={{
-              lat: data.location.latitude,
-              lng: data.location.longitude,
-            }}
-            style={{
-              width: '100%',
-              height: '200px',
-            }}
-            level={3}
-            marker
-          />
+          {detailInfo && (
+            <StaticMap
+              center={{
+                lat: data.latitude,
+                lng: data.longitude,
+              }}
+              style={{
+                width: '100%',
+                height: '200px',
+              }}
+              level={3}
+              marker
+            />
+          )}
         </div>
       </DetailViewStyle>
     </>
