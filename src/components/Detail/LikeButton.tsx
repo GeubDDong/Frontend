@@ -1,5 +1,6 @@
 import { addLike, fetchLike, removeLike } from '@/api/detail.api';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 import { Theme } from '@/style/Theme';
 import { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
@@ -9,6 +10,7 @@ const LikeButton = () => {
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const { isLogin } = useAuth();
+  const { toiletId } = useCurrentToiletInfo();
 
   const handleClickLike = () => {
     if (!isLogin) {
@@ -17,10 +19,10 @@ const LikeButton = () => {
     }
 
     if (isLike) {
-      removeLike(2, { user_email: 'userEmail' }).then();
+      removeLike(toiletId, { user_email: 'userEmail' }).then();
       setLikeCount(likeCount - 1);
     } else {
-      addLike(2, { user_email: 'userEmail' }).then();
+      addLike(toiletId, { user_email: 'userEmail' }).then();
       setLikeCount(likeCount + 1);
     }
 
@@ -28,7 +30,7 @@ const LikeButton = () => {
   };
 
   useEffect(() => {
-    fetchLike(2).then((res) => {
+    fetchLike(toiletId).then((res) => {
       setIsLike(res.like);
       setLikeCount(res.count);
     });
