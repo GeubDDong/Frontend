@@ -4,10 +4,12 @@ import CommentItem from './CommentItem';
 import { useEffect, useRef, useState } from 'react';
 import { ICommentItem } from '@/models/detail.model';
 import { addComment, fetchComments } from '@/api/detail.api';
+import { useAuth } from '@/hooks/useAuth';
 
 const Comments = () => {
   const [comments, setComments] = useState<ICommentItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { isLogin } = useAuth();
 
   const handleClick = () => {
     if (!inputRef.current?.value.trim()) return;
@@ -45,9 +47,14 @@ const Comments = () => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="화장실에 대한 정보와 후기를 자유롭게 남겨주세요!"
+          disabled={!isLogin}
+          placeholder={
+            isLogin
+              ? '화장실에 대한 정보와 후기를 자유롭게 남겨주세요!'
+              : '댓글 등록은 로그인이 필요한 기능입니다.'
+          }
         />
-        <button style={{ cursor: 'pointer' }} onClick={handleClick}>
+        <button onClick={handleClick} disabled={!isLogin}>
           등록
         </button>
       </div>
@@ -86,6 +93,13 @@ const CommentsStyle = styled.div`
     border: none;
     border-radius: 8px;
     white-space: nowrap;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: default;
+      opacity: 0.6;
+    }
   }
 
   input {
@@ -95,6 +109,11 @@ const CommentsStyle = styled.div`
     border-radius: 8px;
     padding: 0 10px;
     font-size: ${Theme.fontSize.sm};
+
+    &:disabled {
+      background-color: #f0f0f0;
+      opacity: 0.6;
+    }
   }
 
   .comments {
