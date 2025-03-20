@@ -2,7 +2,7 @@ import requestHandler from '@/api/requestHandler';
 import { ICommentItem, IToiletDetailInfo } from '@/models/detail.model';
 import { IUserProfile } from '@/types';
 
-export const fetchDeatilInfo = async (id: number) => {
+export const fetchDetailInfo = async (id: number) => {
   return requestHandler<IToiletDetailInfo>('get', `/detail/${id}`);
 };
 
