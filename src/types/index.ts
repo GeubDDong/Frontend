@@ -3,11 +3,31 @@ export interface ILocation {
   longitude: number;
 }
 
+export type TAvailable = 'Y' | 'N';
+
 export interface IToiletInfo {
   id: number;
   name: string;
-  location: ILocation;
+  latitude: number;
+  longitude: number;
   street_address: string;
   lot_address: string;
-  open_hours: string;
+  open_hour: string;
+}
+
+export interface IUserProfile {
+  user_email: string;
+  nickname: string;
+}
+
+export interface ILike {
+  like: boolean;
+  count: number;
+}
+
+export interface IBound {
+  top: number;
+  left: number;
+  bottom: number;
+  right: number;
 }

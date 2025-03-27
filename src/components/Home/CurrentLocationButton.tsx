@@ -1,24 +1,18 @@
-import React from 'react';
-import { ILocation } from '@/types';
 import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 import useCurrentLocation from '@/hooks/useCurrentLocation';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
+import useLocationStore from '@/store/locationStore';
 
-interface ICurrentLocationButtonProps {
-  onLocationChanged: React.Dispatch<React.SetStateAction<ILocation>>;
-}
-
-const CurrentLocationButton: React.FC<ICurrentLocationButtonProps> = ({
-  onLocationChanged,
-}) => {
+const CurrentLocationButton = () => {
+  const setCenter = useLocationStore((state) => state.setCenter);
   const { getLocation } = useCurrentLocation();
   const handleClick = async () => {
     await getLocation()
       .then((location) => {
-        onLocationChanged(location);
+        setCenter(location);
       })
       .catch((errorCode) => {
         toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
@@ -43,14 +37,17 @@ const CurrentLocationButtonStyle = styled.div`
 
   width: 45px;
   height: 45px;
-  background-color: #3191ff;
+  background-color: #ffffff;
   border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   position: absolute;
   bottom: 200px;
   right: 30px;
 
   svg {
-    fill: ${Theme.colors.background};
+    fill: ${Theme.colors.primary};
+    height: 50%;
+    width: 50%;
   }
 `;

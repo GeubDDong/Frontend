@@ -1,25 +1,47 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
-import { useEffect, useState } from 'react';
-import { mockComments } from '@/mocks/mockData';
-
-export interface ICommentItem {
-  id: number;
-  user_email: string;
-  nickname: string;
-  comment: string;
-  updated_at: string;
-}
+import { useEffect, useRef, useState } from 'react';
+import { ICommentItem } from '@/models/detail.model';
+import { addComment, fetchComments } from '@/api/detail.api';
+import { useAuth } from '@/hooks/useAuth';
+import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 
 const Comments = () => {
   const [comments, setComments] = useState<ICommentItem[]>([]);
-  // TODO: api
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const { isLogin } = useAuth();
+  const { toiletId } = useCurrentToiletInfo();
+
+  const handleClick = async () => {
+    if (!toiletId || !inputRef.current?.value.trim()) return;
+
+    const newCommentText = inputRef.current.value.trim();
+
+    try {
+      await addComment(toiletId, { comment: newCommentText });
+
+      const res = await fetchComments(toiletId);
+      if ('comments' in res) {
+        setComments(res.comments.reverse());
+      }
+
+      inputRef.current.value = '';
+    } catch (error) {
+      console.error('댓글 등록 실패:', error);
+    }
+  };
 
   useEffect(() => {
-    setTimeout(() => {
-      setComments(mockComments);
-    }, 500);
+    if (!toiletId) return;
+
+    fetchComments(toiletId).then((res) => {
+      if ('comments' in res) {
+        setComments(res.comments.reverse());
+      } else {
+        setComments([]);
+      }
+    });
   }, []);
 
   return (
@@ -27,14 +49,22 @@ const Comments = () => {
       <div className="title">{`댓글 ${comments.length}`}</div>
       <div className="input">
         <input
+          ref={inputRef}
           type="text"
-          placeholder="화장실에 대한 정보와 후기를 자유롭게 남겨주세요!"
+          disabled={!isLogin}
+          placeholder={
+            isLogin
+              ? '화장실에 대한 정보와 후기를 자유롭게 남겨주세요!'
+              : '댓글 등록은 로그인이 필요한 기능입니다.'
+          }
         />
-        <button style={{ cursor: 'pointer' }}>등록</button>
+        <button onClick={handleClick} disabled={!isLogin}>
+          등록
+        </button>
       </div>
       <div className="comments">
         {comments.map((item) => (
-          <CommentItem key={item.id} item={item} />
+          <CommentItem key={item.id} item={item} setComments={setComments} />
         ))}
       </div>
     </CommentsStyle>
@@ -67,6 +97,13 @@ const CommentsStyle = styled.div`
     border: none;
     border-radius: 8px;
     white-space: nowrap;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: default;
+      opacity: 0.6;
+    }
   }
 
   input {
@@ -76,6 +113,11 @@ const CommentsStyle = styled.div`
     border-radius: 8px;
     padding: 0 10px;
     font-size: ${Theme.fontSize.sm};
+
+    &:disabled {
+      background-color: #f0f0f0;
+      opacity: 0.6;
+    }
   }
 
   .comments {

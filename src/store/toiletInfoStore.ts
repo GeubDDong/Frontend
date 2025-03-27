@@ -1,5 +1,5 @@
+import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 import { create } from 'zustand';
-import { IToiletBasicInfo } from '@/components/Home/ToiletBasicInfo';
 
 interface IUseToiletInfoStore {
   info: IToiletBasicInfo | null;

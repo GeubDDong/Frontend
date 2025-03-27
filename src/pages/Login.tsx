@@ -5,6 +5,10 @@ import kakao from '@/assets/kakao.png';
 import BackButton from '@/components/Common/BackButton';
 
 const Login = () => {
+  const handleClick = () => {
+    window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login/kakao`;
+  };
+
   return (
     <>
       <BackButton />
@@ -25,7 +29,12 @@ const Login = () => {
             />
           </div>
           <div className="buttons">
-            <img src={kakao} alt="kakao_login" style={{ cursor: 'pointer' }} />
+            <img
+              src={kakao}
+              alt="kakao_login"
+              style={{ cursor: 'pointer' }}
+              onClick={handleClick}
+            />
           </div>
         </div>
       </LoginStyle>

@@ -2,8 +2,28 @@ import BackButton from '@/components/Common/BackButton';
 import styled from 'styled-components';
 import logo from '@/assets/logo.png';
 import { Theme } from '@/style/Theme';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setNickname } from '@/api/auth.api';
+import { NICKNAME_MAX_LENGTH } from '@/constants/common';
 
 const ProfileSetup = () => {
+  const [value, setValue] = useState('');
+  const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.slice(0, NICKNAME_MAX_LENGTH);
+    setValue(inputValue);
+  };
+
+  const handleClick = () => {
+    if (!value) return;
+
+    setNickname({ nickname: value }).then(() => {
+      navigate('/');
+    });
+  };
+
   return (
     <>
       <BackButton />
@@ -13,10 +33,15 @@ const ProfileSetup = () => {
         </div>
         <div className="content">
           <div className="input">
-            <input type="form" placeholder="닉네임을 입력하세요." />
-            <span>0/10</span>
+            <input
+              type="form"
+              value={value}
+              onChange={handleChange}
+              placeholder="닉네임을 입력하세요."
+            />
+            <span>{`${value.length}/${NICKNAME_MAX_LENGTH}`}</span>
           </div>
-          <button>설정하기</button>
+          <button onClick={handleClick}>설정하기</button>
         </div>
       </ProfileSetupStyle>
     </>
@@ -88,6 +113,11 @@ const ProfileSetupStyle = styled.div`
     background-color: ${Theme.colors.secondary};
     border: none;
     border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 `;
 export default ProfileSetup;
