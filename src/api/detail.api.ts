@@ -1,5 +1,6 @@
 import requestHandler from '@/api/requestHandler';
-import { ICommentItem, IToiletDetailInfo } from '@/models/detail.model';
+import { ICommentItem } from '@/models/comment.model';
+import { IToiletDetailInfo } from '@/models/detail.model';
 import { useAuthStore } from '@/store/authStore';
 import { ILike, IUserProfile } from '@/types';
 
