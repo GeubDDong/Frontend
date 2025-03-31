@@ -2,7 +2,7 @@ import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import { useEffect, useRef, useState } from 'react';
-import { ICommentItem } from '@/models/detail.model';
+import { ICommentItem } from '@/models/comment.model';
 import { addComment, fetchComments } from '@/api/detail.api';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';

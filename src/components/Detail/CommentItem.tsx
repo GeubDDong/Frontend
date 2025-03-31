@@ -2,7 +2,7 @@ import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
-import { ICommentItem } from '@/models/detail.model';
+import { ICommentItem } from '@/models/comment.model';
 import { formatDateToString } from '@/utils/dateUtil';
 import { fetchComments, removeComment, updateComment } from '@/api/detail.api';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
