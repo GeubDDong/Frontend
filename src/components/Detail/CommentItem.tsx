@@ -2,55 +2,26 @@ import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
-import { ICommentItem } from '@/models/detail.model';
+import { ICommentItem } from '@/models/comment.model';
 import { formatDateToString } from '@/utils/dateUtil';
-import { fetchComments, removeComment, updateComment } from '@/api/detail.api';
-import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 
 interface CommentItemProps {
   item: ICommentItem;
-  setComments: React.Dispatch<React.SetStateAction<ICommentItem[]>>;
+  updateComment: (id: number, comment: string) => Promise<void>;
+  removeComment: (id: number) => Promise<void>;
 }
 
-const CommentItem = ({ item, setComments }: CommentItemProps) => {
-  const [edit, setEdit] = useState<boolean>(false);
+const CommentItem = ({
+  item,
+  updateComment,
+  removeComment,
+}: CommentItemProps) => {
+  const [isEdit, setIsEdit] = useState(false);
   const [editText, setEditText] = useState('');
-  const { toiletId } = useCurrentToiletInfo();
 
-  const handleClickEdit = async () => {
-    setEdit(!edit);
+  const handleClickToggleEdit = () => {
+    setIsEdit((prev) => !prev);
     setEditText(item.comment);
-  };
-
-  const handleClickDelete = async () => {
-    if (!toiletId) return;
-
-    if (edit) {
-      try {
-        await updateComment(toiletId, { id: item.id, comment: editText });
-
-        const res = await fetchComments(toiletId);
-        if ('comments' in res) {
-          setComments(res.comments.reverse());
-        }
-
-        setEdit(false);
-      } catch (error) {
-        console.error('댓글 수정 실패:', error);
-      }
-    } else {
-      if (!toiletId) return;
-
-      try {
-        await removeComment(toiletId, item.id);
-
-        setComments((prevComments) =>
-          prevComments.filter((comment) => comment.id !== item.id),
-        );
-      } catch (error) {
-        console.error('댓글 삭제 실패:', error);
-      }
-    }
   };
 
   return (
@@ -64,16 +35,23 @@ const CommentItem = ({ item, setComments }: CommentItemProps) => {
           <div className="date">{formatDateToString(item.updated_at)}</div>
           {item.isMine && (
             <div className="buttons">
-              <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
-                {edit ? '취소' : '수정'}
-              </button>
-              <button style={{ cursor: 'pointer' }} onClick={handleClickDelete}>
-                {edit ? '확인' : '삭제'}
-              </button>
+              {isEdit ? (
+                <>
+                  <button onClick={handleClickToggleEdit}>취소</button>
+                  <button onClick={() => updateComment(item.id, editText)}>
+                    확인
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button onClick={handleClickToggleEdit}>수정</button>
+                  <button onClick={() => removeComment(item.id)}>삭제</button>
+                </>
+              )}
             </div>
           )}
         </div>
-        {edit ? (
+        {isEdit ? (
           <input
             type="text"
             value={editText}
@@ -120,6 +98,7 @@ const CommentItemStyle = styled.div`
     background-color: transparent;
     font-size: ${Theme.fontSize.xs};
     color: ${Theme.colors.subText};
+    cursor: pointer;
   }
 
   .date {

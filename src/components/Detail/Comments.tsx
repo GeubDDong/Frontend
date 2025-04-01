@@ -1,48 +1,27 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
-import { useEffect, useRef, useState } from 'react';
-import { ICommentItem } from '@/models/detail.model';
-import { addComment, fetchComments } from '@/api/detail.api';
+import { useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
+import { useComments } from '@/hooks/useComments';
 
 const Comments = () => {
-  const [comments, setComments] = useState<ICommentItem[]>([]);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isLogin } = useAuth();
   const { toiletId } = useCurrentToiletInfo();
+  const { comments, addComment, updateComment, removeComment, isLoading } =
+    useComments(toiletId);
 
   const handleClick = async () => {
-    if (!toiletId || !inputRef.current?.value.trim()) return;
+    if (!inputRef.current) return;
 
-    const newCommentText = inputRef.current.value.trim();
+    const inputText = inputRef.current.value.trim();
+    if (!inputText) return;
 
-    try {
-      await addComment(toiletId, { comment: newCommentText });
-
-      const res = await fetchComments(toiletId);
-      if ('comments' in res) {
-        setComments(res.comments.reverse());
-      }
-
-      inputRef.current.value = '';
-    } catch (error) {
-      console.error('댓글 등록 실패:', error);
-    }
+    await addComment(inputText);
+    inputRef.current.value = '';
   };
-
-  useEffect(() => {
-    if (!toiletId) return;
-
-    fetchComments(toiletId).then((res) => {
-      if ('comments' in res) {
-        setComments(res.comments.reverse());
-      } else {
-        setComments([]);
-      }
-    });
-  }, []);
 
   return (
     <CommentsStyle>
@@ -63,9 +42,19 @@ const Comments = () => {
         </button>
       </div>
       <div className="comments">
-        {comments.map((item) => (
-          <CommentItem key={item.id} item={item} setComments={setComments} />
-        ))}
+        {isLoading ? (
+          // TODO: 댓글 로딩중 처리
+          <p>댓글 불러오는 중...</p>
+        ) : (
+          comments.map((item) => (
+            <CommentItem
+              key={item.id}
+              item={item}
+              updateComment={updateComment}
+              removeComment={removeComment}
+            />
+          ))
+        )}
       </div>
     </CommentsStyle>
   );
