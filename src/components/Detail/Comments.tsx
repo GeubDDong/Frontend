@@ -1,8 +1,7 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
-import { useEffect, useRef } from 'react';
-import { addComment } from '@/api/detail.api';
+import { useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 import { useComments } from '@/hooks/useComments';
@@ -11,29 +10,17 @@ const Comments = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isLogin } = useAuth();
   const { toiletId } = useCurrentToiletInfo();
-  const { comments, setComments, loadComments, isLoading } =
-    useComments(toiletId);
+  const { comments, addComment, isLoading } = useComments(toiletId);
 
   const handleClick = async () => {
-    const inputText = inputRef.current?.value.trim();
-    if (!toiletId || !inputText) return;
+    if (!inputRef.current) return;
 
-    try {
-      await addComment(toiletId, { comment: inputText });
-      await loadComments();
+    const inputText = inputRef.current.value.trim();
+    if (!inputText) return;
 
-      if (inputRef.current) {
-        inputRef.current.value = '';
-      }
-    } catch (error) {
-      // TODO: 에러 처리
-      console.log(error);
-    }
+    await addComment(inputText);
+    inputRef.current.value = '';
   };
-
-  useEffect(() => {
-    loadComments();
-  }, []);
 
   return (
     <CommentsStyle>
@@ -58,9 +45,7 @@ const Comments = () => {
           // TODO: 댓글 로딩중 처리
           <p>댓글 불러오는 중...</p>
         ) : (
-          comments.map((item) => (
-            <CommentItem key={item.id} item={item} setComments={setComments} />
-          ))
+          comments.map((item) => <CommentItem key={item.id} item={item} />)
         )}
       </div>
     </CommentsStyle>
