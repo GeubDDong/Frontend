@@ -4,49 +4,22 @@ import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
 import { ICommentItem } from '@/models/comment.model';
 import { formatDateToString } from '@/utils/dateUtil';
-import { removeComment, updateComment } from '@/api/detail.api';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 import { useComments } from '@/hooks/useComments';
 
 interface CommentItemProps {
   item: ICommentItem;
-  setComments: React.Dispatch<React.SetStateAction<ICommentItem[]>>;
 }
 
-const CommentItem = ({ item, setComments }: CommentItemProps) => {
+const CommentItem = ({ item }: CommentItemProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editText, setEditText] = useState('');
   const { toiletId } = useCurrentToiletInfo();
-  const { loadComments } = useComments(toiletId);
+  const { updateComment, removeComment } = useComments(toiletId);
 
   const handleClickToggleEdit = () => {
     setIsEdit((prev) => !prev);
     setEditText(item.comment);
-  };
-
-  const handleClickDelete = async () => {
-    if (!toiletId) return;
-
-    try {
-      await removeComment(toiletId, item.id);
-      setComments((prev) => prev.filter((comment) => comment.id !== item.id));
-    } catch (error) {
-      // TODO: 에러 처리
-      console.log(error);
-    }
-  };
-
-  const handleClickUpdate = async () => {
-    if (!toiletId) return;
-
-    try {
-      await updateComment(toiletId, { id: item.id, comment: editText });
-      await loadComments();
-      setIsEdit(false);
-    } catch (error) {
-      // TODO: 에러 처리
-      console.log(error);
-    }
   };
 
   return (
@@ -63,12 +36,14 @@ const CommentItem = ({ item, setComments }: CommentItemProps) => {
               {isEdit ? (
                 <>
                   <button onClick={handleClickToggleEdit}>취소</button>
-                  <button onClick={handleClickUpdate}>확인</button>
+                  <button onClick={() => updateComment(item.id, editText)}>
+                    확인
+                  </button>
                 </>
               ) : (
                 <>
                   <button onClick={handleClickToggleEdit}>수정</button>
-                  <button onClick={handleClickDelete}>삭제</button>
+                  <button onClick={() => removeComment(item.id)}>삭제</button>
                 </>
               )}
             </div>
