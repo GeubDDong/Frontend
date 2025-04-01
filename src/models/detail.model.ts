@@ -12,12 +12,3 @@ export interface IToiletDetailInfo extends IToiletInfo {
   diaper_changing_station: TAvailable;
   data_reference_date: Date;
 }
-
-export interface ICommentItem {
-  id: number;
-  user_email: string;
-  nickname: string;
-  comment: string;
-  updated_at: Date;
-  isMine: boolean;
-}

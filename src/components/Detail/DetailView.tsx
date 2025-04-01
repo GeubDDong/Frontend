@@ -2,32 +2,23 @@ import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import InfoIcon from './InfoIcon';
 import LikeButton from './LikeButton';
-import { useEffect, useState } from 'react';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
-import { IToiletDetailInfo } from '@/models/detail.model';
-import { fetchDetailInfo } from '@/api/detail.api';
 import { formatDateToString } from '@/utils/dateUtil';
+import { useDetailInfo } from '@/hooks/useDetailInfo';
+import { useEffect } from 'react';
 
 const DetailView = () => {
   const info = useToiletInfoStore((state) => state.info);
-  const [detailInfo, setDetailInfo] = useState<IToiletDetailInfo | null>(null);
+  const { detailInfo, loadDetailInfo, isLoading } = useDetailInfo(info?.id);
   const data = detailInfo || info;
 
   useEffect(() => {
-    async function fetchAPI(id: number) {
-      await fetchDetailInfo(id)
-        .then((res) => setDetailInfo(res))
-        .catch((err) => {
-          setDetailInfo(null);
-          console.error(err);
-        });
-    }
-    if (!info || !info.id) return;
-    fetchAPI(info.id);
+    loadDetailInfo();
   }, []);
 
   if (!data) return null;
+
   return (
     <>
       <DetailViewStyle>
@@ -46,47 +37,52 @@ const DetailView = () => {
           </div>
         )}
         <div className="detailInfoIcons">
-          {detailInfo && (
-            <>
-              <InfoIcon
-                iconName="clock"
-                active={true}
-                text={detailInfo.open_hour}
-              />
-              <InfoIcon iconName="man" active={true} text="남성용" />
-              <InfoIcon iconName="woman" active={true} text="여성용" />
-              <InfoIcon
-                iconName="children"
-                active={
-                  detailInfo.kids_toilet_female === 'Y' ||
-                  detailInfo.kids_toilet_male === 'Y'
-                }
-                text="어린이 대변기"
-              />
-              <InfoIcon
-                iconName="baby"
-                active={detailInfo.diaper_changing_station === 'Y'}
-                text="기저귀 교환대"
-              />
-              <InfoIcon
-                iconName="wheelchair"
-                active={
-                  detailInfo.disabled_female === 'Y' ||
-                  detailInfo.disabled_male === 'Y'
-                }
-                text="장애인"
-              />
-              <InfoIcon
-                iconName="cctv"
-                active={detailInfo.cctv === 'Y'}
-                text="CCTV"
-              />
-              <InfoIcon
-                iconName="bell"
-                active={detailInfo.emergency_bell === 'Y'}
-                text="비상벨"
-              />
-            </>
+          {isLoading ? (
+            // TODO: 스켈레톤 UI
+            <></>
+          ) : (
+            detailInfo && (
+              <>
+                <InfoIcon
+                  iconName="clock"
+                  active={true}
+                  text={detailInfo.open_hour}
+                />
+                <InfoIcon iconName="man" active={true} text="남성용" />
+                <InfoIcon iconName="woman" active={true} text="여성용" />
+                <InfoIcon
+                  iconName="children"
+                  active={
+                    detailInfo.kids_toilet_female === 'Y' ||
+                    detailInfo.kids_toilet_male === 'Y'
+                  }
+                  text="어린이 대변기"
+                />
+                <InfoIcon
+                  iconName="baby"
+                  active={detailInfo.diaper_changing_station === 'Y'}
+                  text="기저귀 교환대"
+                />
+                <InfoIcon
+                  iconName="wheelchair"
+                  active={
+                    detailInfo.disabled_female === 'Y' ||
+                    detailInfo.disabled_male === 'Y'
+                  }
+                  text="장애인"
+                />
+                <InfoIcon
+                  iconName="cctv"
+                  active={detailInfo.cctv === 'Y'}
+                  text="CCTV"
+                />
+                <InfoIcon
+                  iconName="bell"
+                  active={detailInfo.emergency_bell === 'Y'}
+                  text="비상벨"
+                />
+              </>
+            )
           )}
         </div>
         <div className="management">
