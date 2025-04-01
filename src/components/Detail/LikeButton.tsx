@@ -1,18 +1,18 @@
-import { addLike, fetchLike, removeLike } from '@/api/detail.api';
+import { addLike, removeLike } from '@/api/detail.api';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
+import { useLikeStatus } from '@/hooks/useLikeStatus';
 import { Theme } from '@/style/Theme';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import styled from 'styled-components';
 
 const LikeButton = () => {
-  const [isLike, setIsLike] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
   const { isLogin } = useAuth();
   const { toiletId } = useCurrentToiletInfo();
+  const { isLike, setIsLike, loadLikeStatus } = useLikeStatus(toiletId);
 
-  const handleClickLike = () => {
+  const handleClick = async () => {
     if (!toiletId) return;
 
     if (!isLogin) {
@@ -20,24 +20,24 @@ const LikeButton = () => {
       return;
     }
 
-    if (isLike) {
-      removeLike(toiletId, { user_email: 'userEmail' }).then();
-      setLikeCount(likeCount - 1);
-    } else {
-      addLike(toiletId, { user_email: 'userEmail' }).then();
-      setLikeCount(likeCount + 1);
+    const prevLike = isLike;
+    try {
+      if (isLike) {
+        setIsLike(false);
+        await removeLike(toiletId, { user_email: 'user_email' });
+      } else {
+        setIsLike(true);
+        await addLike(toiletId, { user_email: 'user_email' });
+      }
+    } catch (error) {
+      // TODO: 에러 처리
+      console.log(error);
+      setIsLike(prevLike);
     }
-
-    setIsLike(!isLike);
   };
 
   useEffect(() => {
-    if (!toiletId) return;
-
-    fetchLike(toiletId).then((res) => {
-      setIsLike(res.like);
-      setLikeCount(res.count);
-    });
+    loadLikeStatus();
   }, []);
 
   return (
@@ -47,7 +47,7 @@ const LikeButton = () => {
           <FaHeart
             size="1.5rem"
             color="#eb3b41"
-            onPointerDown={handleClickLike}
+            onPointerDown={handleClick}
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -59,14 +59,13 @@ const LikeButton = () => {
           <FaRegHeart
             size="1.5rem"
             color={`${Theme.colors.subText}`}
-            onPointerDown={handleClickLike}
+            onPointerDown={handleClick}
             onClick={(e) => {
               e.stopPropagation();
             }}
             style={{ cursor: 'pointer' }}
           />
         )}
-        <span>{likeCount}</span>
       </LikeButtonStyle>
     </>
   );
