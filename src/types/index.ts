@@ -1,4 +1,4 @@
-export interface ILocation {
+export interface ICoordinate {
   latitude: number;
   longitude: number;
 }
