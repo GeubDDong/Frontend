@@ -10,7 +10,8 @@ const Comments = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isLogin } = useAuth();
   const { toiletId } = useCurrentToiletInfo();
-  const { comments, addComment, isLoading } = useComments(toiletId);
+  const { comments, addComment, updateComment, removeComment, isLoading } =
+    useComments(toiletId);
 
   const handleClick = async () => {
     if (!inputRef.current) return;
@@ -45,7 +46,14 @@ const Comments = () => {
           // TODO: 댓글 로딩중 처리
           <p>댓글 불러오는 중...</p>
         ) : (
-          comments.map((item) => <CommentItem key={item.id} item={item} />)
+          comments.map((item) => (
+            <CommentItem
+              key={item.id}
+              item={item}
+              updateComment={updateComment}
+              removeComment={removeComment}
+            />
+          ))
         )}
       </div>
     </CommentsStyle>

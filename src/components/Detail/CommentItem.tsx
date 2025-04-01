@@ -4,18 +4,20 @@ import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
 import { ICommentItem } from '@/models/comment.model';
 import { formatDateToString } from '@/utils/dateUtil';
-import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
-import { useComments } from '@/hooks/useComments';
 
 interface CommentItemProps {
   item: ICommentItem;
+  updateComment: (id: number, comment: string) => Promise<void>;
+  removeComment: (id: number) => Promise<void>;
 }
 
-const CommentItem = ({ item }: CommentItemProps) => {
+const CommentItem = ({
+  item,
+  updateComment,
+  removeComment,
+}: CommentItemProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editText, setEditText] = useState('');
-  const { toiletId } = useCurrentToiletInfo();
-  const { updateComment, removeComment } = useComments(toiletId);
 
   const handleClickToggleEdit = () => {
     setIsEdit((prev) => !prev);
