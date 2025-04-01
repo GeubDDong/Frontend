@@ -1,44 +1,22 @@
-import { addLike, removeLike } from '@/api/detail.api';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
 import { useLikeStatus } from '@/hooks/useLikeStatus';
 import { Theme } from '@/style/Theme';
-import { useEffect } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import styled from 'styled-components';
 
 const LikeButton = () => {
   const { isLogin } = useAuth();
   const { toiletId } = useCurrentToiletInfo();
-  const { isLike, setIsLike, loadLikeStatus } = useLikeStatus(toiletId);
+  const { isLike, toggleLike } = useLikeStatus(toiletId);
 
   const handleClick = async () => {
-    if (!toiletId) return;
-
     if (!isLogin) {
       window.alert('로그인이 필요한 기능입니다.');
       return;
     }
-
-    const prevLike = isLike;
-    try {
-      if (isLike) {
-        setIsLike(false);
-        await removeLike(toiletId, { user_email: 'user_email' });
-      } else {
-        setIsLike(true);
-        await addLike(toiletId, { user_email: 'user_email' });
-      }
-    } catch (error) {
-      // TODO: 에러 처리
-      console.log(error);
-      setIsLike(prevLike);
-    }
+    toggleLike();
   };
-
-  useEffect(() => {
-    loadLikeStatus();
-  }, []);
 
   return (
     <>

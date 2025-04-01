@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { fetchLike } from '@/api/detail.api';
+import { useEffect, useState } from 'react';
+import { addLike, fetchLike, removeLike } from '@/api/detail.api';
 
 export const useLikeStatus = (toiletId: number | undefined) => {
   const [isLike, setIsLike] = useState(false);
@@ -16,9 +16,32 @@ export const useLikeStatus = (toiletId: number | undefined) => {
     }
   };
 
+  const toggleLike = async () => {
+    if (!toiletId) return;
+
+    const prevLike = isLike;
+    try {
+      setIsLike(!isLike);
+      if (isLike) {
+        await removeLike(toiletId, { user_email: 'user_email' });
+      } else {
+        await addLike(toiletId, { user_email: 'user_email' });
+      }
+    } catch (error) {
+      setIsLike(prevLike);
+      // TODO: 에러 처리
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadLikeStatus();
+  }, []);
+
   return {
     isLike,
     setIsLike,
     loadLikeStatus,
+    toggleLike,
   };
 };
