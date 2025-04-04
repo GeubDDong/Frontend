@@ -5,7 +5,7 @@ import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 import { fetchToiletInfo } from '@/api/mainToiletInfo.api';
-import { useCurrentToiletInfo } from './useCurrentToiletInfo';
+import useSelectedToiletInfo from './useSelectedToiletInfo';
 
 const useMapInfo = () => {
   const [toiletInfoData, setToiletInfoData] = useState<IToiletBasicInfo[]>([]);
@@ -25,7 +25,7 @@ const useMapInfo = () => {
   const setIsFetchingCurrentLocation = useMapInfoStore(
     (store) => store.setIsFetchingCurrentLocation,
   );
-  const { setSelectedToiletInfo } = useCurrentToiletInfo();
+  const { setSelectedToiletInfo } = useSelectedToiletInfo();
 
   const getCurrentLocation = () => {
     if (isFetchingCurrentLocation) return;
@@ -34,6 +34,7 @@ const useMapInfo = () => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
       setCurrentLocation({ latitude, longitude });
+      setCenter({ latitude, longitude });
       setErrorCode(null);
       setIsFetchingCurrentLocation(false);
     };
@@ -75,12 +76,9 @@ const useMapInfo = () => {
   };
 
   useEffect(() => {
-    getCurrentLocation();
+    if (currentLocation.latitude === null || currentLocation === null)
+      getCurrentLocation();
   }, []);
-
-  useEffect(() => {
-    setCenter(currentLocation);
-  }, [currentLocation]);
 
   return {
     toiletInfoData,
