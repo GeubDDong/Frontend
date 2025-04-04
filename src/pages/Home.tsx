@@ -58,8 +58,8 @@ const Home = () => {
       <Map
         id="map"
         center={{
-          lat: center.latitude,
-          lng: center.longitude,
+          lat: center.latitude as number,
+          lng: center.longitude as number,
         }}
         style={{
           width: '100%',

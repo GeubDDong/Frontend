@@ -21,8 +21,8 @@ interface IUseMapInfoStore {
 
 const useMapInfoStore = create<IUseMapInfoStore>((set) => ({
   currentLocation: {
-    latitude: INITIAL_LATITUDE,
-    longitude: INITIAL_LONGITUDE,
+    latitude: null,
+    longitude: null,
   },
   center: {
     latitude: INITIAL_LATITUDE,
