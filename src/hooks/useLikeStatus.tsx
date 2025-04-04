@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { addLike, fetchLike, removeLike } from '@/api/detail.api';
 
-export const useLikeStatus = (toiletId: number | undefined) => {
+const useLikeStatus = (toiletId: number | undefined) => {
   const [isLike, setIsLike] = useState(false);
 
   const loadLikeStatus = async () => {
@@ -45,3 +45,5 @@ export const useLikeStatus = (toiletId: number | undefined) => {
     toggleLike,
   };
 };
+
+export default useLikeStatus;

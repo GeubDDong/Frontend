@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { fetchDetailInfo } from '@/api/detail.api';
 import { IToiletDetailInfo } from '@/models/detail.model';
 
-export const useDetailInfo = (toiletId: number | undefined) => {
+const useDetailInfo = (toiletId: number | undefined) => {
   const [detailInfo, setDetailInfo] = useState<IToiletDetailInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,3 +28,5 @@ export const useDetailInfo = (toiletId: number | undefined) => {
     isLoading,
   };
 };
+
+export default useDetailInfo;

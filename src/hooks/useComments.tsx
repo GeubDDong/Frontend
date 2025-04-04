@@ -7,7 +7,7 @@ import {
 } from '@/api/detail.api';
 import { ICommentItem } from '@/models/comment.model';
 
-export const useComments = (toiletId: number | undefined) => {
+const useComments = (toiletId: number | undefined) => {
   const [comments, setComments] = useState<ICommentItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,3 +78,5 @@ export const useComments = (toiletId: number | undefined) => {
     isLoading,
   };
 };
+
+export default useComments;

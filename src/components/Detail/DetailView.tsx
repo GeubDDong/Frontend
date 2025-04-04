@@ -5,7 +5,7 @@ import LikeButton from './LikeButton';
 import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
 import { formatDateToString } from '@/utils/dateUtil';
-import { useDetailInfo } from '@/hooks/useDetailInfo';
+import useDetailInfo from '@/hooks/useDetailInfo';
 import { useEffect } from 'react';
 
 const DetailView = () => {

@@ -2,16 +2,16 @@ import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import { useRef } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
-import { useComments } from '@/hooks/useComments';
+import useAuth from '@/hooks/useAuth';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
+import useComments from '@/hooks/useComments';
 
 const Comments = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isLogin } = useAuth();
-  const { toiletId } = useCurrentToiletInfo();
+  const { selectedToiletInfo } = useSelectedToiletInfo();
   const { comments, addComment, updateComment, removeComment, isLoading } =
-    useComments(toiletId);
+    useComments(selectedToiletInfo?.id);
 
   const handleClick = async () => {
     if (!inputRef.current) return;

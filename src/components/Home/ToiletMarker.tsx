@@ -1,6 +1,6 @@
 import { MapMarker } from 'react-kakao-maps-sdk';
 import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
-import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 
 interface IToiletMarkerProps {
   info: IToiletBasicInfo;
@@ -8,7 +8,7 @@ interface IToiletMarkerProps {
 
 const ToiletMarker = ({ info }: IToiletMarkerProps) => {
   // const selectedToiletDataInfo = useToiletInfoStore((state) => state.info);
-  const { setSelectedToiletInfo } = useCurrentToiletInfo();
+  const { setSelectedToiletInfo } = useSelectedToiletInfo();
   return (
     <MapMarker
       // image={{
