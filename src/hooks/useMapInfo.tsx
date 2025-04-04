@@ -42,7 +42,9 @@ const useMapInfo = () => {
     const getCurrentLocationError = (error: GeolocationPositionError) => {
       console.error(error);
       setErrorCode(error.code);
-      toast(GEOLOCATION_ERROR_TOAST_MESSAGE[error.code]);
+      toast(GEOLOCATION_ERROR_TOAST_MESSAGE[error.code], {
+        toastId: error.code,
+      });
       setIsFetchingCurrentLocation(false);
     };
 
@@ -60,7 +62,7 @@ const useMapInfo = () => {
     } else {
       const errorCode = GeolocationPositionError.POSITION_UNAVAILABLE;
       setErrorCode(errorCode);
-      toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
+      toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode], { toastId: errorCode });
       setIsFetchingCurrentLocation(false);
     }
   };
