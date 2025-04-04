@@ -1,6 +1,6 @@
 import { MapMarker } from 'react-kakao-maps-sdk';
-import useToiletInfoStore from '@/store/toiletInfoStore';
 import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 
 interface IToiletMarkerProps {
   info: IToiletBasicInfo;
@@ -8,9 +8,7 @@ interface IToiletMarkerProps {
 
 const ToiletMarker = ({ info }: IToiletMarkerProps) => {
   // const selectedToiletDataInfo = useToiletInfoStore((state) => state.info);
-  const setSelectedToiletDataInfo = useToiletInfoStore(
-    (state) => state.setInfo,
-  );
+  const { setSelectedToiletInfo } = useSelectedToiletInfo();
   return (
     <MapMarker
       // image={{
@@ -21,7 +19,7 @@ const ToiletMarker = ({ info }: IToiletMarkerProps) => {
       //       : { width: 25, height: 25 },
       // }}
       position={{ lat: info.latitude, lng: info.longitude }}
-      onClick={() => setSelectedToiletDataInfo(info)}
+      onClick={() => setSelectedToiletInfo(info)}
     />
   );
 };

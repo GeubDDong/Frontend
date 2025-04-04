@@ -1,16 +1,22 @@
 import { MapMarker } from 'react-kakao-maps-sdk';
 import dotDuotone from '@/assets/dotDuotone.svg';
-import useLocationStore from '@/store/locationStore';
+import useMapInfo from '@/hooks/useMapInfo';
 
 const MyLocation = () => {
-  const location = useLocationStore.getState().location;
+  const { currentLocation, errorCode } = useMapInfo();
+  if (errorCode) return <></>;
+  if (currentLocation.latitude === null || currentLocation.longitude === null)
+    return <></>;
   return (
     <MapMarker
       image={{
         src: dotDuotone,
         size: { width: 80, height: 80 },
       }}
-      position={{ lat: location.latitude, lng: location.longitude }}
+      position={{
+        lat: currentLocation.latitude,
+        lng: currentLocation.longitude,
+      }}
     />
   );
 };

@@ -1,6 +1,6 @@
-export interface ILocation {
-  latitude: number;
-  longitude: number;
+export interface ICoordinate {
+  latitude: number | null;
+  longitude: number | null;
 }
 
 export type TAvailable = 'Y' | 'N';

@@ -1,5 +1,5 @@
 import { logout } from '@/api/auth.api';
-import { useAuth } from '@/hooks/useAuth';
+import useAuth from '@/hooks/useAuth';
 import { useAuthStore } from '@/store/authStore';
 import { Theme } from '@/style/Theme';
 import { useState } from 'react';
