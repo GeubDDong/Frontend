@@ -16,7 +16,6 @@ const Home = () => {
     toiletInfoData,
     center,
     zoomLevel,
-    errorCode,
     setCenter,
     setZoomLevel,
     getToiletInfoData,
@@ -72,7 +71,7 @@ const Home = () => {
         minLevel={10}
         maxLevel={1}
       >
-        {errorCode === null && <MyLocation />}
+        <MyLocation />
         {toiletInfoData.map((item) => (
           <ToiletMarker key={item.id} info={item} />
         ))}

@@ -3,7 +3,10 @@ import dotDuotone from '@/assets/dotDuotone.svg';
 import useMapInfo from '@/hooks/useMapInfo';
 
 const MyLocation = () => {
-  const { currentLocation } = useMapInfo();
+  const { currentLocation, errorCode } = useMapInfo();
+  if (errorCode) return <></>;
+  if (currentLocation.latitude === null || currentLocation.longitude === null)
+    return <></>;
   return (
     <MapMarker
       image={{
