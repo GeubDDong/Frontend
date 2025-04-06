@@ -85,7 +85,7 @@ const Home = () => {
 export default Home;
 
 const HomeStyle = styled.div`
-  height: 100%;
+  height: calc(100% - 60px);
   width: 100%;
   position: relative;
   overflow-y: hidden;
