@@ -5,7 +5,7 @@ import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { IBound } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Home/MyLocation';
-import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
+import ToiletInfo from '@/components/Home/ToiletInfo';
 import HomeMenuButton from '@/components/Home/HomeMenuButton';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
@@ -53,7 +53,7 @@ const Home = () => {
 
   return (
     <HomeStyle>
-      <ToiletBasicInfo />
+      <ToiletInfo />
       <Map
         id="map"
         center={{

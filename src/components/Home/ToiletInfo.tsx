@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHeart } from 'react-icons/fa6';
 
-interface BasicInfoStyleProps {
+interface InfoStyleProps {
   $isOpen: boolean;
 }
 
-const ToiletBasicInfo = () => {
+const ToiletInfo = () => {
   const info = useToiletInfoStore((state) => state.info);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const ToiletBasicInfo = () => {
   return (
     <>
       {info && (
-        <ToiletBasicInfoStyle $isOpen={isOpen}>
+        <ToiletInfoStyle $isOpen={isOpen}>
           <div onClick={handleClick}>
             <div className="title">
               <div className="name">{info.name}</div>
@@ -43,13 +43,13 @@ const ToiletBasicInfo = () => {
               </div>
             </div>
           </div>
-        </ToiletBasicInfoStyle>
+        </ToiletInfoStyle>
       )}
     </>
   );
 };
 
-const ToiletBasicInfoStyle = styled.div<BasicInfoStyleProps>`
+const ToiletInfoStyle = styled.div<InfoStyleProps>`
   position: absolute;
   z-index: 1000;
   width: 90%;
@@ -111,4 +111,4 @@ const ToiletBasicInfoStyle = styled.div<BasicInfoStyleProps>`
     margin-right: 10px;
   }
 `;
-export default ToiletBasicInfo;
+export default ToiletInfo;
