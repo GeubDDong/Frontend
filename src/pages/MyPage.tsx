@@ -7,6 +7,6 @@ const MyPage = () => {
 export default MyPage;
 
 const MyPageStyle = styled.div`
-  height: calc(100% - 60px);
+  height: 100%;
   width: 100%;
 `;

@@ -7,6 +7,6 @@ const Rank = () => {
 export default Rank;
 
 const RankStyle = styled.div`
-  height: calc(100% - 60px);
+  height: 100%;
   width: 100%;
 `;
