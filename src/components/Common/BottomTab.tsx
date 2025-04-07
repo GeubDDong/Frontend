@@ -6,20 +6,18 @@ import styled from 'styled-components';
 
 const BottomTab = () => {
   const location = useLocation();
-  const active = location.pathname;
+  const path = location.pathname;
 
   return (
     <BottomTabStyle>
       <Link to="/" className="tab_item">
-        <FaMapMarkedAlt className={active === '/' ? 'active' : ''} />
+        <FaMapMarkedAlt className={path === '/' ? 'active' : ''} />
       </Link>
       <Link to={'/rank'} className="tab_item">
-        <FaTrophy className={active === '/rank' ? 'active' : ''} />
+        <FaTrophy className={path === '/rank' ? 'active' : ''} />
       </Link>
       <Link to={'/myPage'} className="tab_item">
-        <FaUser
-          className={active !== '/' && active !== '/rank' ? 'active' : ''}
-        />
+        <FaUser className={path !== '/' && path !== '/rank' ? 'active' : ''} />
       </Link>
     </BottomTabStyle>
   );
@@ -32,6 +30,7 @@ const BottomTabStyle = styled.div`
   width: 100%;
   height: 60px;
   background-color: ${Theme.colors.background};
+  border-top: 2px solid #ebebeb;
 
   .tab_item {
     display: flex;
