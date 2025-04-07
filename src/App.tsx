@@ -3,14 +3,8 @@ import { GlobalStyle } from '@/style/GlobalStyle';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
-import Home from '@/pages/Home';
-import Detail from '@/pages/Detail';
-import Login from '@/pages/Login';
-import ProfileSetup from '@/pages/ProfileSetup';
-import AuthCallback from '@/pages/AuthCallbackPage';
 import BottomTab from './components/Common/BottomTab';
-import Rank from './pages/Rank';
-import MyPage from './pages/MyPage';
+import routeElements from './routes';
 
 function App() {
   const queryClient = new QueryClient();
@@ -19,15 +13,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
       <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/detail" element={<Detail />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profileSetup" element={<ProfileSetup />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/rank" element={<Rank />} />
-          <Route path="/myPage" element={<MyPage />} />
-        </Routes>
+        <div style={{ height: 'calc(100% - 60px)' }}>
+          <Routes>
+            {routeElements.map(({ path, element }) => (
+              <Route path={path} element={element} />
+            ))}
+          </Routes>
+        </div>
         <BottomTab />
       </Router>
       <ToastContainer
