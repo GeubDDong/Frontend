@@ -1,4 +1,3 @@
-import { RouteObject } from 'react-router-dom';
 import AuthCallback from '@/pages/AuthCallbackPage';
 import Detail from '@/pages/Detail';
 import Home from '@/pages/Home';
@@ -7,14 +6,20 @@ import MyPage from '@/pages/MyPage';
 import ProfileSetup from '@/pages/ProfileSetup';
 import Rank from '@/pages/Rank';
 
-const routeElements: RouteObject[] = [
-  { path: '/', element: <Home /> },
-  { path: '/detail', element: <Detail /> },
-  { path: '/login', element: <Login /> },
-  { path: '/profileSetup', element: <ProfileSetup /> },
-  { path: '/auth/callback', element: <AuthCallback /> },
-  { path: '/rank', element: <Rank /> },
-  { path: '/myPage', element: <MyPage /> },
+interface IRouteElement {
+  key: string;
+  path: string;
+  element: React.ReactNode;
+}
+
+const routeElements: IRouteElement[] = [
+  { key: 'home', path: '/', element: <Home /> },
+  { key: 'detail', path: '/detail', element: <Detail /> },
+  { key: 'login', path: '/login', element: <Login /> },
+  { key: 'profileSetup', path: '/profileSetup', element: <ProfileSetup /> },
+  { key: 'authCallback', path: '/auth/callback', element: <AuthCallback /> },
+  { key: 'rank', path: '/rank', element: <Rank /> },
+  { key: 'myPage', path: '/myPage', element: <MyPage /> },
 ];
 
 export default routeElements;
