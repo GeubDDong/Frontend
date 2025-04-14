@@ -10,6 +10,7 @@ interface Props {
   iconName: string;
   active: boolean;
   text: string;
+  extra?: JSX.Element;
 }
 
 const ICONS: Record<string, JSX.Element> = {
@@ -23,7 +24,7 @@ const ICONS: Record<string, JSX.Element> = {
   clock: <FaRegClock />,
 };
 
-const InfoIcon = ({ iconName, active, text }: Props) => {
+const InfoIcon = ({ iconName, active, text, extra }: Props) => {
   return (
     <InfoIconStyle>
       <div className="circle">
@@ -41,6 +42,7 @@ const InfoIcon = ({ iconName, active, text }: Props) => {
           >
             {ICONS[iconName]}
           </IconContext.Provider>
+          <div className="extra">{extra}</div>
         </div>
       </div>
       <span style={{ opacity: active ? 1 : 0.5 }}>{text}</span>
@@ -66,6 +68,12 @@ const InfoIconStyle = styled.div`
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
+  }
+
+  .extra {
+    position: absolute;
+    top: -2px;
+    right: -5px;
   }
 `;
 
