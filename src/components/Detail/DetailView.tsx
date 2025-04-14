@@ -67,8 +67,19 @@ const DetailView = () => {
           </div>
           <Divider>
             <div className="detailInfoIcons">
-              <InfoIcon iconName="man" active={true} text="남성용" />
-              <InfoIcon iconName="woman" active={true} text="여성용" />
+              <InfoIcon
+                iconName="man"
+                active={
+                  detailInfo.facility.male_toilet > 0 ||
+                  detailInfo.facility.male_urinal > 0
+                }
+                text="남성용"
+              />
+              <InfoIcon
+                iconName="woman"
+                active={detailInfo.facility.female_toilet > 0}
+                text="여성용"
+              />
               <InfoIcon
                 iconName="wheelchair"
                 active={
