@@ -50,7 +50,8 @@ const useMapInfo = () => {
 
     const getCurrentLocationOption = {
       enableHighAccuracy: true,
-      timeout: 3000,
+      timeout: 5000,
+      maximumAge: 30000,
     };
 
     if (navigator.geolocation) {
