@@ -9,6 +9,8 @@ import ToiletInfo from '@/components/Home/ToiletInfo';
 import HomeMenuButton from '@/components/Home/HomeMenuButton';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
+import BottomSheet from '@/components/Common/BottomSheet';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -21,6 +23,7 @@ const Home = () => {
     getToiletInfoData,
   } = useMapInfo();
   const [bound, setBound] = useState<IBound | null>(null);
+  const { selectedToiletInfo } = useSelectedToiletInfo();
 
   useKakaoLoader();
 
@@ -53,7 +56,10 @@ const Home = () => {
 
   return (
     <HomeStyle>
-      <ToiletInfo />
+      <CurrentLocationButton />
+      <BottomSheet isOpen={!!selectedToiletInfo}>
+        <ToiletInfo />
+      </BottomSheet>
       <Map
         id="map"
         center={{
@@ -71,13 +77,12 @@ const Home = () => {
         minLevel={10}
         maxLevel={1}
       >
-        <MyLocation />
         {toiletInfoData.map((item) => (
           <ToiletMarker key={item.id} info={item} />
         ))}
+        <MyLocation />
       </Map>
       <HomeMenuButton />
-      <CurrentLocationButton />
     </HomeStyle>
   );
 };
