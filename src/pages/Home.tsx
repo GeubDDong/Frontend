@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Map } from 'react-kakao-maps-sdk';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
 import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { IBound } from '@/types';
 import styled from 'styled-components';
@@ -8,6 +8,11 @@ import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
 import Search from '@/components/Home/Search';
+import {
+  CLUSTERER_ZOOM_LEVEL,
+  MAX_ZOOM_LEVEL,
+  MIN_ZOOM_LEVEL,
+} from '@/constants/initialMapInfo';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -48,6 +53,14 @@ const Home = () => {
     }
   };
 
+  const onClusterclick = (
+    _target: kakao.maps.MarkerClusterer,
+    cluster: kakao.maps.Cluster,
+  ) => {
+    const map = mapRef.current;
+    map!.setLevel(zoomLevel - 1, { anchor: cluster.getCenter() });
+  };
+
   return (
     <HomeStyle>
       <Map
@@ -64,13 +77,20 @@ const Home = () => {
         ref={mapRef}
         onIdle={handleIdle}
         isPanto={true}
-        minLevel={10}
-        maxLevel={1}
+        minLevel={MIN_ZOOM_LEVEL}
+        maxLevel={MAX_ZOOM_LEVEL}
       >
         <MyLocation />
-        {toiletInfoData.map((item) => (
-          <ToiletMarker key={item.id} info={item} />
-        ))}
+        <MarkerClusterer
+          averageCenter={true}
+          minLevel={CLUSTERER_ZOOM_LEVEL}
+          disableClickZoom={true}
+          onClusterclick={onClusterclick}
+        >
+          {toiletInfoData.map((item) => (
+            <ToiletMarker key={item.id} info={item} />
+          ))}
+        </MarkerClusterer>
       </Map>
       <Search />
       <CurrentLocationButton />
