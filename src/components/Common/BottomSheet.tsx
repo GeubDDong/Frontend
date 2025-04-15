@@ -27,7 +27,9 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
   const handleTouchMove = (e: React.TouchEvent) => {
     deltaY.current = startY.current - e.touches[0].clientY;
-    if (sheet.current?.scrollTop > 0 && deltaY.current < 0) return;
+
+    if (!sheet.current) return;
+    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
 
     const newHeight = Math.max(
       MIN_HEIGHT,
@@ -37,7 +39,8 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
   };
 
   const handleTouchEnd = () => {
-    if (sheet.current?.scrollTop > 0 && deltaY.current < 0) return;
+    if (!sheet.current) return;
+    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
 
     if (deltaY.current < 0) {
       setHeight(MIN_HEIGHT); // 축소
@@ -66,7 +69,8 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
     deltaY.current = startY.current - e.clientY;
 
-    if (sheet.current?.scrollTop > 0 && deltaY.current < 0) return;
+    if (!sheet.current) return;
+    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
 
     const newHeight = Math.max(
       MIN_HEIGHT,
@@ -77,7 +81,8 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
   };
 
   const handleMouseUp = () => {
-    if (sheet.current?.scrollTop > 0 && deltaY.current < 0) return;
+    if (!sheet.current) return;
+    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
 
     document.body.style.userSelect = 'auto';
 
