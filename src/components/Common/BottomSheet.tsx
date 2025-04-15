@@ -134,11 +134,15 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
 export default BottomSheet;
 
-const BottomSheetStyle = styled.div<{
+const BottomSheetStyle = styled.div.attrs<{
   $isOpen: boolean;
   $isExpanded: boolean;
   $height: number;
-}>`
+}>((props) => ({
+  style: {
+    height: `${props.$height}px`,
+  },
+}))`
   position: absolute;
   bottom: 0;
   margin: 0 auto;
@@ -146,7 +150,6 @@ const BottomSheetStyle = styled.div<{
   transform: translateY(${({ $isOpen }) => ($isOpen ? '0%' : '100%')});
   transition: transform 0.3s ease-in-out;
   width: 100%;
-  height: ${({ $height }) => `${$height}px`};
   max-height: 100%;
   background-color: white;
   border-radius: ${({ $isExpanded }) =>
