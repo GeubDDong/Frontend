@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 interface IUseToiletInfoStore {
   info: IToiletBasicInfo | null;
-  setInfo: (info: IToiletBasicInfo) => void;
+  setInfo: (info: IToiletBasicInfo | null) => void;
 }
 
 const useToiletInfoStore = create<IUseToiletInfoStore>((set) => ({

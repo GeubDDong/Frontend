@@ -13,6 +13,7 @@ import {
   MAX_ZOOM_LEVEL,
   MIN_ZOOM_LEVEL,
 } from '@/constants/initialMapInfo';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -24,6 +25,7 @@ const Home = () => {
     setZoomLevel,
     getToiletInfoData,
   } = useMapInfo();
+  const { setSelectedToiletInfo } = useSelectedToiletInfo();
   const [bound, setBound] = useState<IBound | null>(null);
 
   useEffect(() => {
@@ -39,6 +41,10 @@ const Home = () => {
     if (bound === null) return;
     getToiletInfoData(bound);
   }, [bound]);
+
+  useEffect(() => {
+    if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) setSelectedToiletInfo(null);
+  });
 
   const handleIdle = (map: kakao.maps.Map) => {
     const newCenter = map.getCenter();
