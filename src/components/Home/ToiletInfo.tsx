@@ -1,16 +1,15 @@
 import styled from 'styled-components';
-import React from 'react';
 import Comments from '../Detail/Comments';
 import DetailView from '../Detail/DetailView';
 
-const ToiletInfo = React.memo(() => {
+const ToiletInfo = () => {
   return (
     <ToiletInfoStyle>
       <DetailView />
       <Comments />
     </ToiletInfoStyle>
   );
-});
+};
 
 const ToiletInfoStyle = styled.div`
   display: flex;
