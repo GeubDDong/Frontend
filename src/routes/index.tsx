@@ -17,7 +17,11 @@ const routeElements: IRouteElement[] = [
   { key: 'detail', path: '/detail', element: <Detail /> },
   { key: 'login', path: '/login', element: <Login /> },
   { key: 'profileSetup', path: '/profileSetup', element: <ProfileSetup /> },
-  { key: 'authCallback', path: '/auth/callback', element: <AuthCallback /> },
+  {
+    key: 'authCallback',
+    path: '/auth/callback/kakao',
+    element: <AuthCallback />,
+  },
   { key: 'rank', path: '/rank', element: <Rank /> },
   { key: 'myPage', path: '/myPage', element: <MyPage /> },
 ];
