@@ -9,6 +9,7 @@ import { styled } from 'styled-components';
 interface Props {
   iconName: string;
   active: boolean;
+  size?: number;
   text: string;
   extra?: JSX.Element;
 }
@@ -24,7 +25,7 @@ const ICONS: Record<string, JSX.Element> = {
   clock: <FaRegClock />,
 };
 
-const InfoIcon = ({ iconName, active, text, extra }: Props) => {
+const InfoIcon = ({ iconName, active, size = 2, text, extra }: Props) => {
   return (
     <InfoIconStyle>
       <div className="circle">
@@ -36,7 +37,7 @@ const InfoIcon = ({ iconName, active, text, extra }: Props) => {
         <div className="info">
           <IconContext.Provider
             value={{
-              size: '2rem',
+              size: `${size}rem`,
               color: 'white',
             }}
           >
@@ -60,20 +61,22 @@ const InfoIconStyle = styled.div`
     color: ${Theme.colors.mainText};
     text-align: center;
   }
+
   .circle {
     position: relative;
   }
 
   .info {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .extra {
     position: absolute;
     top: -2px;
-    right: -5px;
+    right: -6px;
   }
 `;
 

@@ -86,14 +86,16 @@ const DetailView = () => {
                   detailInfo.facility.disabled_male_toilet > 0 ||
                   detailInfo.facility.disabled_male_urinal > 0
                 }
+                size={1.5}
                 text="장애인 남성용"
-                extra={<AiOutlineMan size="1.2rem" color="white" />}
+                extra={<AiOutlineMan size="0.9rem" color="white" />}
               />
               <InfoIcon
                 iconName="wheelchair"
                 active={detailInfo.facility.disabled_female_toilet > 0}
+                size={1.5}
                 text="장애인 여성용"
-                extra={<AiOutlineWoman size="1.2rem" color="white" />}
+                extra={<AiOutlineWoman size="0.9rem" color="white" />}
               />
               <InfoIcon
                 iconName="children"
