@@ -1,8 +1,9 @@
 import { IUserProfile, TLoginProvider } from '@/types';
 import requestHandler from '@/api/requestHandler';
+import { IAuthData } from '@/models/auth.model';
 
 export const login = async (provider: TLoginProvider) => {
-  return requestHandler('post', `/auth/${provider}`);
+  return requestHandler<IAuthData>('post', `/auth/${provider}`);
 };
 
 export const setNickname = async (data: Pick<IUserProfile, 'nickname'>) => {

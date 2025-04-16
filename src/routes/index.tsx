@@ -1,4 +1,4 @@
-import AuthCallback from '@/pages/AuthCallbackPage';
+import Kakao from '@/components/Login/Kakao';
 import Detail from '@/pages/Detail';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
@@ -18,9 +18,9 @@ const routeElements: IRouteElement[] = [
   { key: 'login', path: '/login', element: <Login /> },
   { key: 'profileSetup', path: '/profileSetup', element: <ProfileSetup /> },
   {
-    key: 'authCallback',
+    key: 'authCallback_kakao',
     path: '/auth/callback/kakao',
-    element: <AuthCallback />,
+    element: <Kakao />,
   },
   { key: 'rank', path: '/rank', element: <Rank /> },
   { key: 'myPage', path: '/myPage', element: <MyPage /> },
