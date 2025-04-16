@@ -41,6 +41,9 @@ const LikeButton = () => {
             onClick={(e) => {
               e.stopPropagation();
             }}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
             style={{ cursor: 'pointer' }}
           />
         )}

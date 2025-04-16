@@ -4,16 +4,17 @@ import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { IBound } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Home/MyLocation';
-import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
+import ToiletInfo from '@/components/Home/ToiletInfo';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
+import BottomSheet from '@/components/Common/BottomSheet';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import Search from '@/components/Home/Search';
 import {
   CLUSTERER_ZOOM_LEVEL,
   MAX_ZOOM_LEVEL,
   MIN_ZOOM_LEVEL,
 } from '@/constants/initialMapInfo';
-import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -25,7 +26,7 @@ const Home = () => {
     setZoomLevel,
     getToiletInfoData,
   } = useMapInfo();
-  const { setSelectedToiletInfo } = useSelectedToiletInfo();
+  const { setSelectedToiletInfo, selectedToiletInfo } = useSelectedToiletInfo();
   const [bound, setBound] = useState<IBound | null>(null);
 
   useEffect(() => {
@@ -98,9 +99,11 @@ const Home = () => {
           ))}
         </MarkerClusterer>
       </Map>
-      <Search />
       <CurrentLocationButton />
-      <ToiletBasicInfo />
+      <Search />
+      <BottomSheet isOpen={!!selectedToiletInfo}>
+        <ToiletInfo />
+      </BottomSheet>
     </HomeStyle>
   );
 };
