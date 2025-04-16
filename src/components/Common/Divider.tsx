@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ReactNode } from 'react';
+import { Theme } from '@/style/Theme';
 
 interface SectionProps {
   children: ReactNode;
@@ -15,5 +16,5 @@ export default Divider;
 const DividerStyle = styled.div<{ $noBorder: boolean }>`
   padding-bottom: 20px;
   border-bottom: ${({ $noBorder }) =>
-    $noBorder ? 'none' : '1px solid #e5e7eb'};
+    $noBorder ? 'none' : `1px solid ${Theme.colors.divider}`};
 `;
