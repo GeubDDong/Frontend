@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import logo from '@/assets/logo.png';
 import kakao from '@/assets/kakao.png';
 import BackButton from '@/components/Common/BackButton';
+import { TLoginProvider } from '@/types';
 
 const Login = () => {
-  const handleClick = () => {
-    window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login/kakao`;
+  const handleClick = (provider: TLoginProvider) => {
+    switch (provider) {
+      case 'kakao': {
+        window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login/kakao`;
+      }
+    }
   };
 
   return (
@@ -33,7 +38,7 @@ const Login = () => {
               src={kakao}
               alt="kakao_login"
               style={{ cursor: 'pointer' }}
-              onClick={handleClick}
+              onClick={() => handleClick('kakao')}
             />
           </div>
         </div>

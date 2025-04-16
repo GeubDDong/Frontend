@@ -31,3 +31,5 @@ export interface IBound {
   bottom: number;
   right: number;
 }
+
+export type TLoginProvider = 'kakao' | 'google';
