@@ -19,7 +19,7 @@ const Rating = ({
   return (
     <RatingStyles>
       <div className="total">
-        <FaStar color="#FACC15" size="2rem" />
+        <FaStar color={Theme.colors.star} size="2rem" />
         <div className="rate">
           <span className="score">{total}</span>
           <span className="outOf">/5</span>
@@ -30,19 +30,19 @@ const Rating = ({
           label="청결도"
           value={(cleanliness / 5) * 100}
           score={cleanliness}
-          color="#facc15"
+          color={Theme.colors.star}
         />
         <ProgressBar
           label="비품상태"
           value={(amenities / 5) * 100}
           score={amenities}
-          color="#facc15"
+          color={Theme.colors.star}
         />
         <ProgressBar
           label="접근성"
           value={(accessibility / 5) * 100}
           score={accessibility}
-          color="#facc15"
+          color={Theme.colors.star}
         />
       </div>
     </RatingStyles>

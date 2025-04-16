@@ -8,6 +8,7 @@ export const Theme = {
     subText: '#999999',
     buttonText: 'white',
     divider: '#e5e7eb',
+    star: '#FACC15',
   },
   fontSize: {
     xs: '10px',

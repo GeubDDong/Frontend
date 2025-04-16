@@ -39,21 +39,21 @@ const DetailView = () => {
               <div className="ratingItem">
                 청결도
                 <div className="score">
-                  <FaStar color="#FACC15" />
+                  <FaStar color={Theme.colors.star} />
                   {detailInfo.avg_cleanliness}
                 </div>
               </div>
               <div className="ratingItem">
                 비품상태
                 <div className="score">
-                  <FaStar color="#FACC15" />
+                  <FaStar color={Theme.colors.star} />
                   {detailInfo.avg_amenities}
                 </div>
               </div>
               <div className="ratingItem">
                 접근성
                 <div className="score">
-                  <FaStar color="#FACC15" />
+                  <FaStar color={Theme.colors.star} />
                   {detailInfo.avg_accessibility}
                 </div>
               </div>
