@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
 import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { IBound } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Home/MyLocation';
 import ToiletInfo from '@/components/Home/ToiletInfo';
-import HomeMenuButton from '@/components/Home/HomeMenuButton';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
 import BottomSheet from '@/components/Common/BottomSheet';
 import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
+import Search from '@/components/Home/Search';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -24,8 +23,6 @@ const Home = () => {
   } = useMapInfo();
   const [bound, setBound] = useState<IBound | null>(null);
   const { selectedToiletInfo } = useSelectedToiletInfo();
-
-  useKakaoLoader();
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -82,7 +79,7 @@ const Home = () => {
         ))}
         <MyLocation />
       </Map>
-      <HomeMenuButton />
+      <Search />
     </HomeStyle>
   );
 };

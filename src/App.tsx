@@ -5,18 +5,21 @@ import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
 import BottomTab from './components/Common/BottomTab';
 import routeElements from './routes';
+import useKakaoLoader from './hooks/useKakaoLoader';
 
 function App() {
+  const { isKakaoLoaded } = useKakaoLoader();
   const queryClient = new QueryClient();
 
+  if (!isKakaoLoaded) return <></>;
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
       <Router>
-        <div style={{ height: 'calc(100% - 60px)' }}>
+        <div style={{ height: 'calc(100% - 62px)' }}>
           <Routes>
-            {routeElements.map(({ path, element }) => (
-              <Route path={path} element={element} />
+            {routeElements.map(({ key, path, element }) => (
+              <Route key={key} path={path} element={element} />
             ))}
           </Routes>
         </div>
