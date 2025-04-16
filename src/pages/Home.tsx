@@ -53,10 +53,6 @@ const Home = () => {
 
   return (
     <HomeStyle>
-      <CurrentLocationButton />
-      <BottomSheet isOpen={!!selectedToiletInfo}>
-        <ToiletInfo />
-      </BottomSheet>
       <Map
         id="map"
         center={{
@@ -79,7 +75,11 @@ const Home = () => {
         ))}
         <MyLocation />
       </Map>
+      <CurrentLocationButton />
       <Search />
+      <BottomSheet isOpen={!!selectedToiletInfo}>
+        <ToiletInfo />
+      </BottomSheet>
     </HomeStyle>
   );
 };
