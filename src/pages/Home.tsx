@@ -8,13 +8,14 @@ import ToiletInfo from '@/components/Home/ToiletInfo';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
 import BottomSheet from '@/components/Common/BottomSheet';
-import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import Search from '@/components/Home/Search';
 import {
   CLUSTERER_ZOOM_LEVEL,
   MAX_ZOOM_LEVEL,
   MIN_ZOOM_LEVEL,
 } from '@/constants/initialMapInfo';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
+import InfoWindow from '@/components/Home/InfoWindow';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map>(null);
@@ -26,7 +27,13 @@ const Home = () => {
     setZoomLevel,
     getToiletInfoData,
   } = useMapInfo();
-  const { setSelectedToiletInfo, selectedToiletInfo } = useSelectedToiletInfo();
+  const {
+    isInfoOpened,
+    selectedToilet,
+    setSelectedToilet,
+    setSelectedMarker,
+    setIsInfoOpened,
+  } = useSelectedInfo();
   const [bound, setBound] = useState<IBound | null>(null);
 
   useEffect(() => {
@@ -44,7 +51,15 @@ const Home = () => {
   }, [bound]);
 
   useEffect(() => {
-    if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) setSelectedToiletInfo(null);
+    setIsInfoOpened(false);
+  }, [zoomLevel]);
+
+  useEffect(() => {
+    if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) {
+      setSelectedMarker(null);
+      setSelectedToilet(null);
+      setIsInfoOpened(false);
+    }
   });
 
   const handleIdle = (map: kakao.maps.Map) => {
@@ -94,14 +109,19 @@ const Home = () => {
           disableClickZoom={true}
           onClusterclick={onClusterclick}
         >
-          {toiletInfoData.map((item) => (
-            <ToiletMarker key={item.id} info={item} />
-          ))}
+          {toiletInfoData &&
+            toiletInfoData.mapMarkers.map((item) => (
+              <ToiletMarker
+                key={`${item.markerLatitude},${item.markerLongitude}`}
+                info={item}
+              />
+            ))}
         </MarkerClusterer>
+        {isInfoOpened && <InfoWindow />}
       </Map>
-      <CurrentLocationButton />
       <Search />
-      <BottomSheet isOpen={!!selectedToiletInfo}>
+      <CurrentLocationButton />
+      <BottomSheet isOpen={!!selectedToilet}>
         <ToiletInfo />
       </BottomSheet>
     </HomeStyle>
