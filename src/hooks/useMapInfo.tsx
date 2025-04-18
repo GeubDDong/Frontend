@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import useMapInfoStore from '@/store/mapInfoStore';
 import { IBound } from '@/types';
-import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 import { fetchToiletInfo } from '@/api/mainToiletInfo.api';
-import useSelectedToiletInfo from './useSelectedToiletInfo';
+import MapMarkersModel from '@/models/mapMarkerInfo.model';
 
 const useMapInfo = () => {
-  const [toiletInfoData, setToiletInfoData] = useState<IToiletBasicInfo[]>([]);
+  const [toiletInfoData, setToiletInfoData] = useState<MapMarkersModel | null>(
+    null,
+  );
   const currentLocation = useMapInfoStore((state) => state.currentLocation);
   const center = useMapInfoStore((state) => state.center);
   const zoomLevel = useMapInfoStore((state) => state.zoomLevel);
@@ -25,7 +26,6 @@ const useMapInfo = () => {
   const setIsFetchingCurrentLocation = useMapInfoStore(
     (store) => store.setIsFetchingCurrentLocation,
   );
-  const { setSelectedToiletInfo } = useSelectedToiletInfo();
 
   const getCurrentLocation = () => {
     if (isFetchingCurrentLocation) return;
@@ -71,8 +71,7 @@ const useMapInfo = () => {
   const getToiletInfoData = async (bound: IBound) => {
     try {
       const data = await fetchToiletInfo(center, bound);
-      setToiletInfoData(data);
-      setSelectedToiletInfo(data[0] || null);
+      setToiletInfoData(new MapMarkersModel(data));
     } catch (error) {
       console.error(error);
     }
