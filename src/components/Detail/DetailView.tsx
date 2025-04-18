@@ -6,19 +6,19 @@ import { StaticMap } from 'react-kakao-maps-sdk';
 import { formatDateToString } from '@/utils/dateUtil';
 import useDetailInfo from '@/hooks/useDetailInfo';
 import { useEffect } from 'react';
-import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import { FaStar } from 'react-icons/fa';
 import Divider from '../Common/Divider';
 import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai';
 import Rating from './Rating';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
 
 const DetailView = () => {
-  const { selectedToiletInfo } = useSelectedToiletInfo();
-  const { detailInfo, loadDetailInfo } = useDetailInfo(selectedToiletInfo?.id);
+  const { selectedToilet } = useSelectedInfo();
+  const { detailInfo, loadDetailInfo } = useDetailInfo(selectedToilet?.id);
 
   useEffect(() => {
     loadDetailInfo();
-  }, [selectedToiletInfo]);
+  }, [selectedToilet]);
 
   return (
     <DetailViewStyle>

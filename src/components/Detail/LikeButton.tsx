@@ -1,14 +1,14 @@
 import useAuth from '@/hooks/useAuth';
-import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import useLikeStatus from '@/hooks/useLikeStatus';
 import { Theme } from '@/style/Theme';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import styled from 'styled-components';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
 
 const LikeButton = () => {
   const { isLogin } = useAuth();
-  const { selectedToiletInfo } = useSelectedToiletInfo();
-  const { isLike, toggleLike } = useLikeStatus(selectedToiletInfo?.id);
+  const { selectedToilet } = useSelectedInfo();
+  const { isLike, toggleLike } = useLikeStatus(selectedToilet?.id);
 
   const handleClick = async () => {
     if (!isLogin) {
