@@ -1,23 +1,15 @@
 import { login } from '@/api/auth.api';
 import { useAuthStore } from '@/store/authStore';
 import { TLoginProvider } from '@/types';
-import { useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const navigate = useNavigate();
 
-  const handleLogin = async (provider: TLoginProvider) => {
+  const handleLogin = async (provider: TLoginProvider, code: string) => {
     try {
-      const res = await login(provider);
+      const res = await login(provider, code);
       console.log(res);
-
-      if (res.nickName) {
-        navigate('/');
-      } else {
-        navigate('/profileSetup');
-      }
 
       setAccessToken(res.accessToken);
     } catch (error) {
