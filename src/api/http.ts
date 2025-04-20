@@ -16,19 +16,6 @@ const createClient = (config?: AxiosRequestConfig) => {
     ...config,
   });
 
-  axiosInstance.interceptors.request.use(
-    (config) => {
-      const accessToken = useAuthStore.getState().accessToken;
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    },
-  );
-
   axiosInstance.interceptors.response.use(
     (response) => {
       return response;
@@ -36,17 +23,16 @@ const createClient = (config?: AxiosRequestConfig) => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response?.status === 401 && !originalRequest.retry) {
+      if (
+        error.response?.status === 401 &&
+        !originalRequest.retry &&
+        useAuthStore.getState().isLogin
+      ) {
         originalRequest.retry = true;
 
         try {
-          const res = await refreshToken();
-          const newAccessToken = res.accessToken;
-
-          useAuthStore.getState().setAccessToken(newAccessToken);
-
+          await refreshToken();
           // 재요청
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           useAuthStore.getState().logout();
