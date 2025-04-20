@@ -1,30 +1,23 @@
 import useMapInfo from '@/hooks/useMapInfo';
+import useSearch from '@/hooks/useSearch';
 import { Theme } from '@/style/Theme';
 import { useEffect, useState } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import styled from 'styled-components';
-import kakaoPlacesService from '@/utils/kakaoPlacesService';
 
 const Search = () => {
   const { setCenter } = useMapInfo();
   const [keyword, setKeyword] = useState('');
-  const [data, setData] = useState<kakao.maps.services.PlacesSearchResult>([]);
+  const { searchResult, searchAddress, resetSearchResult } = useSearch();
 
   useEffect(() => {
-    const ps = kakaoPlacesService;
-
-    if (keyword) {
-      ps.keywordSearch(keyword, (data, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-          setData(data);
-        }
-      });
-    }
+    if (!keyword) return;
+    searchAddress(keyword);
   }, [keyword]);
 
   const handleClickItem = (x: string, y: string) => {
     setKeyword('');
-    setData([]);
+    resetSearchResult();
     const latitude = parseFloat(y);
     const longitude = parseFloat(x);
     setCenter({ latitude, longitude });
@@ -32,7 +25,7 @@ const Search = () => {
 
   const handleClickClose = () => {
     setKeyword('');
-    setData([]);
+    resetSearchResult();
   };
 
   return (
@@ -46,13 +39,13 @@ const Search = () => {
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
-        {keyword && data.length > 0 && (
+        {keyword && searchResult.length > 0 && (
           <FaPlus className="close_icon" onClick={handleClickClose} />
         )}
       </div>
-      {keyword && data.length > 0 && (
+      {keyword && searchResult.length > 0 && (
         <div className="result_container">
-          {data.map((item) => (
+          {searchResult.map((item) => (
             <div
               key={item.id}
               className="result_item"
