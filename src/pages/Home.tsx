@@ -18,7 +18,7 @@ import useSelectedInfo from '@/hooks/useSelectedInfo';
 import InfoWindow from '@/components/Home/InfoWindow';
 
 const Home = () => {
-  const mapRef = useRef<kakao.maps.Map>(null);
+  const mapRef = useRef<kakao.maps.Map | null>(null);
   const {
     toiletInfoData,
     center,
@@ -36,31 +36,31 @@ const Home = () => {
   } = useSelectedInfo();
   const [bound, setBound] = useState<IBound | null>(null);
 
+  const getBound = (map: kakao.maps.Map) => {
+    const top = map.getBounds().getNorthEast().getLat();
+    const right = map.getBounds().getNorthEast().getLng();
+    const bottom = map.getBounds().getSouthWest().getLat();
+    const left = map.getBounds().getSouthWest().getLng();
+    setBound({ top, left, bottom, right });
+  };
+
   useEffect(() => {
     if (!mapRef.current) return;
-    const top = mapRef.current.getBounds().getNorthEast().getLat();
-    const right = mapRef.current.getBounds().getNorthEast().getLng();
-    const bottom = mapRef.current.getBounds().getSouthWest().getLat();
-    const left = mapRef.current.getBounds().getSouthWest().getLng();
-    setBound({ top, left, bottom, right });
-  }, [mapRef.current, center, zoomLevel]);
+    getBound(mapRef.current);
+  }, [center.latitude, center.longitude, zoomLevel]);
 
   useEffect(() => {
     if (bound === null) return;
     getToiletInfoData(bound);
-  }, [bound]);
-
-  useEffect(() => {
-    setIsInfoOpened(false);
-  }, [zoomLevel]);
+  }, [bound?.bottom, bound?.left, bound?.right, bound?.top]);
 
   useEffect(() => {
     if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) {
       setSelectedMarker(null);
       setSelectedToilet(null);
-      setIsInfoOpened(false);
     }
-  });
+    setIsInfoOpened(false);
+  }, [zoomLevel]);
 
   const handleIdle = (map: kakao.maps.Map) => {
     const newCenter = map.getCenter();
@@ -87,6 +87,12 @@ const Home = () => {
     <HomeStyle>
       <Map
         id="map"
+        onCreate={(map) => {
+          if (mapRef.current !== map) {
+            mapRef.current = map;
+            getBound(map);
+          }
+        }}
         center={{
           lat: center.latitude as number,
           lng: center.longitude as number,
@@ -96,7 +102,6 @@ const Home = () => {
           height: '100%',
         }}
         level={zoomLevel}
-        ref={mapRef}
         onIdle={handleIdle}
         isPanto={true}
         minLevel={MIN_ZOOM_LEVEL}
@@ -109,7 +114,7 @@ const Home = () => {
           disableClickZoom={true}
           onClusterclick={onClusterclick}
         >
-          {toiletInfoData &&
+          {toiletInfoData?.mapMarkers.length &&
             toiletInfoData.mapMarkers.map((item) => (
               <ToiletMarker
                 key={`${item.markerLatitude},${item.markerLongitude}`}

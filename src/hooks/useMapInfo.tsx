@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useMapInfoStore from '@/store/mapInfoStore';
 import { IBound } from '@/types';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 import { fetchToiletInfo } from '@/api/mainToiletInfo.api';
 import MapMarkersModel from '@/models/mapMarkerInfo.model';
+import useToiletInfoStore from '@/store/toiletInfoStore';
 
 const useMapInfo = () => {
-  const [toiletInfoData, setToiletInfoData] = useState<MapMarkersModel | null>(
-    null,
-  );
+  const toiletInfoData = useToiletInfoStore((state) => state.info);
+  const setToiletInfoData = useToiletInfoStore((state) => state.setInfo);
   const currentLocation = useMapInfoStore((state) => state.currentLocation);
   const center = useMapInfoStore((state) => state.center);
   const zoomLevel = useMapInfoStore((state) => state.zoomLevel);
