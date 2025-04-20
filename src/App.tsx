@@ -11,20 +11,21 @@ function App() {
   const { isKakaoLoaded } = useKakaoLoader();
   const queryClient = new QueryClient();
 
-  if (!isKakaoLoaded) return <></>;
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
-      <Router>
-        <div style={{ height: 'calc(100% - 62px)' }}>
-          <Routes>
-            {routeElements.map(({ key, path, element }) => (
-              <Route key={key} path={path} element={element} />
-            ))}
-          </Routes>
-        </div>
-        <BottomTab />
-      </Router>
+      {isKakaoLoaded && (
+        <Router>
+          <div style={{ height: 'calc(100% - 62px)' }}>
+            <Routes>
+              {routeElements.map(({ key, path, element }) => (
+                <Route key={key} path={path} element={element} />
+              ))}
+            </Routes>
+          </div>
+          <BottomTab />
+        </Router>
+      )}
       <ToastContainer
         position="top-center"
         limit={1}
