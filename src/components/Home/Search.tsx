@@ -1,19 +1,17 @@
 import useMapInfo from '@/hooks/useMapInfo';
 import { Theme } from '@/style/Theme';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import styled from 'styled-components';
+import kakaoPlacesService from '@/utils/kakaoPlacesService';
 
 const Search = () => {
   const { setCenter } = useMapInfo();
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState<kakao.maps.services.PlacesSearchResult>([]);
-  const psRef = useRef<kakao.maps.services.Places | null>(null);
 
   useEffect(() => {
-    if (!psRef.current) psRef.current = new kakao.maps.services.Places();
-
-    const ps = psRef.current;
+    const ps = kakaoPlacesService;
 
     if (keyword) {
       ps.keywordSearch(keyword, (data, status) => {
