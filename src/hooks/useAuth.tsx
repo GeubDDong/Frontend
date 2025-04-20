@@ -4,14 +4,11 @@ import { TLoginProvider } from '@/types';
 
 const useAuth = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   const handleLogin = async (provider: TLoginProvider, code: string) => {
     try {
       const res = await login(provider, code);
       console.log(res);
-
-      setAccessToken(res.accessToken);
     } catch (error) {
       console.error('로그인 실패:', error);
     }

@@ -3,26 +3,12 @@ import { TLoginProvider } from '@/types';
 import { create } from 'zustand';
 
 interface IUseAuthStore {
-  accessToken: string | null;
   isLogin: boolean;
-  setAccessToken: (token: string | null) => void;
   logout: (provider: TLoginProvider) => void;
 }
 
 export const useAuthStore = create<IUseAuthStore>((set) => ({
-  accessToken: localStorage.getItem('accessToken') || null,
-  isLogin: !!localStorage.getItem('accessToken'),
-
-  setAccessToken: (token) => {
-    if (token) {
-      localStorage.setItem('accessToken', token);
-      set({ accessToken: token, isLogin: true });
-    } else {
-      localStorage.removeItem('accessToken');
-      set({ accessToken: null, isLogin: false });
-    }
-  },
-
+  isLogin: false,
   logout: async (provider: TLoginProvider) => {
     try {
       await logout();
