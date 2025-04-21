@@ -1,7 +1,7 @@
-import useBottomSheetStore from '@/store/bottomSheetStore';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
+import { useBottomSheet } from '@/hooks/useBottomSheet';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -9,11 +9,14 @@ interface BottomSheetProps {
 }
 
 const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
-  const { isExpanded, setIsExpanded } = useBottomSheetStore();
-  const [height, setHeight] = useState<number>(135);
-  const startY = useRef(0);
+  const { isExpanded, setIsExpanded } = useBottomSheet();
   const MIN_HEIGHT = 135;
   const MAX_HEIGHT = window.innerHeight;
+  const [height, setHeight] = useState<number>(
+    isExpanded ? MAX_HEIGHT : MIN_HEIGHT,
+  );
+  const startY = useRef(0);
+
   const deltaY = useRef(0);
   const sheet = useRef<HTMLDivElement>(null);
   const startHeight = useRef(height);
@@ -122,7 +125,7 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
-      {isExpanded && (
+      <div className="header">
         <div className="down">
           <IoIosArrowDown
             size={'1.5rem'}
@@ -132,8 +135,14 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
             }}
           />
         </div>
-      )}
-      {!isExpanded && <div className="handleBar" />}
+        <div
+          className="handleBar"
+          onClick={() => {
+            setIsExpanded(false);
+            setHeight(MIN_HEIGHT);
+          }}
+        />
+      </div>
       {children}
     </BottomSheetStyle>
   );
@@ -169,23 +178,27 @@ const BottomSheetStyle = styled.div.attrs<{
   display: flex;
   flex-direction: column;
   overflow-y: ${({ $isExpanded }) => ($isExpanded ? 'auto' : 'hidden')};
+  scrollbar-gutter: stable;
 
-  .down {
-    border-radius: 30px;
-    padding: 10px 0px 0px 8px;
+  .header {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 8px;
   }
 
   .down svg {
     cursor: pointer;
+    display: ${({ $isExpanded }) => ($isExpanded ? 'auto' : 'none')};
   }
 
   .handleBar {
+    position: absolute;
     width: 40px;
     height: 5px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #e5e7eb;
     border-radius: 30px;
-    margin: 8px auto;
-    padding: 0px 0px 5px 0px;
     cursor: pointer;
   }
 `;
