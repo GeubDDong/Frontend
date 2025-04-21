@@ -8,9 +8,16 @@ import { TLoginProvider } from '@/types';
 const Login = () => {
   const handleClick = (provider: TLoginProvider) => {
     switch (provider) {
-      case 'kakao': {
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_OAUTH_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_OAUTH_REDIRECT_URI}&response_type=code&prompt=login`;
-      }
+      case 'kakao':
+        {
+          window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_OAUTH_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_OAUTH_REDIRECT_URI}&response_type=code&prompt=login`;
+        }
+        break;
+      case 'google':
+        {
+          window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${import.meta.env.VITE_GOOGLE_OAUTH_API_KEY}&redirect_uri=${import.meta.env.VITE_GOOGLE_OAUTH_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&prompt=select_account`;
+        }
+        break;
     }
   };
 
@@ -85,6 +92,12 @@ const LoginStyle = styled.div`
     width: 100%;
     font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.subText};
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 `;
 
