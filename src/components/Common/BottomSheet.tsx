@@ -19,17 +19,25 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
   const startHeight = useRef(height);
   const isDragging = useRef(false);
 
+  const shouldPreventDragDown = () => {
+    if (!sheet.current) return false;
+    return sheet.current.scrollTop! > 0 && deltaY.current < 0;
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
+    isDragging.current = false;
+
     startY.current = e.touches[0].clientY;
     startHeight.current = height;
     deltaY.current = 0;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    isDragging.current = true;
+
     deltaY.current = startY.current - e.touches[0].clientY;
 
-    if (!sheet.current) return;
-    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
+    if (shouldPreventDragDown()) return;
 
     const newHeight = Math.max(
       MIN_HEIGHT,
@@ -39,8 +47,7 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
   };
 
   const handleTouchEnd = () => {
-    if (!sheet.current) return;
-    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
+    if (shouldPreventDragDown()) return;
 
     if (deltaY.current < 0) {
       setHeight(MIN_HEIGHT); // 축소
@@ -69,9 +76,6 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
     deltaY.current = startY.current - e.clientY;
 
-    if (!sheet.current) return;
-    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
-
     const newHeight = Math.max(
       MIN_HEIGHT,
       Math.min(MAX_HEIGHT, startHeight.current + deltaY.current),
@@ -81,9 +85,6 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
   };
 
   const handleMouseUp = () => {
-    if (!sheet.current) return;
-    if (sheet.current.scrollTop > 0 && deltaY.current < 0) return;
-
     document.body.style.userSelect = 'auto';
 
     if (isDragging.current) {
@@ -114,6 +115,7 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
       $isOpen={isOpen}
       $isExpanded={isExpanded}
       $height={height}
+      $isDragging={isDragging.current}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -143,6 +145,7 @@ const BottomSheetStyle = styled.div.attrs<{
   $isOpen: boolean;
   $isExpanded: boolean;
   $height: number;
+  $isDragging: boolean;
 }>((props) => ({
   style: {
     height: `${props.$height}px`,
@@ -153,7 +156,10 @@ const BottomSheetStyle = styled.div.attrs<{
   margin: 0 auto;
   z-index: 9999;
   transform: translateY(${({ $isOpen }) => ($isOpen ? '0%' : '100%')});
-  transition: transform 0.3s ease-in-out;
+  transition: ${({ $isDragging }) =>
+    $isDragging
+      ? 'transform 0.3s ease-in-out'
+      : 'transform 0.3s ease-in-out, height 0.3s ease-in'};
   width: 100%;
   max-height: 100%;
   background-color: white;
