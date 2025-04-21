@@ -80,7 +80,8 @@ const Home = () => {
     cluster: kakao.maps.Cluster,
   ) => {
     const map = mapRef.current;
-    map!.setLevel(zoomLevel - 1, { anchor: cluster.getCenter() });
+    if (!map) return;
+    map.setLevel(zoomLevel - 1, { anchor: cluster.getCenter() });
   };
 
   return (
