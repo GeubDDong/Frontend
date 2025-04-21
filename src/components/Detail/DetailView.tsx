@@ -18,7 +18,7 @@ const DetailView = () => {
 
   useEffect(() => {
     loadDetailInfo();
-  }, [selectedToilet]);
+  }, [selectedToilet?.id]);
 
   return (
     <DetailViewStyle>
