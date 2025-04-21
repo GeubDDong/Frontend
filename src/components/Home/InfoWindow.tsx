@@ -28,7 +28,7 @@ const InfoWindow = () => {
           />
         </div>
         <div className="contents">
-          {selectedMarker!.toilets.map((item) => (
+          {selectedMarker?.toilets.map((item) => (
             <div
               key={item.id}
               className="contents_item"
