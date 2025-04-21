@@ -1,9 +1,6 @@
-import { MapMarker } from 'react-kakao-maps-sdk';
-import locationPin_liked from '@/assets/locationPin_liked.svg';
-import locationPin_normal from '@/assets/locationPin_normal.svg';
-import locationPin_selected from '@/assets/locationPin_selected.svg';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import { IMapMarkersModelItem } from '@/models/mapMarkerInfo.model';
+import { CustomMapMarker, MarkerType } from '../Common/CustomMapMarker';
 
 interface IToiletMarkerProps {
   info: IMapMarkersModelItem;
@@ -17,19 +14,17 @@ const ToiletMarker = ({ info }: IToiletMarkerProps) => {
     setSelectedMarker,
   } = useSelectedInfo();
 
-  let src = locationPin_normal;
-  let size = 25;
+  let markerType: MarkerType = 'default';
 
   if (info.toilets.some((item) => item.isLiked)) {
-    src = locationPin_liked;
+    markerType = 'liked';
   }
 
   if (
     selectedToilet &&
     info.toilets.some((item) => item.id === selectedToilet.id)
   ) {
-    src = locationPin_selected;
-    size = 40;
+    markerType = 'selected';
   }
 
   const handleClick = () => {
@@ -43,11 +38,8 @@ const ToiletMarker = ({ info }: IToiletMarkerProps) => {
   };
 
   return (
-    <MapMarker
-      image={{
-        src: src,
-        size: { height: size, width: size * 0.714 },
-      }}
+    <CustomMapMarker
+      type={markerType}
       position={{ lat: info.markerLatitude, lng: info.markerLongitude }}
       onClick={handleClick}
     />
