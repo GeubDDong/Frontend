@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
-interface IUseBottonSheetStore {
+interface IUseBottomSheetStore {
   isExpanded: boolean;
   setIsExpanded: (state: boolean) => void;
 }
 
-const useBottomSheetStore = create<IUseBottonSheetStore>((set) => ({
+const useBottomSheetStore = create<IUseBottomSheetStore>((set) => ({
   isExpanded: false,
   setIsExpanded: (state) => set({ isExpanded: state }),
 }));
