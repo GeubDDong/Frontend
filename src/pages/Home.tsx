@@ -4,9 +4,11 @@ import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { IBound } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Home/MyLocation';
-import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
+import ToiletInfo from '@/components/Home/ToiletInfo';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
+import BottomSheet from '@/components/Common/BottomSheet';
+import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import Search from '@/components/Home/Search';
 
 const Home = () => {
@@ -20,6 +22,7 @@ const Home = () => {
     getToiletInfoData,
   } = useMapInfo();
   const [bound, setBound] = useState<IBound | null>(null);
+  const { selectedToiletInfo } = useSelectedToiletInfo();
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -67,14 +70,16 @@ const Home = () => {
         minLevel={10}
         maxLevel={1}
       >
-        <MyLocation />
         {toiletInfoData.map((item) => (
           <ToiletMarker key={item.id} info={item} />
         ))}
+        <MyLocation />
       </Map>
-      <Search />
       <CurrentLocationButton />
-      <ToiletBasicInfo />
+      <Search />
+      <BottomSheet isOpen={!!selectedToiletInfo}>
+        <ToiletInfo />
+      </BottomSheet>
     </HomeStyle>
   );
 };
