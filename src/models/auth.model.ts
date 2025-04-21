@@ -1,4 +1,9 @@
 export interface IAuthData {
-  accessToken: string;
-  nickName: string;
+  user: IUserInfo;
+}
+
+export interface IUserInfo {
+  nickname: string;
+  email: string;
+  profileImage: string;
 }

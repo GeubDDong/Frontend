@@ -1,20 +1,37 @@
-import { login } from '@/api/auth.api';
+import { login, logout } from '@/api/auth.api';
 import { useAuthStore } from '@/store/authStore';
 import { TLoginProvider } from '@/types';
 
 const useAuth = () => {
-  const isLogin = useAuthStore((state) => state.isLogin);
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleLogin = async (provider: TLoginProvider, code: string) => {
     try {
       const res = await login(provider, code);
-      console.log(res);
+      setUser(res.user);
     } catch (error) {
       console.error('로그인 실패:', error);
     }
   };
 
-  return { isLogin, login: handleLogin };
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setUser(null);
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+    }
+  };
+
+  const isLogin = !!user;
+
+  return {
+    user,
+    isLogin,
+    login: handleLogin,
+    logout: handleLogout,
+  };
 };
 
 export default useAuth;

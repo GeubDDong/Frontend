@@ -1,19 +1,21 @@
-import { logout } from '@/api/auth.api';
+import { IUserInfo } from '@/models/auth.model';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface IUseAuthStore {
-  isLogin: boolean;
-  logout: () => void;
+  user: IUserInfo | null;
+  setUser: (user: IUserInfo | null) => void;
 }
 
-export const useAuthStore = create<IUseAuthStore>((set) => ({
-  isLogin: false,
-  logout: async () => {
-    try {
-      await logout();
-      set({ isLogin: false });
-    } catch (error) {
-      console.log(error);
-    }
-  },
-}));
+export const useAuthStore = create<IUseAuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+    }),
+    {
+      name: 'auth-user',
+      partialize: (state) => ({ user: state.user }),
+    },
+  ),
+);

@@ -17,7 +17,7 @@ export interface NoCommentsResponse {
 }
 
 export const fetchComments = async (id: number) => {
-  const url = useAuthStore.getState().isLogin ? '' : '/public';
+  const url = useAuthStore.getState().user ? '' : '/public';
 
   return requestHandler<CommentsResponse | NoCommentsResponse>(
     'get',
@@ -44,7 +44,7 @@ export const removeComment = async (toiletId: number, commentId: number) => {
 };
 
 export const fetchLike = async (id: number) => {
-  const url = useAuthStore.getState().isLogin ? '' : '/public';
+  const url = useAuthStore.getState().user ? '' : '/public';
 
   return requestHandler<ILike>('get', `/likes/${id}${url}`);
 };

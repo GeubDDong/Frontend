@@ -22,12 +22,9 @@ const createClient = (config?: AxiosRequestConfig) => {
     },
     async (error) => {
       const originalRequest = error.config;
+      const { user, setUser } = useAuthStore.getState();
 
-      if (
-        error.response?.status === 401 &&
-        !originalRequest.retry &&
-        useAuthStore.getState().isLogin
-      ) {
+      if (error.response?.status === 401 && !originalRequest.retry && user) {
         originalRequest.retry = true;
 
         try {
@@ -35,7 +32,7 @@ const createClient = (config?: AxiosRequestConfig) => {
           // 재요청
           return axiosInstance(originalRequest);
         } catch (refreshError) {
-          useAuthStore.getState().logout();
+          setUser(null);
           return Promise.reject(refreshError);
         }
       }
