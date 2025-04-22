@@ -14,18 +14,18 @@ const ToiletMarker = ({ info }: IToiletMarkerProps) => {
     setSelectedMarker,
   } = useSelectedInfo();
 
-  let markerType: MarkerType = 'default';
-
-  if (info.toilets.some((item) => item.isLiked)) {
-    markerType = 'liked';
-  }
-
-  if (
-    selectedToilet &&
-    info.toilets.some((item) => item.id === selectedToilet.id)
-  ) {
-    markerType = 'selected';
-  }
+  const markerType: MarkerType = (() => {
+    if (
+      selectedToilet &&
+      info.toilets.some((item) => item.id === selectedToilet.id)
+    ) {
+      return 'selected';
+    }
+    if (info.toilets.some((item) => item.isLiked)) {
+      return 'liked';
+    }
+    return 'default';
+  })();
 
   const handleClick = () => {
     setSelectedMarker(info);
