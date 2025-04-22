@@ -1,13 +1,13 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
-import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import useComments from '@/hooks/useComments';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
 
 const Comments = () => {
-  const { selectedToiletInfo } = useSelectedToiletInfo();
+  const { selectedToilet } = useSelectedInfo();
   const { comments, updateComment, removeComment, isLoading } = useComments(
-    selectedToiletInfo?.id,
+    selectedToilet?.id,
   );
 
   return (

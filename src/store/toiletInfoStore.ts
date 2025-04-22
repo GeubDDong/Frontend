@@ -1,9 +1,9 @@
-import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
+import MapMarkersModel from '@/models/mapMarkerInfo.model';
 import { create } from 'zustand';
 
 interface IUseToiletInfoStore {
-  info: IToiletBasicInfo | null;
-  setInfo: (info: IToiletBasicInfo) => void;
+  info: MapMarkersModel | null;
+  setInfo: (info: MapMarkersModel | null) => void;
 }
 
 const useToiletInfoStore = create<IUseToiletInfoStore>((set) => ({
