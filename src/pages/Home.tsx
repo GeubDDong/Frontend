@@ -1,16 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import { Map } from 'react-kakao-maps-sdk';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
 import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
 import { IBound } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Home/MyLocation';
-import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
+import ToiletInfo from '@/components/Home/ToiletInfo';
 import ToiletMarker from '@/components/Home/ToiletMarker';
 import useMapInfo from '@/hooks/useMapInfo';
+import BottomSheet from '@/components/Common/BottomSheet';
 import Search from '@/components/Home/Search';
+import {
+  CLUSTERER_ZOOM_LEVEL,
+  MAX_ZOOM_LEVEL,
+  MIN_ZOOM_LEVEL,
+} from '@/constants/initialMapInfo';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
+import InfoWindow from '@/components/Home/InfoWindow';
 
 const Home = () => {
-  const mapRef = useRef<kakao.maps.Map>(null);
+  const mapRef = useRef<kakao.maps.Map | null>(null);
   const {
     toiletInfoData,
     center,
@@ -19,21 +27,40 @@ const Home = () => {
     setZoomLevel,
     getToiletInfoData,
   } = useMapInfo();
+  const {
+    isInfoOpened,
+    selectedToilet,
+    setSelectedToilet,
+    setSelectedMarker,
+    setIsInfoOpened,
+  } = useSelectedInfo();
   const [bound, setBound] = useState<IBound | null>(null);
+
+  const getBound = (map: kakao.maps.Map) => {
+    const top = map.getBounds().getNorthEast().getLat();
+    const right = map.getBounds().getNorthEast().getLng();
+    const bottom = map.getBounds().getSouthWest().getLat();
+    const left = map.getBounds().getSouthWest().getLng();
+    setBound({ top, left, bottom, right });
+  };
 
   useEffect(() => {
     if (!mapRef.current) return;
-    const top = mapRef.current.getBounds().getNorthEast().getLat();
-    const right = mapRef.current.getBounds().getNorthEast().getLng();
-    const bottom = mapRef.current.getBounds().getSouthWest().getLat();
-    const left = mapRef.current.getBounds().getSouthWest().getLng();
-    setBound({ top, left, bottom, right });
-  }, [mapRef.current, center, zoomLevel]);
+    getBound(mapRef.current);
+  }, [center.latitude, center.longitude, zoomLevel]);
 
   useEffect(() => {
     if (bound === null) return;
     getToiletInfoData(bound);
-  }, [bound]);
+  }, [bound?.bottom, bound?.left, bound?.right, bound?.top]);
+
+  useEffect(() => {
+    if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) {
+      setSelectedMarker(null);
+      setSelectedToilet(null);
+    }
+    setIsInfoOpened(false);
+  }, [zoomLevel]);
 
   const handleIdle = (map: kakao.maps.Map) => {
     const newCenter = map.getCenter();
@@ -48,10 +75,25 @@ const Home = () => {
     }
   };
 
+  const onClusterclick = (
+    _target: kakao.maps.MarkerClusterer,
+    cluster: kakao.maps.Cluster,
+  ) => {
+    const map = mapRef.current;
+    if (!map) return;
+    map.setLevel(zoomLevel - 1, { anchor: cluster.getCenter() });
+  };
+
   return (
     <HomeStyle>
       <Map
         id="map"
+        onCreate={(map) => {
+          if (mapRef.current !== map) {
+            mapRef.current = map;
+            getBound(map);
+          }
+        }}
         center={{
           lat: center.latitude as number,
           lng: center.longitude as number,
@@ -61,20 +103,33 @@ const Home = () => {
           height: '100%',
         }}
         level={zoomLevel}
-        ref={mapRef}
         onIdle={handleIdle}
         isPanto={true}
-        minLevel={10}
-        maxLevel={1}
+        minLevel={MIN_ZOOM_LEVEL}
+        maxLevel={MAX_ZOOM_LEVEL}
       >
         <MyLocation />
-        {toiletInfoData.map((item) => (
-          <ToiletMarker key={item.id} info={item} />
-        ))}
+        <MarkerClusterer
+          averageCenter={true}
+          minLevel={CLUSTERER_ZOOM_LEVEL}
+          disableClickZoom={true}
+          onClusterclick={onClusterclick}
+        >
+          {toiletInfoData?.mapMarkers.length &&
+            toiletInfoData.mapMarkers.map((item) => (
+              <ToiletMarker
+                key={`${item.markerLatitude},${item.markerLongitude}`}
+                info={item}
+              />
+            ))}
+        </MarkerClusterer>
+        {isInfoOpened && <InfoWindow />}
       </Map>
       <Search />
       <CurrentLocationButton />
-      <ToiletBasicInfo />
+      <BottomSheet isOpen={!!selectedToilet}>
+        <ToiletInfo />
+      </BottomSheet>
     </HomeStyle>
   );
 };

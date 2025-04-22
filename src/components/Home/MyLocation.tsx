@@ -9,9 +9,10 @@ const MyLocation = () => {
     return <></>;
   return (
     <MapMarker
+      clickable={false}
       image={{
         src: dotDuotone,
-        size: { width: 80, height: 80 },
+        size: { width: 40, height: 40 },
       }}
       position={{
         lat: currentLocation.latitude,

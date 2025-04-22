@@ -1,45 +1,20 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
-import { useRef } from 'react';
-import useAuth from '@/hooks/useAuth';
-import useSelectedToiletInfo from '@/hooks/useSelectedToiletInfo';
 import useComments from '@/hooks/useComments';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
 
 const Comments = () => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const { isLogin } = useAuth();
-  const { selectedToiletInfo } = useSelectedToiletInfo();
-  const { comments, addComment, updateComment, removeComment, isLoading } =
-    useComments(selectedToiletInfo?.id);
-
-  const handleClick = async () => {
-    if (!inputRef.current) return;
-
-    const inputText = inputRef.current.value.trim();
-    if (!inputText) return;
-
-    await addComment(inputText);
-    inputRef.current.value = '';
-  };
+  const { selectedToilet } = useSelectedInfo();
+  const { comments, updateComment, removeComment, isLoading } = useComments(
+    selectedToilet?.id,
+  );
 
   return (
     <CommentsStyle>
-      <div className="title">{`댓글 ${comments.length}`}</div>
-      <div className="input">
-        <input
-          ref={inputRef}
-          type="text"
-          disabled={!isLogin}
-          placeholder={
-            isLogin
-              ? '화장실에 대한 정보와 후기를 자유롭게 남겨주세요!'
-              : '댓글 등록은 로그인이 필요한 기능입니다.'
-          }
-        />
-        <button onClick={handleClick} disabled={!isLogin}>
-          등록
-        </button>
+      <div className="title">
+        <span className="titleName">리뷰</span>
+        <span className="count">{`(${comments.length})`}</span>
       </div>
       <div className="comments">
         {isLoading ? (
@@ -66,46 +41,20 @@ const CommentsStyle = styled.div`
   gap: 10px;
 
   .title {
-    font-size: ${Theme.fontSize.md};
-    color: ${Theme.colors.mainText};
-    font-weight: bold;
-  }
-
-  .input {
     display: flex;
-    gap: 10px;
-    justify-content: space-between;
+    gap: 3px;
+    flex-direction: row;
     align-items: center;
-  }
 
-  .input button {
-    font-size: ${Theme.fontSize.sm};
-    padding: 10px;
-    color: ${Theme.colors.buttonText};
-    background-color: ${Theme.colors.primary};
-    border: none;
-    border-radius: 8px;
-    white-space: nowrap;
-    cursor: pointer;
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: default;
-      opacity: 0.6;
+    .titleName {
+      font-size: ${Theme.fontSize.md};
+      color: ${Theme.colors.mainText};
+      font-weight: bold;
     }
-  }
 
-  input {
-    width: 90%;
-    height: 30px;
-    border: 1px solid #afb1b6;
-    border-radius: 8px;
-    padding: 0 10px;
-    font-size: ${Theme.fontSize.sm};
-
-    &:disabled {
-      background-color: #f0f0f0;
-      opacity: 0.6;
+    .count {
+      font-size: ${Theme.fontSize.sm};
+      color: ${Theme.colors.subText};
     }
   }
 
