@@ -1,7 +1,9 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import logo from '@/assets/logo.png';
-import kakao from '@/assets/kakao.png';
+import kakao from '@/assets/kakao.svg';
+import google from '@/assets/google.svg';
+import naver from '@/assets/naver.svg';
 import BackButton from '@/components/Common/BackButton';
 import { TLoginProvider } from '@/types';
 
@@ -46,6 +48,18 @@ const Login = () => {
               alt="kakao_login"
               style={{ cursor: 'pointer' }}
               onClick={() => handleClick('kakao')}
+            />
+            <img
+              src={google}
+              alt="google_login"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleClick('google')}
+            />
+            <img
+              src={naver}
+              alt="naver_login"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleClick('naver')}
             />
           </div>
         </div>

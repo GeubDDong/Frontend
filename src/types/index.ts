@@ -32,4 +32,4 @@ export interface IBound {
   right: number;
 }
 
-export type TLoginProvider = 'kakao' | 'google';
+export type TLoginProvider = 'kakao' | 'google' | 'naver';
