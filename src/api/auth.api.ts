@@ -19,5 +19,5 @@ export const logout = async () => {
 };
 
 export const refreshToken = async () => {
-  return requestHandler<{ accessToken: string }>('post', '/auth/refresh');
+  return requestHandler('post', '/auth/refresh');
 };
