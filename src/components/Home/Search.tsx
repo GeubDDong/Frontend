@@ -1,9 +1,12 @@
+import { FILTER_KEY } from '@/constants/filter';
 import useMapInfo from '@/hooks/useMapInfo';
 import useSearch from '@/hooks/useSearch';
 import { Theme } from '@/style/Theme';
 import { useEffect, useState } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import styled from 'styled-components';
+import FilteringButton from '../Common/FilteringButton';
+import { TFilterKey } from '@/types';
 
 const Search = () => {
   const { setCenter } = useMapInfo();
@@ -57,6 +60,15 @@ const Search = () => {
           ))}
         </div>
       )}
+      <div className="filtering_button_container">
+        {Object.entries(FILTER_KEY).map(([key, value]) => (
+          <FilteringButton
+            key={key}
+            filterValue={value}
+            filterKey={key as TFilterKey}
+          />
+        ))}
+      </div>
     </SearchStyle>
   );
 };
@@ -145,6 +157,26 @@ const SearchStyle = styled.div`
       &:hover {
         background-color: #f0f0f0;
       }
+    }
+  }
+
+  .filtering_button_container {
+    margin-top: 4px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
     }
   }
 `;
