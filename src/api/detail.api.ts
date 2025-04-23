@@ -2,7 +2,7 @@ import requestHandler from '@/api/requestHandler';
 import { ICommentItem } from '@/models/comment.model';
 import { IToiletDetailInfo } from '@/models/detail.model';
 import { useAuthStore } from '@/store/authStore';
-import { ILike, IUserProfile } from '@/types';
+import { ILike, IUserInfo } from '@/types';
 
 export const fetchDetailInfo = async (id: number) => {
   return requestHandler<IToiletDetailInfo>('get', `/detail/${id}`);
@@ -51,14 +51,14 @@ export const fetchLike = async (id: number) => {
 
 export const addLike = async (
   id: number,
-  userEmail: Pick<IUserProfile, 'user_email'>,
+  userEmail: Pick<IUserInfo, 'email'>,
 ) => {
   return requestHandler('post', `/likes/${id}`, userEmail);
 };
 
 export const removeLike = async (
   id: number,
-  userEmail: Pick<IUserProfile, 'user_email'>,
+  userEmail: Pick<IUserInfo, 'email'>,
 ) => {
   return requestHandler('delete', `/likes/${id}`, userEmail);
 };
