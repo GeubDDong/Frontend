@@ -15,9 +15,10 @@ export interface IToiletInfo {
   open_hour: string;
 }
 
-export interface IUserProfile {
-  user_email: string;
+export interface IUserInfo {
+  email: string;
   nickname: string;
+  profileImage: string;
 }
 
 export interface ILike {

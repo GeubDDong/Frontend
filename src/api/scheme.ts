@@ -14,3 +14,15 @@ export interface IMapMarkerItem {
 export interface IMapMarkers {
   groups: IMapMarkerItem[];
 }
+
+// 로그인 응답
+export interface IAuthLoginResponse {
+  isNewUser: boolean;
+  user: IUserResponse;
+}
+
+export interface IUserResponse {
+  email: string;
+  nickname: string;
+  profile_Image: string;
+}

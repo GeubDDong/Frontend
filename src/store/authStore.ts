@@ -1,4 +1,4 @@
-import { IUserInfo } from '@/models/auth.model';
+import { IUserInfo } from '@/types';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

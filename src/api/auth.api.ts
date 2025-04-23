@@ -1,12 +1,16 @@
-import { IUserProfile, TLoginProvider } from '@/types';
+import { IUserInfo, TLoginProvider } from '@/types';
 import requestHandler from '@/api/requestHandler';
-import { IAuthData } from '@/models/auth.model';
+import { IAuthLoginResponse } from './scheme';
 
 export const login = async (provider: TLoginProvider, code: string) => {
-  return requestHandler<IAuthData>('post', `/auth/login/${provider}`, code);
+  return requestHandler<IAuthLoginResponse>(
+    'post',
+    `/auth/login/${provider}`,
+    code,
+  );
 };
 
-export const setNickname = async (data: Pick<IUserProfile, 'nickname'>) => {
+export const setNickname = async (data: Pick<IUserInfo, 'nickname'>) => {
   return requestHandler('post', '/auth/nickname', data);
 };
 
