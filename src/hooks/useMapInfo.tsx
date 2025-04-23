@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useMapInfoStore from '@/store/mapInfoStore';
-import { IBound } from '@/types';
+import { IBound, TFilterKey } from '@/types';
 import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 import { fetchToiletInfo } from '@/api/mainToiletInfo.api';
@@ -68,9 +68,9 @@ const useMapInfo = () => {
     }
   };
 
-  const getToiletInfoData = async (bound: IBound) => {
+  const getToiletInfoData = async (bound: IBound, filterKeys: TFilterKey[]) => {
     try {
-      const data = await fetchToiletInfo(center, bound);
+      const data = await fetchToiletInfo(center, bound, filterKeys);
       setToiletInfoData(new MapMarkersModel(data));
     } catch (error) {
       console.error(error);
