@@ -1,4 +1,4 @@
-import { IAuthLoginResponse, IMapMarkers } from '@/api/scheme';
+import { IAuthLoginResponse, ILikeResponse, IMapMarkers } from '@/api/scheme';
 import { IToiletDetailInfo } from '@/models/detail.model';
 import { http, HttpResponse } from 'msw';
 
@@ -102,6 +102,9 @@ const dummyAuthLoginData: IAuthLoginResponse = {
   },
 };
 
+const dummyLike: ILikeResponse = {
+  like: true,
+};
 export const handlers = [
   http.get(new RegExp('/detail/.*'), () => {
     return HttpResponse.json(dummyToiletInfos);
@@ -111,5 +114,8 @@ export const handlers = [
   }),
   http.post(new RegExp('/auth/login/.*'), () => {
     return HttpResponse.json(dummyAuthLoginData);
+  }),
+  http.get(new RegExp('/favorites/.*'), () => {
+    return HttpResponse.json(dummyLike);
   }),
 ];

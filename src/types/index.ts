@@ -23,11 +23,6 @@ export interface IUserInfo {
   profileImage: string;
 }
 
-export interface ILike {
-  like: boolean;
-  count: number;
-}
-
 export interface IBound {
   top: number;
   left: number;

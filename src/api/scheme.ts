@@ -26,3 +26,8 @@ export interface IUserResponse {
   nickname: string;
   profile_Image: string;
 }
+
+// 좋아요 조회 응답
+export interface ILikeResponse {
+  like: boolean;
+}

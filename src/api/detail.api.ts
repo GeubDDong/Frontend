@@ -2,7 +2,7 @@ import requestHandler from '@/api/requestHandler';
 import { ICommentItem } from '@/models/comment.model';
 import { IToiletDetailInfo } from '@/models/detail.model';
 import { useAuthStore } from '@/store/authStore';
-import { ILike, IUserInfo } from '@/types';
+import { ILikeResponse } from './scheme';
 
 export const fetchDetailInfo = async (id: number) => {
   return requestHandler<IToiletDetailInfo>('get', `/detail/${id}`);
@@ -46,19 +46,13 @@ export const removeComment = async (toiletId: number, commentId: number) => {
 export const fetchLike = async (id: number) => {
   const url = useAuthStore.getState().user ? '' : '/public';
 
-  return requestHandler<ILike>('get', `/likes/${id}${url}`);
+  return requestHandler<ILikeResponse>('get', `/favorites/${id}${url}`);
 };
 
-export const addLike = async (
-  id: number,
-  userEmail: Pick<IUserInfo, 'email'>,
-) => {
-  return requestHandler('post', `/likes/${id}`, userEmail);
+export const addLike = async (id: number) => {
+  return requestHandler('post', `/favorites/${id}`);
 };
 
-export const removeLike = async (
-  id: number,
-  userEmail: Pick<IUserInfo, 'email'>,
-) => {
-  return requestHandler('delete', `/likes/${id}`, userEmail);
+export const removeLike = async (id: number) => {
+  return requestHandler('delete', `/favorites/${id}`);
 };
