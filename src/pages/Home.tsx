@@ -16,6 +16,7 @@ import {
 } from '@/constants/initialMapInfo';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import InfoWindow from '@/components/Home/InfoWindow';
+import useFilter from '@/hooks/useFilter';
 
 const Home = () => {
   const mapRef = useRef<kakao.maps.Map | null>(null);
@@ -34,6 +35,7 @@ const Home = () => {
     setSelectedMarker,
     setIsInfoOpened,
   } = useSelectedInfo();
+  const { filterKeys } = useFilter();
   const [bound, setBound] = useState<IBound | null>(null);
 
   const getBound = (map: kakao.maps.Map) => {
@@ -51,8 +53,8 @@ const Home = () => {
 
   useEffect(() => {
     if (bound === null) return;
-    getToiletInfoData(bound);
-  }, [bound?.bottom, bound?.left, bound?.right, bound?.top]);
+    getToiletInfoData(bound, filterKeys);
+  }, [bound?.bottom, bound?.left, bound?.right, bound?.top, filterKeys]);
 
   useEffect(() => {
     if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) {
