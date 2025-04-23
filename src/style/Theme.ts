@@ -16,4 +16,10 @@ export const Theme = {
     md: '16px',
     lg: '24px',
   },
+  zIndex: {
+    base: 0,
+    element: 100,
+    sheet: 200,
+    overlay: 300,
+  },
 };

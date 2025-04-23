@@ -77,7 +77,7 @@ export default Search;
 
 const SearchStyle = styled.div`
   position: absolute;
-  z-index: 9999;
+  z-index: ${Theme.zIndex.element};
   left: 50%;
   top: 30px;
   transform: translateX(-50%);

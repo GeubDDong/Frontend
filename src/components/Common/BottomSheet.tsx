@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
 import useBottomSheet from '@/hooks/useBottomSheet';
+import { Theme } from '@/style/Theme';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -163,7 +164,7 @@ const BottomSheetStyle = styled.div.attrs<{
   position: absolute;
   bottom: 0;
   margin: 0 auto;
-  z-index: 9999;
+  z-index: ${Theme.zIndex.sheet};
   transform: translateY(${({ $isOpen }) => ($isOpen ? '0%' : '100%')});
   transition: ${({ $isDragging }) =>
     $isDragging
