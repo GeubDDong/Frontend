@@ -1,5 +1,9 @@
-import { IAuthLoginResponse, IMapMarkers } from '@/api/scheme';
-import { IToiletDetailInfo } from '@/models/detail.model';
+import {
+  IAuthLoginResponse,
+  ILikeResponse,
+  IMapMarkers,
+  IToiletDetailResponse,
+} from '@/api/scheme';
 import { http, HttpResponse } from 'msw';
 
 const dummyToiletBasicInfos: IMapMarkers = {
@@ -60,7 +64,7 @@ const dummyToiletBasicInfos: IMapMarkers = {
   ],
 };
 
-const dummyToiletInfos: IToiletDetailInfo = {
+const dummyToiletInfos: IToiletDetailResponse = {
   id: 1,
   name: '부강꿈뜰근린공원',
   street_address: '세종특별자치시 부강면 태산길 33',
@@ -73,15 +77,14 @@ const dummyToiletInfos: IToiletDetailInfo = {
   avg_accessibility: 5.0,
   avg_rating: 4.0,
   management: {
-    id: 1,
     name: '세종특별자치시 부강면',
     phone_number: '044-301-5431',
   },
   facility: {
     male_toilet: 1,
     male_urinal: 1,
-    disabled_male_toilet: 1,
-    disabled_male_urinal: 1,
+    disabled_male_toilet: 0,
+    disabled_male_urinal: 0,
     kids_toilet_male: 0,
     female_toilet: 1,
     disabled_female_toilet: 1,
@@ -102,6 +105,10 @@ const dummyAuthLoginData: IAuthLoginResponse = {
   },
 };
 
+const dummyLike: ILikeResponse = {
+  like: true,
+};
+
 export const handlers = [
   http.get(new RegExp('/detail/.*'), () => {
     return HttpResponse.json(dummyToiletInfos);
@@ -111,5 +118,8 @@ export const handlers = [
   }),
   http.post(new RegExp('/auth/login/.*'), () => {
     return HttpResponse.json(dummyAuthLoginData);
+  }),
+  http.get(new RegExp('/favorites/.*'), () => {
+    return HttpResponse.json(dummyLike);
   }),
 ];

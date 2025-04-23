@@ -2,11 +2,10 @@ import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
-import { ICommentItem } from '@/models/comment.model';
-import { formatDateToString } from '@/utils/dateUtil';
+import { ICommentModel } from '@/models/comment.model';
 
 interface CommentItemProps {
-  item: ICommentItem;
+  item: ICommentModel;
   updateComment: (id: number, comment: string) => Promise<void>;
   removeComment: (id: number) => Promise<void>;
 }
@@ -21,7 +20,7 @@ const CommentItem = ({
 
   const handleClickToggleEdit = () => {
     setIsEdit((prev) => !prev);
-    setEditText(item.comment);
+    setEditText(item.content);
   };
 
   return (
@@ -32,7 +31,7 @@ const CommentItem = ({
       <div className="content">
         <div className="top">
           <div className="nickname">{item.nickname}</div>
-          <div className="date">{formatDateToString(item.updated_at)}</div>
+          <div className="date">{item.updatedAt}</div>
           {item.isMine && (
             <div className="buttons">
               {isEdit ? (
@@ -58,7 +57,7 @@ const CommentItem = ({
             onChange={(e) => setEditText(e.target.value)}
           />
         ) : (
-          <div className="comment">{item.comment}</div>
+          <div className="comment">{item.content}</div>
         )}
       </div>
     </CommentItemStyle>

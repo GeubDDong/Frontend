@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { addLike, fetchLike, removeLike } from '@/api/detail.api';
+import LikeModel from '@/models/like.model';
 
 const useLikeStatus = (toiletId: number | undefined) => {
   const [isLike, setIsLike] = useState(false);
@@ -9,7 +10,7 @@ const useLikeStatus = (toiletId: number | undefined) => {
 
     try {
       const res = await fetchLike(toiletId);
-      setIsLike(res.like);
+      setIsLike(new LikeModel(res).isLiked);
     } catch (error) {
       // TODO: 에러 처리
       console.log(error);
@@ -23,9 +24,9 @@ const useLikeStatus = (toiletId: number | undefined) => {
     try {
       setIsLike(!isLike);
       if (isLike) {
-        await removeLike(toiletId, { email: 'user_email' });
+        await removeLike(toiletId);
       } else {
-        await addLike(toiletId, { email: 'user_email' });
+        await addLike(toiletId);
       }
     } catch (error) {
       setIsLike(prevLike);
