@@ -15,7 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     width: 100vw;
     min-width: 300px;
     max-width: 767px;
-    height: 100vh;
+    height: 100svh;
     margin: 0 auto;
   }
   
