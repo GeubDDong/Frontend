@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
-import { useBottomSheet } from '@/hooks/useBottomSheet';
+import useBottomSheet from '@/hooks/useBottomSheet';
 
 interface BottomSheetProps {
   isOpen: boolean;

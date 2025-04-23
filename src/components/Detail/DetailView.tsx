@@ -3,7 +3,6 @@ import { Theme } from '@/style/Theme';
 import InfoIcon from './InfoIcon';
 import LikeButton from './LikeButton';
 import { StaticMap } from 'react-kakao-maps-sdk';
-import { formatDateToString } from '@/utils/dateUtil';
 import useDetailInfo from '@/hooks/useDetailInfo';
 import { useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
@@ -29,96 +28,81 @@ const DetailView = () => {
               <div className="name">{detailInfo.name}</div>
               <LikeButton />
             </div>
-            <div className="address">
-              {detailInfo.street_address
-                ? detailInfo.street_address
-                : detailInfo.lot_address}
-            </div>
-            <div className="openHours">{detailInfo.open_hour}</div>
+            <div className="address">{detailInfo.address}</div>
+            <div className="openHours">{detailInfo.openHour}</div>
             <div className="rating">
               <div className="ratingItem">
                 청결도
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.avg_cleanliness}
+                  {detailInfo.cleanliness}
                 </div>
               </div>
               <div className="ratingItem">
                 비품상태
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.avg_amenities}
+                  {detailInfo.amenities}
                 </div>
               </div>
               <div className="ratingItem">
                 접근성
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.avg_accessibility}
+                  {detailInfo.accessibility}
                 </div>
               </div>
             </div>
             <div className="update">
               <span>데이터 기준일</span>
-              <span>
-                {formatDateToString(detailInfo.facility.reference_date)}
-              </span>
+              <span>{detailInfo.facility.referenceDate}</span>
             </div>
           </div>
           <Divider>
             <div className="detailInfoIcons">
               <InfoIcon
                 iconName="man"
-                active={
-                  detailInfo.facility.male_toilet > 0 ||
-                  detailInfo.facility.male_urinal > 0
-                }
+                active={detailInfo.facility.hasMale}
                 text="남성용"
               />
               <InfoIcon
                 iconName="woman"
-                active={detailInfo.facility.female_toilet > 0}
+                active={detailInfo.facility.hasFemale}
                 text="여성용"
               />
               <InfoIcon
                 iconName="wheelchair"
-                active={
-                  detailInfo.facility.disabled_male_toilet > 0 ||
-                  detailInfo.facility.disabled_male_urinal > 0
-                }
+                active={detailInfo.facility.hasDisabledMale}
                 size={1.5}
                 text="장애인 남성용"
                 extra={<AiOutlineMan size="0.9rem" color="white" />}
               />
               <InfoIcon
                 iconName="wheelchair"
-                active={detailInfo.facility.disabled_female_toilet > 0}
+                active={detailInfo.facility.hasDisabledFemale}
                 size={1.5}
                 text="장애인 여성용"
                 extra={<AiOutlineWoman size="0.9rem" color="white" />}
               />
               <InfoIcon
                 iconName="children"
-                active={
-                  detailInfo.facility.kids_toilet_female > 0 ||
-                  detailInfo.facility.kids_toilet_male > 0
-                }
+                active={detailInfo.facility.hasKids}
                 text="어린이"
               />
               <InfoIcon
                 iconName="baby"
-                active={detailInfo.facility.diaper_changing_station === 'Y'}
+                active={detailInfo.facility.hasDiaperChangingStation}
                 text="기저귀 교환대"
               />
 
               <InfoIcon
                 iconName="cctv"
-                active={detailInfo.facility.cctv === 'Y'}
+                active={detailInfo.facility.hasCCTV}
                 text="CCTV"
               />
               <InfoIcon
                 iconName="bell"
-                active={detailInfo.facility.emergency_bell === 'Y'}
+                active={detailInfo.facility.hasBell}
                 text="비상벨"
               />
             </div>
@@ -144,14 +128,14 @@ const DetailView = () => {
               <div className="title">관리기관</div>
 
               <span>{detailInfo.management.name}</span>
-              <span>{detailInfo.management.phone_number}</span>
+              <span>{detailInfo.management.phone}</span>
             </div>
           </Divider>
           <Rating
-            total={detailInfo.avg_rating}
-            cleanliness={detailInfo.avg_cleanliness}
-            amenities={detailInfo.avg_amenities}
-            accessibility={detailInfo.avg_accessibility}
+            total={detailInfo.rating}
+            cleanliness={detailInfo.cleanliness}
+            amenities={detailInfo.amenities}
+            accessibility={detailInfo.accessibility}
           />
         </>
       )}

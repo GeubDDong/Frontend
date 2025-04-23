@@ -5,18 +5,6 @@ export interface ICoordinate {
   longitude: number | null;
 }
 
-export type TAvailable = 'Y' | 'N';
-
-export interface IToiletInfo {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-  street_address: string;
-  lot_address: string;
-  open_hour: string;
-}
-
 export interface IUserInfo {
   email: string;
   nickname: string;
