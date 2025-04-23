@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import useComments from '@/hooks/useComments';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
+import { FaPencilAlt } from 'react-icons/fa';
 
 const Comments = () => {
   const { selectedToilet } = useSelectedInfo();
@@ -12,10 +13,17 @@ const Comments = () => {
 
   return (
     <CommentsStyle>
-      <div className="title">
-        <span className="titleName">리뷰</span>
-        <span className="count">{`(${comments.length})`}</span>
+      <div className="top">
+        <div className="title">
+          <span className="titleName">리뷰</span>
+          <span className="count">{`(${comments.length})`}</span>
+        </div>
+        <div className="write" onClick={() => window.alert('리뷰 모달')}>
+          <FaPencilAlt size={'0.9rem'} />
+          리뷰 작성하기
+        </div>
       </div>
+
       <div className="comments">
         {isLoading ? (
           // TODO: 댓글 로딩중 처리
@@ -40,6 +48,14 @@ const CommentsStyle = styled.div`
   flex-direction: column;
   gap: 10px;
 
+  .top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: ${Theme.fontSize.sm};
+    color: ${Theme.colors.mainText};
+  }
+
   .title {
     display: flex;
     gap: 3px;
@@ -56,6 +72,13 @@ const CommentsStyle = styled.div`
       font-size: ${Theme.fontSize.sm};
       color: ${Theme.colors.subText};
     }
+  }
+
+  .write {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    cursor: pointer;
   }
 
   .comments {
