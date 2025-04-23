@@ -1,5 +1,4 @@
 import LoginCallback from '@/components/Login/Callback';
-import Detail from '@/pages/Detail';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import MyPage from '@/pages/MyPage';
@@ -14,7 +13,6 @@ interface IRouteElement {
 
 const routeElements: IRouteElement[] = [
   { key: 'home', path: '/', element: <Home /> },
-  { key: 'detail', path: '/detail', element: <Detail /> },
   { key: 'login', path: '/login', element: <Login /> },
   { key: 'profileSetup', path: '/profileSetup', element: <ProfileSetup /> },
   {
