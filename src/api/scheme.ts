@@ -31,3 +31,19 @@ export interface IUserResponse {
 export interface ILikeResponse {
   like: boolean;
 }
+
+// 댓글 조회 응답
+export interface ICommentsResponse {
+  comments: ICommentItemResponse[];
+}
+
+export interface ICommentItemResponse {
+  id: number;
+  profile_image: string;
+  avg_rating: number;
+  nickname: string;
+  comment: string;
+  updated_at: Date;
+  created_at: Date;
+  isMine: boolean;
+}

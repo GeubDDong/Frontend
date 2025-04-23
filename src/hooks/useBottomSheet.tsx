@@ -1,6 +1,6 @@
 import useBottomSheetStore from '@/store/bottomSheetStore';
 
-export const useBottomSheet = () => {
+const useBottomSheet = () => {
   const isExpanded = useBottomSheetStore((state) => state.isExpanded);
   const setIsExpanded = useBottomSheetStore((state) => state.setIsExpanded);
 
@@ -9,3 +9,5 @@ export const useBottomSheet = () => {
     setIsExpanded,
   };
 };
+
+export default useBottomSheet;
