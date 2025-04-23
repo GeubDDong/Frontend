@@ -1,28 +1,21 @@
+import { IUserInfo } from '@/types';
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface IUseAuthStore {
-  accessToken: string | null;
-  isLogin: boolean;
-  setAccessToken: (token: string | null) => void;
-  logout: () => void;
+  user: IUserInfo | null;
+  setUser: (user: IUserInfo | null) => void;
 }
 
-export const useAuthStore = create<IUseAuthStore>((set) => ({
-  accessToken: localStorage.getItem('accessToken') || null,
-  isLogin: !!localStorage.getItem('accessToken'),
-
-  setAccessToken: (token) => {
-    if (token) {
-      localStorage.setItem('accessToken', token);
-      set({ accessToken: token, isLogin: true });
-    } else {
-      localStorage.removeItem('accessToken');
-      set({ accessToken: null, isLogin: false });
-    }
-  },
-
-  logout: () => {
-    localStorage.removeItem('accessToken');
-    set({ accessToken: null, isLogin: false });
-  },
-}));
+export const useAuthStore = create<IUseAuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+    }),
+    {
+      name: 'auth-user',
+      partialize: (state) => ({ user: state.user }),
+    },
+  ),
+);

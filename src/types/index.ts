@@ -17,9 +17,10 @@ export interface IToiletInfo {
   open_hour: string;
 }
 
-export interface IUserProfile {
-  user_email: string;
+export interface IUserInfo {
+  email: string;
   nickname: string;
+  profileImage: string;
 }
 
 export interface ILike {
@@ -33,6 +34,8 @@ export interface IBound {
   bottom: number;
   right: number;
 }
+
+export type TLoginProvider = 'kakao' | 'google' | 'naver';
 
 export type TFilterKey = keyof typeof FILTER_KEY;
 

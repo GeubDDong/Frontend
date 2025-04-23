@@ -1,4 +1,4 @@
-import { IMapMarkers } from '@/api/scheme';
+import { IAuthLoginResponse, IMapMarkers } from '@/api/scheme';
 import { IToiletDetailInfo } from '@/models/detail.model';
 import { http, HttpResponse } from 'msw';
 
@@ -93,11 +93,23 @@ const dummyToiletInfos: IToiletDetailInfo = {
   },
 };
 
+const dummyAuthLoginData: IAuthLoginResponse = {
+  isNewUser: true,
+  user: {
+    nickname: 'aa',
+    profile_Image: 'fff',
+    email: 'as@aa',
+  },
+};
+
 export const handlers = [
   http.get(new RegExp('/detail/.*'), () => {
     return HttpResponse.json(dummyToiletInfos);
   }),
   http.get(new RegExp('/toilet.*'), () => {
     return HttpResponse.json(dummyToiletBasicInfos);
+  }),
+  http.post(new RegExp('/auth/login/.*'), () => {
+    return HttpResponse.json(dummyAuthLoginData);
   }),
 ];
