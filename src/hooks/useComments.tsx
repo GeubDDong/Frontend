@@ -5,10 +5,10 @@ import {
   removeComment,
   updateComment,
 } from '@/api/detail.api';
-import { ICommentItem } from '@/models/comment.model';
+import CommentModel, { ICommentModel } from '@/models/comment.model';
 
 const useComments = (toiletId: number | undefined) => {
-  const [comments, setComments] = useState<ICommentItem[]>([]);
+  const [comments, setComments] = useState<ICommentModel[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const loadComments = async () => {
@@ -18,7 +18,7 @@ const useComments = (toiletId: number | undefined) => {
     try {
       const res = await fetchComments(toiletId);
       if ('comments' in res) {
-        setComments(res.comments.reverse());
+        setComments(new CommentModel(res).comments);
       }
     } catch (error) {
       // TODO: 에러처리
