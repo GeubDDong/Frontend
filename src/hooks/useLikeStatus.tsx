@@ -23,9 +23,9 @@ const useLikeStatus = (toiletId: number | undefined) => {
     try {
       setIsLike(!isLike);
       if (isLike) {
-        await removeLike(toiletId, { user_email: 'user_email' });
+        await removeLike(toiletId, { email: 'user_email' });
       } else {
-        await addLike(toiletId, { user_email: 'user_email' });
+        await addLike(toiletId, { email: 'user_email' });
       }
     } catch (error) {
       setIsLike(prevLike);
