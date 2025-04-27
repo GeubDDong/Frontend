@@ -25,6 +25,11 @@ const routeElements: IRouteElement[] = [
     path: '/auth/callback/google',
     element: <LoginCallback provider="google" />,
   },
+  {
+    key: 'authCallback_naver',
+    path: '/auth/callback/naver',
+    element: <LoginCallback provider="naver" />,
+  },
   { key: 'rank', path: '/rank', element: <Rank /> },
   { key: 'myPage', path: '/myPage', element: <MyPage /> },
 ];
