@@ -20,7 +20,7 @@ const useMyPage = () => {
     fetchApi();
   }, []);
 
-  return { myPageInfo };
+  return { myPageInfo, setMyPageInfo };
 };
 
 export default useMyPage;
