@@ -8,11 +8,30 @@ import CommentModal from './CommentModal';
 import { overlay } from 'overlay-kit';
 import useAuth from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import useDetailInfo from '@/hooks/useDetailInfo';
+import { ICommentActionModel } from '@/models/comment.model';
 
 const Comments = () => {
   const { selectedToilet } = useSelectedInfo();
+  const { detailInfo, setDetailInfo } = useDetailInfo(
+    selectedToilet || undefined,
+  );
+  const updateRating = (rating: ICommentActionModel) => {
+    if (detailInfo) {
+      setDetailInfo({
+        ...detailInfo,
+        rating: rating.avgRating,
+        ratingItems: {
+          cleanliness: rating.ratingItems.cleanliness,
+          amenities: rating.ratingItems.amenities,
+          accessibility: rating.ratingItems.accessibility,
+        },
+      });
+    }
+  };
+
   const { comments, addComment, updateComment, removeComment, isLoading } =
-    useComments(selectedToilet || undefined);
+    useComments(selectedToilet || undefined, updateRating);
   const { isLogin } = useAuth();
   const navigate = useNavigate();
 

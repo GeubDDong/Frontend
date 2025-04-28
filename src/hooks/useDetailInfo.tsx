@@ -24,6 +24,7 @@ const useDetailInfo = (toiletId: number | undefined) => {
 
   return {
     detailInfo,
+    setDetailInfo,
     loadDetailInfo,
     isLoading,
   };

@@ -1,6 +1,7 @@
 import requestHandler from '@/api/requestHandler';
 import { useAuthStore } from '@/store/authStore';
 import {
+  ICommentActionResponse,
   ICommentRequest,
   ICommentsResponse,
   ILikeResponse,
@@ -30,7 +31,7 @@ export const addComment = async (
   comment: string,
   ratings: IRatingItem,
 ) => {
-  return requestHandler<unknown, Omit<ICommentRequest, 'id'>>(
+  return requestHandler<ICommentActionResponse, Omit<ICommentRequest, 'id'>>(
     'post',
     `/comments/${toiletId}`,
     {
@@ -50,7 +51,7 @@ export const updateComment = async (
   comment: string,
   ratings: IRatingItem,
 ) => {
-  return requestHandler<unknown, ICommentRequest>(
+  return requestHandler<ICommentActionResponse, ICommentRequest>(
     'put',
     `/comments/${toiletId}`,
     {
@@ -66,7 +67,11 @@ export const updateComment = async (
 };
 
 export const removeComment = async (toiletId: number, commentId: number) => {
-  return requestHandler('delete', `/comments/${toiletId}`, { id: commentId });
+  return requestHandler<ICommentActionResponse>(
+    'delete',
+    `/comments/${toiletId}`,
+    { id: commentId },
+  );
 };
 
 export const fetchLike = async (id: number) => {
