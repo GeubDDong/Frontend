@@ -1,3 +1,4 @@
+import useAuth from '@/hooks/useAuth';
 import { useState } from 'react';
 import { FaSignOutAlt, FaUserAltSlash } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
@@ -5,13 +6,10 @@ import styled from 'styled-components';
 
 const UserSetting = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
-  };
-
-  const handleLogout = () => {
-    console.log('로그아웃');
   };
 
   const handleDeleteAccount = () => {
@@ -22,7 +20,7 @@ const UserSetting = () => {
       <IoMdSettings className="setting_icon" onClick={toggleMenu} />
       {isOpen && (
         <div className="dropdown_menu">
-          <button onClick={handleLogout}>
+          <button onClick={() => logout()}>
             <FaSignOutAlt />
             로그아웃
           </button>
