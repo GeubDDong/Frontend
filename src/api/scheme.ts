@@ -25,7 +25,7 @@ export interface IAuthLoginResponse {
 export interface IUserResponse {
   email: string;
   nickname: string;
-  profile_Image: string;
+  profile_image: string;
 }
 //#endregion
 
@@ -64,6 +64,14 @@ export interface ICommentItemResponse {
   updated_at: Date;
   created_at: Date;
   isMine: boolean;
+}
+
+// 댓글 등록, 수정, 삭제시 응답 스키마
+export interface ICommentActionResponse {
+  avg_cleanliness: number;
+  avg_amenities: number;
+  avg_accessibility: number;
+  avg_rating: number;
 }
 //#endregion
 

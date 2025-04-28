@@ -10,7 +10,7 @@ class AuthUserModel {
     this.#user = {
       email: authData.user.email,
       nickname: authData.user.nickname,
-      profileImage: authData.user.profile_Image,
+      profileImage: authData.user.profile_image,
     };
   }
 
