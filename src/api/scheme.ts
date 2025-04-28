@@ -37,7 +37,7 @@ export interface ILikeResponse {
 
 //#region 댓글
 export interface ICommentRequest {
-  id: number;
+  commentId: number;
   comment: string;
   rating: ICommentRatingRequest;
 }

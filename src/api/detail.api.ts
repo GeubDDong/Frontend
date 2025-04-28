@@ -31,18 +31,17 @@ export const addComment = async (
   comment: string,
   ratings: IRatingItem,
 ) => {
-  return requestHandler<ICommentActionResponse, Omit<ICommentRequest, 'id'>>(
-    'post',
-    `/comments/${toiletId}`,
-    {
-      comment,
-      rating: {
-        cleanliness: ratings.cleanliness,
-        amenities: ratings.amenities,
-        accessibility: ratings.accessibility,
-      },
+  return requestHandler<
+    ICommentActionResponse,
+    Omit<ICommentRequest, 'commentId'>
+  >('post', `/comments/${toiletId}`, {
+    comment,
+    rating: {
+      cleanliness: ratings.cleanliness,
+      amenities: ratings.amenities,
+      accessibility: ratings.accessibility,
     },
-  );
+  });
 };
 
 export const updateComment = async (
@@ -55,7 +54,7 @@ export const updateComment = async (
     'put',
     `/comments/${toiletId}`,
     {
-      id: commentId,
+      commentId: commentId,
       comment,
       rating: {
         cleanliness: ratings.cleanliness,
