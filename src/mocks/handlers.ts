@@ -133,7 +133,7 @@ const dummyAuthLoginData: IAuthLoginResponse = {
   isNewUser: true,
   user: {
     nickname: 'aa',
-    profile_Image: 'fff',
+    profile_image: 'fff',
     email: 'as@aa',
   },
 };
