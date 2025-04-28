@@ -4,12 +4,34 @@ import CommentItem from './CommentItem';
 import useComments from '@/hooks/useComments';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import { FaPencilAlt } from 'react-icons/fa';
+import CommentModal from './CommentModal';
+import { overlay } from 'overlay-kit';
+import useAuth from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Comments = () => {
   const { selectedToilet } = useSelectedInfo();
-  const { comments, updateComment, removeComment, isLoading } = useComments(
-    selectedToilet?.id,
-  );
+  const { comments, addComment, updateComment, removeComment, isLoading } =
+    useComments(selectedToilet?.id);
+  const { isLogin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (!isLogin) {
+      navigate('/login');
+      return;
+    }
+
+    overlay.open(({ isOpen, unmount }) => {
+      return (
+        <CommentModal
+          isOpen={isOpen}
+          onExit={unmount}
+          addComment={addComment}
+        />
+      );
+    });
+  };
 
   return (
     <CommentsStyle>
@@ -18,12 +40,11 @@ const Comments = () => {
           <span className="titleName">리뷰</span>
           <span className="count">{`(${comments.length})`}</span>
         </div>
-        <div className="write" onClick={() => window.alert('리뷰 모달')}>
+        <div className="write" onClick={handleClick}>
           <FaPencilAlt size={'0.9rem'} />
           리뷰 작성하기
         </div>
       </div>
-
       <div className="comments">
         {isLoading ? (
           // TODO: 댓글 로딩중 처리
@@ -79,12 +100,13 @@ const CommentsStyle = styled.div`
     flex-direction: row;
     gap: 2px;
     cursor: pointer;
+    color: ${Theme.colors.mainText};
   }
 
   .comments {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 15px;
     margin-top: 10px;
   }
 `;

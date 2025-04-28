@@ -1,10 +1,12 @@
 import { ICommentsResponse } from '@/api/scheme';
+import { IRatingItem } from '@/types';
 import { formatDateToString } from '@/utils/dateUtil';
 
 export interface ICommentModel {
   id: number;
   profileImage: string;
-  rating: number;
+  avgRating: number;
+  ratings: IRatingItem;
   nickname: string;
   content: string;
   createdAt: string;
@@ -19,7 +21,12 @@ class CommentModel {
     this.#comments = commentsData.comments.reverse().map((item) => ({
       id: item.id,
       profileImage: item.profile_image,
-      rating: item.avg_rating,
+      avgRating: item.avg_rating,
+      ratings: {
+        cleanliness: item.avg_cleanliness,
+        amenities: item.avg_amenities,
+        accessibility: item.avg_accessibility,
+      },
       nickname: item.nickname,
       content: item.comment,
       createdAt: formatDateToString(item.created_at),
