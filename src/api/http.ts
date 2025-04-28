@@ -1,12 +1,14 @@
 import { useAuthStore } from '@/store/authStore';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, CreateAxiosDefaults } from 'axios';
 import { refreshToken } from './auth.api';
 
 const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 const DEFAULT_TIMEOUT = 5000;
 
-const createClient = (config?: AxiosRequestConfig) => {
-  const axiosInstance = axios.create({
+const createAxiosDefault = (
+  config?: AxiosRequestConfig,
+): CreateAxiosDefaults => {
+  return {
     baseURL: BASE_URL,
     timeout: DEFAULT_TIMEOUT,
     headers: {
@@ -14,7 +16,11 @@ const createClient = (config?: AxiosRequestConfig) => {
     },
     withCredentials: true,
     ...config,
-  });
+  };
+};
+
+const createClient = (config?: AxiosRequestConfig) => {
+  const axiosInstance = axios.create(createAxiosDefault(config));
 
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -23,10 +29,6 @@ const createClient = (config?: AxiosRequestConfig) => {
     async (error) => {
       const originalRequest = error.config;
       const { user, setUser } = useAuthStore.getState();
-
-      if (originalRequest.url === '/auth/refresh') {
-        return Promise.reject(error);
-      }
 
       if (error.response?.status === 401 && !originalRequest.retry && user) {
         originalRequest.retry = true;
@@ -47,6 +49,10 @@ const createClient = (config?: AxiosRequestConfig) => {
   return axiosInstance;
 };
 
-const httpClient = createClient();
+const createClientWithoutRefresh = (config?: AxiosRequestConfig) => {
+  const axiosInstance = axios.create(createAxiosDefault(config));
+  return axiosInstance;
+};
 
-export default httpClient;
+export const httpClient = createClient();
+export const httpClientWithoutRefresh = createClientWithoutRefresh();
