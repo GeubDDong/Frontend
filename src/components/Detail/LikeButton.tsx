@@ -5,12 +5,19 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import styled from 'styled-components';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const LikeButton = () => {
   const { isLogin } = useAuth();
   const { selectedToilet } = useSelectedInfo();
-  const { isLike, toggleLike } = useLikeStatus(selectedToilet || undefined);
+  const { isLike, toggleLike, loadLikeStatus } = useLikeStatus(
+    selectedToilet || undefined,
+  );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loadLikeStatus();
+  }, [selectedToilet]);
 
   const handleClick = async () => {
     if (!isLogin) {

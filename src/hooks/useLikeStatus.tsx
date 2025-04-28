@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addLike, fetchLike, removeLike } from '@/api/detail.api';
 import LikeModel from '@/models/like.model';
 
@@ -34,10 +34,6 @@ const useLikeStatus = (toiletId: number | undefined) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    loadLikeStatus();
-  }, []);
 
   return {
     isLike,
