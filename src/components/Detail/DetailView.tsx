@@ -35,21 +35,21 @@ const DetailView = () => {
                 청결도
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.cleanliness}
+                  {detailInfo.ratingItems.cleanliness}
                 </div>
               </div>
               <div className="ratingItem">
                 비품상태
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.amenities}
+                  {detailInfo.ratingItems.amenities}
                 </div>
               </div>
               <div className="ratingItem">
                 접근성
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.accessibility}
+                  {detailInfo.ratingItems.accessibility}
                 </div>
               </div>
             </div>
@@ -133,9 +133,9 @@ const DetailView = () => {
           </Divider>
           <Rating
             total={detailInfo.rating}
-            cleanliness={detailInfo.cleanliness}
-            amenities={detailInfo.amenities}
-            accessibility={detailInfo.accessibility}
+            cleanliness={detailInfo.ratingItems.cleanliness}
+            amenities={detailInfo.ratingItems.amenities}
+            accessibility={detailInfo.ratingItems.accessibility}
           />
         </>
       )}

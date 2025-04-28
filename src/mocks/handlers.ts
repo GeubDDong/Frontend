@@ -1,5 +1,6 @@
 import {
   IAuthLoginResponse,
+  ICommentsResponse,
   ILikeResponse,
   IMapMarkers,
   IToiletDetailResponse,
@@ -96,6 +97,38 @@ const dummyToiletInfos: IToiletDetailResponse = {
   },
 };
 
+const dummyToiletInfo2: IToiletDetailResponse = {
+  id: 2,
+  name: '부강꿈뜰근린공원2',
+  street_address: '세종특별자치시 부강면 태산길 33',
+  lot_address: '세종특별자치시 부강면 부강리 101',
+  latitude: 36.528533,
+  longitude: 127.371124,
+  open_hour: '09:00~18:00',
+  avg_cleanliness: 3.5,
+  avg_amenities: 3.5,
+  avg_accessibility: 5.0,
+  avg_rating: 4.0,
+  management: {
+    name: '세종특별자치시 부강면',
+    phone_number: '044-301-5431',
+  },
+  facility: {
+    male_toilet: 1,
+    male_urinal: 1,
+    disabled_male_toilet: 0,
+    disabled_male_urinal: 0,
+    kids_toilet_male: 0,
+    female_toilet: 1,
+    disabled_female_toilet: 1,
+    kids_toilet_female: 1,
+    emergency_bell: 'Y',
+    cctv: 'Y',
+    diaper_changing_station: 'Y',
+    reference_date: new Date(),
+  },
+};
+
 const dummyAuthLoginData: IAuthLoginResponse = {
   isNewUser: true,
   user: {
@@ -105,13 +138,47 @@ const dummyAuthLoginData: IAuthLoginResponse = {
   },
 };
 
+const dummyComments: ICommentsResponse = {
+  comments: [
+    {
+      id: 34,
+      profile_image:
+        'http://k.kakaocdn.net/dn/isqYD/btsMIDcNbdn/MxiPPNlqtw8XUYYe21wec0/img_110x110.jpg',
+      avg_rating: 4,
+      avg_cleanliness: 3,
+      avg_amenities: 4,
+      avg_accessibility: 5,
+      nickname: 'SSS2517',
+      comment: '그저그래그래ㅐ요 !',
+      created_at: new Date(),
+      updated_at: new Date(),
+      isMine: true,
+    },
+    {
+      id: 32,
+      profile_image: '',
+      avg_rating: 2,
+      avg_cleanliness: 2,
+      avg_amenities: 2,
+      avg_accessibility: 2,
+      nickname: 'SSS2517',
+      comment: '테스트 코멘트2 입니다.',
+      created_at: new Date(),
+      updated_at: new Date(),
+      isMine: true,
+    },
+  ],
+};
 const dummyLike: ILikeResponse = {
   like: true,
 };
 
 export const handlers = [
-  http.get(new RegExp('/detail/.*'), () => {
+  http.get(new RegExp('/detail/1'), () => {
     return HttpResponse.json(dummyToiletInfos);
+  }),
+  http.get(new RegExp('/detail/2'), () => {
+    return HttpResponse.json(dummyToiletInfo2);
   }),
   http.get(new RegExp('/toilet.*'), () => {
     return HttpResponse.json(dummyToiletBasicInfos);
@@ -121,5 +188,8 @@ export const handlers = [
   }),
   http.get(new RegExp('/favorites/.*'), () => {
     return HttpResponse.json(dummyLike);
+  }),
+  http.get(new RegExp('/comments/.*'), () => {
+    return HttpResponse.json(dummyComments);
   }),
 ];

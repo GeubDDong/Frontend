@@ -6,6 +6,7 @@ import {
   updateComment,
 } from '@/api/detail.api';
 import CommentModel, { ICommentModel } from '@/models/comment.model';
+import { IRatingItem } from '@/types';
 
 const useComments = (toiletId: number | undefined) => {
   const [comments, setComments] = useState<ICommentModel[]>([]);
@@ -28,11 +29,11 @@ const useComments = (toiletId: number | undefined) => {
     }
   };
 
-  const handleAddComment = async (comment: string) => {
+  const handleAddComment = async (comment: string, ratings: IRatingItem) => {
     if (!toiletId) return;
 
     try {
-      await addComment(toiletId, { comment });
+      await addComment(toiletId, comment, ratings);
       await loadComments();
     } catch (error) {
       // TODO: 에러 처리
@@ -40,11 +41,15 @@ const useComments = (toiletId: number | undefined) => {
     }
   };
 
-  const handleUpdateComment = async (id: number, comment: string) => {
+  const handleUpdateComment = async (
+    id: number,
+    comment: string,
+    ratings: IRatingItem,
+  ) => {
     if (!toiletId) return;
 
     try {
-      await updateComment(toiletId, { id, comment });
+      await updateComment(toiletId, id, comment, ratings);
       await loadComments();
     } catch (error) {
       // TODO: 에러 처리
@@ -66,7 +71,7 @@ const useComments = (toiletId: number | undefined) => {
 
   useEffect(() => {
     loadComments();
-  }, []);
+  }, [toiletId]);
 
   return {
     comments,

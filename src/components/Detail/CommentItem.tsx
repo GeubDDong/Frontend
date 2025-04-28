@@ -1,12 +1,19 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { IoPersonCircle } from 'react-icons/io5';
 import { ICommentModel } from '@/models/comment.model';
+import { overlay } from 'overlay-kit';
+import CommentModal from './CommentModal';
+import ProfileImage from '../Common/ProfileImage';
+import StarRating from '../Common/StarRating';
+import { IRatingItem } from '@/types';
 
 interface CommentItemProps {
   item: ICommentModel;
-  updateComment: (id: number, comment: string) => Promise<void>;
+  updateComment: (
+    id: number,
+    comment: string,
+    ratings: IRatingItem,
+  ) => Promise<void>;
   removeComment: (id: number) => Promise<void>;
 }
 
@@ -15,50 +22,40 @@ const CommentItem = ({
   updateComment,
   removeComment,
 }: CommentItemProps) => {
-  const [isEdit, setIsEdit] = useState(false);
-  const [editText, setEditText] = useState('');
-
-  const handleClickToggleEdit = () => {
-    setIsEdit((prev) => !prev);
-    setEditText(item.content);
+  const handleClickEdit = () => {
+    console.log(item);
+    overlay.open(({ isOpen, unmount }) => {
+      return (
+        <CommentModal
+          isOpen={isOpen}
+          onExit={unmount}
+          initialRatings={item.ratings}
+          updateComment={updateComment}
+          commentId={item.id}
+          comment={item.content}
+        />
+      );
+    });
   };
 
   return (
     <CommentItemStyle>
-      <div className="profile">
-        <IoPersonCircle size="3rem" style={{ color: Theme.colors.secondary }} />
-      </div>
+      <ProfileImage src={item.profileImage} size={40} />
       <div className="content">
-        <div className="top">
+        <div className="info">
           <div className="nickname">{item.nickname}</div>
-          <div className="date">{item.updatedAt}</div>
+          <div className="date">{item.createdAt}</div>
           {item.isMine && (
             <div className="buttons">
-              {isEdit ? (
-                <>
-                  <button onClick={handleClickToggleEdit}>취소</button>
-                  <button onClick={() => updateComment(item.id, editText)}>
-                    확인
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button onClick={handleClickToggleEdit}>수정</button>
-                  <button onClick={() => removeComment(item.id)}>삭제</button>
-                </>
-              )}
+              <button onClick={handleClickEdit}>수정</button>
+              <button onClick={() => removeComment(item.id)}>삭제</button>
             </div>
           )}
         </div>
-        {isEdit ? (
-          <input
-            type="text"
-            value={editText}
-            onChange={(e) => setEditText(e.target.value)}
-          />
-        ) : (
-          <div className="comment">{item.content}</div>
-        )}
+        <div className="star">
+          <StarRating value={item.avgRating} size={15} />
+        </div>
+        <div className="comment">{item.content}</div>
       </div>
     </CommentItemStyle>
   );
@@ -67,7 +64,6 @@ const CommentItem = ({
 const CommentItemStyle = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 5px;
 
   .content {
@@ -77,7 +73,7 @@ const CommentItemStyle = styled.div`
     width: 100%;
   }
 
-  .top {
+  .info {
     display: flex;
     gap: 5px;
     align-items: center;

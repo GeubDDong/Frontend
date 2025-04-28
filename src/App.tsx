@@ -6,6 +6,7 @@ import 'react-toastify/ReactToastify.css';
 import BottomTab from './components/Common/BottomTab';
 import routeElements from './routes';
 import useKakaoLoader from './hooks/useKakaoLoader';
+import { OverlayProvider } from 'overlay-kit';
 
 function App() {
   const { isKakaoLoaded } = useKakaoLoader();
@@ -14,6 +15,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
+      <OverlayProvider />
       {isKakaoLoaded && (
         <Router>
           <div style={{ height: 'calc(100% - 62px)' }}>

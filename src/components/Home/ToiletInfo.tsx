@@ -15,6 +15,6 @@ const ToiletInfoStyle = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 10px;
-  gap: 20px;
+  gap: 30px;
 `;
 export default ToiletInfo;

@@ -39,6 +39,13 @@ export interface ILikeResponse {
 export interface ICommentRequest {
   id: number;
   comment: string;
+  rating: ICommentRatingRequest;
+}
+
+export interface ICommentRatingRequest {
+  accessibility: number;
+  amenities: number;
+  cleanliness: number;
 }
 
 export interface ICommentsResponse {
@@ -49,6 +56,9 @@ export interface ICommentItemResponse {
   id: number;
   profile_image: string;
   avg_rating: number;
+  avg_cleanliness: number;
+  avg_amenities: number;
+  avg_accessibility: number;
   nickname: string;
   comment: string;
   updated_at: Date;
