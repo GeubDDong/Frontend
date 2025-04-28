@@ -14,12 +14,10 @@ export interface IFavoriteItem {
 
 export interface IReviewItem {
   id: number;
-  toilet: {
-    id: number;
-    name: string;
-    latitude: number;
-    longitude: number;
-  };
+  toiletId: number;
+  name: string;
+  latitude: number;
+  longitude: number;
   comment: string;
   avgCleanliness: number;
   avgAmenities: number;
@@ -47,12 +45,10 @@ class MyPageModel {
 
     this.#reviews = myPageResponse.reviews.map((item) => ({
       id: item.id,
-      toilet: {
-        id: item.toilet.id,
-        name: item.toilet.name,
-        latitude: item.toilet.latitude,
-        longitude: item.toilet.longitude,
-      },
+      toiletId: item.toilet_id,
+      name: item.toilet_name,
+      latitude: item.latitude,
+      longitude: item.longitude,
       comment: item.comment,
       avgCleanliness: item.avg_cleanliness,
       avgAmenities: item.avg_amenities,
@@ -77,12 +73,10 @@ class MyPageModel {
       })),
       reviews: this.#reviews.map((rev) => ({
         id: rev.id,
-        toilet: {
-          id: rev.toilet.id,
-          name: rev.toilet.name,
-          latitude: rev.toilet.latitude,
-          longitude: rev.toilet.longitude,
-        },
+        toilet_id: rev.toiletId,
+        toilet_name: rev.name,
+        latitude: rev.latitude,
+        longitude: rev.longitude,
         comment: rev.comment,
         avg_cleanliness: rev.avgCleanliness,
         avg_amenities: rev.avgAmenities,

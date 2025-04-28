@@ -42,10 +42,10 @@ const ItemCard = ({
       setSelectedToilet((item as IFavoriteItem).id);
     } else if (tabType === 'reviewList') {
       setCenter({
-        latitude: (item as IReviewItem).toilet.latitude,
-        longitude: (item as IReviewItem).toilet.longitude,
+        latitude: (item as IReviewItem).latitude,
+        longitude: (item as IReviewItem).longitude,
       });
-      setSelectedToilet((item as IReviewItem).toilet.id);
+      setSelectedToilet((item as IReviewItem).toiletId);
     }
     navigate('/');
   };
@@ -61,7 +61,7 @@ const ItemCard = ({
         );
       } else if (tabType === 'reviewList') {
         await removeComment(
-          (item as IReviewItem).toilet.id,
+          (item as IReviewItem).toiletId,
           (item as IReviewItem).id,
         );
         newListItemsResponse.reviews = newListItemsResponse.reviews.filter(
@@ -125,9 +125,7 @@ const ItemCard = ({
             accessibility={item.avgAccessibility}
           />
           <span className="date">{(item as IReviewItem).updatedAt}</span>
-          <span className="toilet_name">
-            {(item as IReviewItem).toilet.name}
-          </span>
+          <span className="toilet_name">{(item as IReviewItem).name}</span>
         </div>
       )}
     </ItemCardStyle>

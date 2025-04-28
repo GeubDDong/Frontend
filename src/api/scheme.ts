@@ -120,18 +120,16 @@ export interface IFavoriteResponse {
 
 export interface IReviewResponse {
   id: number;
-  toilet: {
-    id: number;
-    name: string;
-    latitude: number;
-    longitude: number;
-  };
   comment: string;
   avg_cleanliness: number;
   avg_amenities: number;
   avg_accessibility: number;
   created_at: string;
   updated_at: string;
+  toilet_id: number;
+  toilet_name: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IMyPageResponse {
