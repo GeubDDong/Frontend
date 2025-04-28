@@ -24,6 +24,10 @@ const createClient = (config?: AxiosRequestConfig) => {
       const originalRequest = error.config;
       const { user, setUser } = useAuthStore.getState();
 
+      if (originalRequest.url === '/auth/refresh') {
+        return Promise.reject(error);
+      }
+
       if (error.response?.status === 401 && !originalRequest.retry && user) {
         originalRequest.retry = true;
 
