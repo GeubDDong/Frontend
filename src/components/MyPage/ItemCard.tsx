@@ -140,12 +140,13 @@ const ItemCardStyle = styled.div`
   background-color: #f1f1f1;
   border-radius: 16px;
   border: 1px solid #dddddd;
-  padding: 10px;
+  padding: 10px 30px 10px 10px;
   position: relative;
   cursor: pointer;
 
   .delete_button {
     position: absolute;
+    color: #888888;
     top: 12px;
     right: 12px;
   }
