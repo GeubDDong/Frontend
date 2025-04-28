@@ -4,11 +4,13 @@ import useSelectedInfo from '@/hooks/useSelectedInfo';
 import MyPageModel, { IFavoriteItem, IReviewItem } from '@/models/myPage.model';
 import { Theme } from '@/style/Theme';
 import { TTabType } from '@/types';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import ConfirmModal from '../Common/ConfirmModal';
 
 interface IItemCardProps {
   tabType: TTabType;
@@ -29,6 +31,7 @@ const ItemCard = ({
   listItems,
   setListItems,
 }: IItemCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { setCenter } = useMapInfo();
   const { setSelectedToilet } = useSelectedInfo();
   const navigate = useNavigate();
@@ -52,6 +55,10 @@ const ItemCard = ({
 
   const handleClickDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    setIsModalOpen(true);
+  };
+
+  const deleteFunction = async () => {
     try {
       const newListItemsResponse = listItems.toResponse();
       if (tabType === 'likeList') {
@@ -69,8 +76,11 @@ const ItemCard = ({
         );
       }
       setListItems(new MyPageModel(newListItemsResponse));
+      setIsModalOpen(false);
     } catch (error) {
       console.error(error);
+      toast('삭제에 실패하였습니다.', { toastId: 4444 });
+      setIsModalOpen(false);
     }
   };
 
@@ -127,6 +137,13 @@ const ItemCard = ({
           <span className="date">{(item as IReviewItem).updatedAt}</span>
           <span className="toilet_name">{(item as IReviewItem).name}</span>
         </div>
+      )}
+      {isModalOpen && (
+        <ConfirmModal
+          message="정말로 삭제하시겠습니까?"
+          onConfirm={deleteFunction}
+          onCancel={() => {}}
+        />
       )}
     </ItemCardStyle>
   );
