@@ -13,11 +13,13 @@ import useSelectedInfo from '@/hooks/useSelectedInfo';
 
 const DetailView = () => {
   const { selectedToilet } = useSelectedInfo();
-  const { detailInfo, loadDetailInfo } = useDetailInfo(selectedToilet?.id);
+  const { detailInfo, loadDetailInfo } = useDetailInfo(
+    selectedToilet || undefined,
+  );
 
   useEffect(() => {
     loadDetailInfo();
-  }, [selectedToilet?.id]);
+  }, [selectedToilet]);
 
   return (
     <DetailViewStyle>

@@ -1,16 +1,13 @@
-import {
-  IMapMarkersModelItem,
-  IMapMarkersModelToiletItem,
-} from '@/models/mapMarkerInfo.model';
+import { IMapMarkersModelItem } from '@/models/mapMarkerInfo.model';
 import { create } from 'zustand';
 
 interface IUseToiletInfoStore {
   selectedMarker: IMapMarkersModelItem | null;
   isInfoOpened: boolean;
-  selectedToilet: IMapMarkersModelToiletItem | null;
+  selectedToilet: number | null;
   setSelectedMarker: (marker: IMapMarkersModelItem | null) => void;
   setIsInfoOpened: (state: boolean) => void;
-  setSelectedToilet: (toilet: IMapMarkersModelToiletItem | null) => void;
+  setSelectedToilet: (toilet: number | null) => void;
 }
 
 const useSelectedInfoStore = create<IUseToiletInfoStore>((set) => ({

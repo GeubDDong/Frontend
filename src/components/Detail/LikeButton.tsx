@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const LikeButton = () => {
   const { isLogin } = useAuth();
   const { selectedToilet } = useSelectedInfo();
-  const { isLike, toggleLike } = useLikeStatus(selectedToilet?.id);
+  const { isLike, toggleLike } = useLikeStatus(selectedToilet || undefined);
   const navigate = useNavigate();
 
   const handleClick = async () => {

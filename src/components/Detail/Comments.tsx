@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const Comments = () => {
   const { selectedToilet } = useSelectedInfo();
   const { comments, addComment, updateComment, removeComment, isLoading } =
-    useComments(selectedToilet?.id);
+    useComments(selectedToilet || undefined);
   const { isLogin } = useAuth();
   const navigate = useNavigate();
 
