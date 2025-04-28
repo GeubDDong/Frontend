@@ -7,15 +7,13 @@ import styled from 'styled-components';
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const { user, isLogin } = useAuth();
+  const { isLogin } = useAuth();
 
   useEffect(() => {
     if (!isLogin) {
       navigate('/login');
     }
   }, []);
-
-  console.log(`isLogin: ${isLogin}, user: ${user}`);
 
   if (!isLogin) return <></>;
   return (
