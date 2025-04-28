@@ -26,3 +26,5 @@ export interface IFilterItem {
   label: string;
   query: string;
 }
+
+export type TTabType = 'likeList' | 'reviewList';
