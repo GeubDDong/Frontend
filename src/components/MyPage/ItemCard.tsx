@@ -1,13 +1,20 @@
-import { IFavoriteItem, IReviewItem } from '@/models/myPage.model';
+import { removeComment, removeLike } from '@/api/detail.api';
+import useMapInfo from '@/hooks/useMapInfo';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
+import MyPageModel, { IFavoriteItem, IReviewItem } from '@/models/myPage.model';
 import { Theme } from '@/style/Theme';
 import { TTabType } from '@/types';
+import React from 'react';
 import { FaStar } from 'react-icons/fa';
 import { FaRegTrashCan } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface IItemCardProps {
   tabType: TTabType;
   item: IFavoriteItem | IReviewItem;
+  listItems: MyPageModel;
+  setListItems: React.Dispatch<React.SetStateAction<MyPageModel | null>>;
 }
 
 interface IScoreComponentProps {
@@ -16,10 +23,56 @@ interface IScoreComponentProps {
   accessibility: number;
 }
 
-const ItemCard = ({ tabType, item }: IItemCardProps) => {
-  // const handleClickCard = () => {};
+const ItemCard = ({
+  tabType,
+  item,
+  listItems,
+  setListItems,
+}: IItemCardProps) => {
+  const { setCenter } = useMapInfo();
+  const { setSelectedToilet } = useSelectedInfo();
+  const navigate = useNavigate();
 
-  // const handleClickDelete = () => {};
+  const handleClickCard = () => {
+    if (tabType === 'likeList') {
+      setCenter({
+        latitude: (item as IFavoriteItem).latitude,
+        longitude: (item as IFavoriteItem).longitude,
+      });
+      setSelectedToilet((item as IFavoriteItem).id);
+    } else if (tabType === 'reviewList') {
+      setCenter({
+        latitude: (item as IReviewItem).toilet.latitude,
+        longitude: (item as IReviewItem).toilet.longitude,
+      });
+      setSelectedToilet((item as IReviewItem).toilet.id);
+    }
+    navigate('/');
+  };
+
+  const handleClickDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      const newListItemsResponse = listItems.toResponse();
+      if (tabType === 'likeList') {
+        await removeLike((item as IFavoriteItem).id);
+        newListItemsResponse.favorites = newListItemsResponse.favorites.filter(
+          (res) => res.id !== (item as IFavoriteItem).id,
+        );
+      } else if (tabType === 'reviewList') {
+        await removeComment(
+          (item as IReviewItem).toilet.id,
+          (item as IReviewItem).id,
+        );
+        newListItemsResponse.reviews = newListItemsResponse.reviews.filter(
+          (res) => res.id !== (item as IReviewItem).id,
+        );
+      }
+      setListItems(new MyPageModel(newListItemsResponse));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const ScoreComponent = ({
     cleanliness,
@@ -45,8 +98,8 @@ const ItemCard = ({ tabType, item }: IItemCardProps) => {
   };
 
   return (
-    <ItemCardStyle onClick={() => {}}>
-      <FaRegTrashCan className="delete_button" />
+    <ItemCardStyle onClick={handleClickCard}>
+      <FaRegTrashCan className="delete_button" onClick={handleClickDelete} />
       {tabType === 'likeList' && (
         <div className="card">
           <span className="name">{(item as IFavoriteItem).name}</span>
