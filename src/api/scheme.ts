@@ -56,9 +56,9 @@ export interface ICommentItemResponse {
   id: number;
   profile_image: string;
   avg_rating: number;
-  avg_cleanliness: number;
-  avg_amenities: number;
-  avg_accessibility: number;
+  cleanliness: number;
+  amenities: number;
+  accessibility: number;
   nickname: string;
   comment: string;
   updated_at: Date;

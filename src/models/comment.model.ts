@@ -23,9 +23,9 @@ class CommentModel {
       profileImage: item.profile_image,
       avgRating: item.avg_rating,
       ratings: {
-        cleanliness: item.avg_cleanliness,
-        amenities: item.avg_amenities,
-        accessibility: item.avg_accessibility,
+        cleanliness: item.cleanliness,
+        amenities: item.amenities,
+        accessibility: item.accessibility,
       },
       nickname: item.nickname,
       content: item.comment,
