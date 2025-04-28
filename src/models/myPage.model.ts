@@ -62,6 +62,37 @@ class MyPageModel {
     }));
   }
 
+  toResponse(): IMyPageResponse {
+    return {
+      favorites: this.#favorites.map((fav) => ({
+        id: fav.id,
+        name: fav.name,
+        street_address: fav.streetAddress,
+        lot_address: fav.lotAddress,
+        latitude: fav.latitude,
+        longitude: fav.longitude,
+        avg_cleanliness: fav.avgCleanliness,
+        avg_amenities: fav.avgAmenities,
+        avg_accessibility: fav.avgAccessibility,
+      })),
+      reviews: this.#reviews.map((rev) => ({
+        id: rev.id,
+        toilet: {
+          id: rev.toilet.id,
+          name: rev.toilet.name,
+          latitude: rev.toilet.latitude,
+          longitude: rev.toilet.longitude,
+        },
+        comment: rev.comment,
+        avg_cleanliness: rev.avgCleanliness,
+        avg_amenities: rev.avgAmenities,
+        avg_accessibility: rev.avgAccessibility,
+        created_at: rev.createdAt,
+        updated_at: rev.updatedAt,
+      })),
+    };
+  }
+
   get favorites() {
     return this.#favorites;
   }
