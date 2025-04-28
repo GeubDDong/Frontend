@@ -6,6 +6,7 @@ import {
   ILikeResponse,
   IToiletDetailResponse,
 } from './scheme';
+import { IRatingItem } from '@/types';
 
 export const fetchDetailInfo = async (id: number) => {
   return requestHandler<IToiletDetailResponse>('get', `/detail/${id}`);
@@ -25,14 +26,43 @@ export const fetchComments = async (id: number) => {
 };
 
 export const addComment = async (
-  id: number,
-  data: Pick<ICommentRequest, 'comment'>,
+  toiletId: number,
+  comment: string,
+  ratings: IRatingItem,
 ) => {
-  return requestHandler('post', `/comments/${id}`, data);
+  return requestHandler<unknown, Omit<ICommentRequest, 'id'>>(
+    'post',
+    `/comments/${toiletId}`,
+    {
+      comment,
+      rating: {
+        cleanliness: ratings.cleanliness,
+        amenities: ratings.amenities,
+        accessibility: ratings.accessibility,
+      },
+    },
+  );
 };
 
-export const updateComment = async (id: number, comment: ICommentRequest) => {
-  return requestHandler('put', `/comments/${id}`, comment);
+export const updateComment = async (
+  toiletId: number,
+  commentId: number,
+  comment: string,
+  ratings: IRatingItem,
+) => {
+  return requestHandler<unknown, ICommentRequest>(
+    'put',
+    `/comments/${toiletId}`,
+    {
+      id: commentId,
+      comment,
+      rating: {
+        cleanliness: ratings.cleanliness,
+        amenities: ratings.amenities,
+        accessibility: ratings.accessibility,
+      },
+    },
+  );
 };
 
 export const removeComment = async (toiletId: number, commentId: number) => {

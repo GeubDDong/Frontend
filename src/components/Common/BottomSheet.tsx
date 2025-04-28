@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
 import useBottomSheet from '@/hooks/useBottomSheet';
+import { Theme } from '@/style/Theme';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -25,6 +26,20 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
   const shouldPreventDragDown = () => {
     if (!sheet.current) return false;
     return sheet.current.scrollTop! > 0 && deltaY.current < 0;
+  };
+
+  const collapse = () => {
+    if (sheet.current) {
+      sheet.current.scrollTop = 0;
+    }
+
+    setHeight(MIN_HEIGHT);
+    setIsExpanded(false);
+  };
+
+  const expand = () => {
+    setHeight(MAX_HEIGHT); // 확장
+    setIsExpanded(true);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -53,11 +68,9 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
     if (shouldPreventDragDown()) return;
 
     if (deltaY.current < 0) {
-      setHeight(MIN_HEIGHT); // 축소
-      setIsExpanded(false);
+      collapse();
     } else if (deltaY.current > 0) {
-      setHeight(MAX_HEIGHT); // 확장
-      setIsExpanded(true);
+      expand();
     }
   };
 
@@ -92,11 +105,9 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
     if (isDragging.current) {
       if (deltaY.current < 0) {
-        setHeight(MIN_HEIGHT);
-        setIsExpanded(false);
+        collapse();
       } else if (deltaY.current > 0) {
-        setHeight(MAX_HEIGHT);
-        setIsExpanded(true);
+        expand();
       }
     }
 
@@ -108,8 +119,7 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
     if (isDragging.current) return;
     if (isExpanded) return;
 
-    setIsExpanded(true);
-    setHeight(MAX_HEIGHT);
+    expand();
   };
 
   return (
@@ -163,7 +173,7 @@ const BottomSheetStyle = styled.div.attrs<{
   position: absolute;
   bottom: 0;
   margin: 0 auto;
-  z-index: 9999;
+  z-index: ${Theme.zIndex.sheet};
   transform: translateY(${({ $isOpen }) => ($isOpen ? '0%' : '100%')});
   transition: ${({ $isDragging }) =>
     $isDragging

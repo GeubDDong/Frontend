@@ -20,6 +20,12 @@ const Login = () => {
           window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${import.meta.env.VITE_GOOGLE_OAUTH_API_KEY}&redirect_uri=${import.meta.env.VITE_GOOGLE_OAUTH_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&prompt=select_account`;
         }
         break;
+      case 'naver':
+        {
+          const state = Math.random();
+          window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${import.meta.env.VITE_NAVER_OAUTH_API_KEY}&state=${state}&redirect_uri=${import.meta.env.VITE_NAVER_OAUTH_REDIRECT_URI}`;
+        }
+        break;
     }
   };
 

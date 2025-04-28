@@ -19,7 +19,7 @@ const CurrentLocationButtonStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: ${Theme.zIndex.element};
   cursor: pointer;
 
   width: 45px;

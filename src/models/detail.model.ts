@@ -1,4 +1,5 @@
 import { IToiletDetailResponse } from '@/api/scheme';
+import { IRatingItem } from '@/types';
 import { formatDateToString } from '@/utils/dateUtil';
 
 export interface IToiletDetailModel {
@@ -7,9 +8,7 @@ export interface IToiletDetailModel {
   latitude: number;
   longitude: number;
   openHour: string;
-  cleanliness: number;
-  amenities: number;
-  accessibility: number;
+  ratingItems: IRatingItem;
   rating: number;
   management: IToiletManagementModel;
   facility: IToiletFacilityModel;
@@ -55,13 +54,15 @@ class DetailModel {
   constructor(info: IToiletDetailResponse) {
     this.#info = {
       name: info.name,
-      address: info.street_address ?? info.lot_address,
+      address: info.street_address || info.lot_address,
       latitude: info.latitude,
       longitude: info.longitude,
       openHour: info.open_hour,
-      cleanliness: info.avg_cleanliness,
-      amenities: info.avg_amenities,
-      accessibility: info.avg_accessibility,
+      ratingItems: {
+        cleanliness: info.avg_cleanliness,
+        amenities: info.avg_amenities,
+        accessibility: info.avg_accessibility,
+      },
       rating: info.avg_rating,
       management: {
         name: info.management.name,
