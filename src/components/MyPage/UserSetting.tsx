@@ -2,6 +2,7 @@ import useAuth from '@/hooks/useAuth';
 import { useState } from 'react';
 import { FaSignOutAlt, FaUserAltSlash } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 const UserSetting = () => {
@@ -13,7 +14,7 @@ const UserSetting = () => {
   };
 
   const handleDeleteAccount = () => {
-    console.log('회원탈퇴');
+    toast('준비중인 기능입니다.', { toastId: 9999 });
   };
   return (
     <UserSettingStyle>
@@ -25,7 +26,7 @@ const UserSetting = () => {
             로그아웃
           </button>
           <div className="divider" />
-          <button onClick={handleDeleteAccount}>
+          <button onClick={handleDeleteAccount} className="disabled">
             <FaUserAltSlash />
             회원탈퇴
           </button>
@@ -82,6 +83,10 @@ const UserSettingStyle = styled.div`
       font-size: 14px;
       &:hover {
         background-color: #f2f2f2;
+      }
+
+      &.disabled {
+        color: #acacac;
       }
     }
   }
