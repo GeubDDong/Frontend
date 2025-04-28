@@ -48,13 +48,13 @@ export interface ICommentActionModel {
 export class CommentActionModel {
   #rating: ICommentActionModel;
 
-  constructor(data: ICommentActionResponse) {
+  constructor(response: ICommentActionResponse) {
     this.#rating = {
-      avgRating: data.avg_rating,
+      avgRating: response.data.avg_rating,
       ratingItems: {
-        cleanliness: data.avg_cleanliness,
-        amenities: data.avg_amenities,
-        accessibility: data.avg_accessibility,
+        cleanliness: response.data.avg_cleanliness,
+        amenities: response.data.avg_amenities,
+        accessibility: response.data.avg_accessibility,
       },
     };
   }

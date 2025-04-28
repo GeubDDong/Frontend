@@ -68,10 +68,12 @@ export interface ICommentItemResponse {
 
 // 댓글 등록, 수정, 삭제시 응답 스키마
 export interface ICommentActionResponse {
-  avg_cleanliness: number;
-  avg_amenities: number;
-  avg_accessibility: number;
-  avg_rating: number;
+  data: {
+    avg_cleanliness: number;
+    avg_amenities: number;
+    avg_accessibility: number;
+    avg_rating: number;
+  };
 }
 //#endregion
 
