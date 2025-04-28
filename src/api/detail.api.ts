@@ -66,7 +66,7 @@ export const updateComment = async (
 };
 
 export const removeComment = async (toiletId: number, commentId: number) => {
-  return requestHandler('delete', `/comments/${toiletId}/${commentId}`);
+  return requestHandler('delete', `/comments/${toiletId}`, { id: commentId });
 };
 
 export const fetchLike = async (id: number) => {
