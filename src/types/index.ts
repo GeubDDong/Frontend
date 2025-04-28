@@ -26,3 +26,9 @@ export interface IFilterItem {
   label: string;
   query: string;
 }
+
+export interface IRatingItem {
+  cleanliness: number;
+  amenities: number;
+  accessibility: number;
+}
