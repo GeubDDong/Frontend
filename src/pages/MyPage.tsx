@@ -15,6 +15,7 @@ const MyPage = () => {
     }
   }, []);
 
+  if (!isLogin) return <></>;
   return (
     <MyPageStyle>
       <UserInfo />
