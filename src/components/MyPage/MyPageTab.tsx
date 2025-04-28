@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ScrollList from './ScrollList';
 import { TTabType } from '@/types';
 import useMyPage from '@/hooks/useMyPage';
-import MyPageModel from '@/models/myPage.model';
 
 const MyPageTab = () => {
   const [tabType, setTabType] = useState<TTabType>('likeList');
@@ -22,11 +21,16 @@ const MyPageTab = () => {
           </div>
         </div>
       </div>
-      <ScrollList
-        tabType={tabType}
-        listItems={myPageInfo as MyPageModel}
-        setListItems={setMyPageInfo}
-      />
+      {myPageInfo && (
+        <ScrollList
+          tabType={tabType}
+          listItems={myPageInfo}
+          setListItems={setMyPageInfo}
+        />
+      )}
+      {!myPageInfo && (
+        <div className="fail">데이터를 가져오는 데 실패했습니다.</div>
+      )}
     </MyPageTabStyle>
   );
 };
@@ -67,5 +71,11 @@ const MyPageTabStyle = styled.div`
         }
       }
     }
+  }
+  .fail {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
   }
 `;
