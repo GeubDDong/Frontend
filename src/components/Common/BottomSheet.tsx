@@ -28,6 +28,20 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
     return sheet.current.scrollTop! > 0 && deltaY.current < 0;
   };
 
+  const collapse = () => {
+    if (sheet.current) {
+      sheet.current.scrollTop = 0;
+    }
+
+    setHeight(MIN_HEIGHT);
+    setIsExpanded(false);
+  };
+
+  const expand = () => {
+    setHeight(MAX_HEIGHT); // 확장
+    setIsExpanded(true);
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     isDragging.current = false;
 
@@ -54,11 +68,9 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
     if (shouldPreventDragDown()) return;
 
     if (deltaY.current < 0) {
-      setHeight(MIN_HEIGHT); // 축소
-      setIsExpanded(false);
+      collapse();
     } else if (deltaY.current > 0) {
-      setHeight(MAX_HEIGHT); // 확장
-      setIsExpanded(true);
+      expand();
     }
   };
 
@@ -93,11 +105,9 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
     if (isDragging.current) {
       if (deltaY.current < 0) {
-        setHeight(MIN_HEIGHT);
-        setIsExpanded(false);
+        collapse();
       } else if (deltaY.current > 0) {
-        setHeight(MAX_HEIGHT);
-        setIsExpanded(true);
+        expand();
       }
     }
 
@@ -109,8 +119,7 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
     if (isDragging.current) return;
     if (isExpanded) return;
 
-    setIsExpanded(true);
-    setHeight(MAX_HEIGHT);
+    expand();
   };
 
   return (
