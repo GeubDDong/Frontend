@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import ScrollList from './ScrollList';
 import { TTabType } from '@/types';
 import useMyPage from '@/hooks/useMyPage';
+import MyPageModel from '@/models/myPage.model';
 
 const MyPageTab = () => {
   const [tabType, setTabType] = useState<TTabType>('likeList');
-  const { myPageInfo } = useMyPage();
+  const { myPageInfo, setMyPageInfo } = useMyPage();
   return (
     <MyPageTabStyle>
       <div className="tab_header_container">
@@ -21,7 +22,11 @@ const MyPageTab = () => {
           </div>
         </div>
       </div>
-      {myPageInfo && <ScrollList tabType={tabType} listItems={myPageInfo} />}
+      <ScrollList
+        tabType={tabType}
+        listItems={myPageInfo as MyPageModel}
+        setListItems={setMyPageInfo}
+      />
     </MyPageTabStyle>
   );
 };
