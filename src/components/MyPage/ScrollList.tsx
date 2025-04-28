@@ -1,7 +1,7 @@
 import { TTabType } from '@/types';
 import styled from 'styled-components';
 import ItemCard from './ItemCard';
-import MyPageModel from '@/models/myPage.model';
+import MyPageModel, { IFavoriteItem, IReviewItem } from '@/models/myPage.model';
 
 interface IScrollListProps {
   tabType: TTabType;
@@ -14,8 +14,9 @@ const ScrollList = ({ tabType, listItems, setListItems }: IScrollListProps) => {
     <ScrollListStyle>
       {tabType === 'likeList' &&
         (listItems.favorites.length > 0 ? (
-          listItems.favorites.map((item) => (
+          listItems.favorites.map((item: IFavoriteItem) => (
             <ItemCard
+              key={`likeItem_${item.id}`}
               tabType={tabType}
               item={item}
               listItems={listItems}
@@ -27,8 +28,9 @@ const ScrollList = ({ tabType, listItems, setListItems }: IScrollListProps) => {
         ))}
       {tabType === 'reviewList' &&
         (listItems.reviews.length > 0 ? (
-          listItems.reviews.map((item) => (
+          listItems.reviews.map((item: IReviewItem) => (
             <ItemCard
+              key={`reviewItem_${item.toiletId}`}
               tabType={tabType}
               item={item}
               listItems={listItems}
