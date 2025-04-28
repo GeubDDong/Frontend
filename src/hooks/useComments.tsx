@@ -20,6 +20,8 @@ const useComments = (toiletId: number | undefined) => {
       const res = await fetchComments(toiletId);
       if ('comments' in res) {
         setComments(new CommentModel(res).comments);
+      } else {
+        setComments([]);
       }
     } catch (error) {
       // TODO: 에러처리
