@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { FaStar } from 'react-icons/fa';
 import ProgressBar from '../Common/ProgressBar';
 import { Theme } from '@/style/Theme';
+import Star from '../Common/Star';
 
 interface RatingProps {
   total: number;
@@ -19,7 +19,7 @@ const Rating = ({
   return (
     <RatingStyles>
       <div className="total">
-        <FaStar color={Theme.colors.star} size="2rem" />
+        <Star status="fill" size={35} />
         <div className="rate">
           <span className="score">{total}</span>
           <span className="outOf">/5</span>
