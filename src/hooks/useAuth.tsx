@@ -29,6 +29,11 @@ const useAuth = () => {
     }
   };
 
+  const updateNickname = (nickname: string) => {
+    if (!user) return;
+    setUser({ ...user, nickname });
+  };
+
   const isLogin = !!user;
 
   return {
@@ -36,6 +41,7 @@ const useAuth = () => {
     isLogin,
     login: handleLogin,
     logout: handleLogout,
+    updateNickname,
   };
 };
 
