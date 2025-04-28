@@ -94,3 +94,38 @@ export interface IToiletFacilityResponse {
   reference_date: Date;
 }
 //#endregion
+
+//#region 마이페이지
+export interface IFavoriteResponse {
+  id: number;
+  name: string;
+  street_address: string;
+  lot_address: string;
+  latitude: number;
+  longitude: number;
+  avg_cleanliness: number;
+  avg_amenities: number;
+  avg_accessibility: number;
+}
+
+export interface IReviewResponse {
+  id: number;
+  toilet: {
+    id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
+  comment: string;
+  avg_cleanliness: number;
+  avg_amenities: number;
+  avg_accessibility: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IMyPageResponse {
+  favorites: IFavoriteResponse[];
+  reviews: IReviewResponse[];
+}
+//#endregion
