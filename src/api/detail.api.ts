@@ -70,9 +70,7 @@ export const removeComment = async (toiletId: number, commentId: number) => {
 };
 
 export const fetchLike = async (id: number) => {
-  const url = useAuthStore.getState().user ? '' : '/public';
-
-  return requestHandler<ILikeResponse>('get', `/favorites/${id}${url}`);
+  return requestHandler<ILikeResponse>('get', `/favorites/${id}`);
 };
 
 export const addLike = async (id: number) => {
