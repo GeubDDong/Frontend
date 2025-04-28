@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { refreshToken } from './auth.api';
 
 const BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
-const DEFAULT_TIMEOUT = 3000;
+const DEFAULT_TIMEOUT = 5000;
 
 const createClient = (config?: AxiosRequestConfig) => {
   const axiosInstance = axios.create({
