@@ -53,12 +53,12 @@ const ItemCard = ({
     navigate('/');
   };
 
-  const handleClickDelete = async (e: React.MouseEvent) => {
+  const handleClickDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsModalOpen(true);
   };
 
-  const deleteFunction = async () => {
+  const confirmDelete = async () => {
     try {
       const newListItemsResponse = listItems.toResponse();
       if (tabType === 'likeList') {
@@ -82,6 +82,10 @@ const ItemCard = ({
       toast('삭제에 실패하였습니다.', { toastId: 4444 });
       setIsModalOpen(false);
     }
+  };
+
+  const cancelDelete = () => {
+    setIsModalOpen(false);
   };
 
   const ScoreComponent = ({
@@ -108,44 +112,46 @@ const ItemCard = ({
   };
 
   return (
-    <ItemCardStyle onClick={handleClickCard}>
-      <FaRegTrashCan className="delete_button" onClick={handleClickDelete} />
-      {tabType === 'likeList' && (
-        <div className="card">
-          <span className="name">{(item as IFavoriteItem).name}</span>
-          <span className="address">
-            {(item as IFavoriteItem).streetAddress ||
-              (item as IFavoriteItem).lotAddress}
-          </span>
-          <ScoreComponent
-            cleanliness={item.avgCleanliness}
-            amenities={item.avgAmenities}
-            accessibility={item.avgAccessibility}
-          />
-        </div>
-      )}
-      {tabType === 'reviewList' && (
-        <div className="card">
-          {(item as IReviewItem).comment && (
-            <span className="comment">{(item as IReviewItem).comment}</span>
-          )}
-          <ScoreComponent
-            cleanliness={item.avgCleanliness}
-            amenities={item.avgAmenities}
-            accessibility={item.avgAccessibility}
-          />
-          <span className="date">{(item as IReviewItem).updatedAt}</span>
-          <span className="toilet_name">{(item as IReviewItem).name}</span>
-        </div>
-      )}
+    <>
+      <ItemCardStyle onClick={handleClickCard}>
+        <FaRegTrashCan className="delete_button" onClick={handleClickDelete} />
+        {tabType === 'likeList' && (
+          <div className="card">
+            <span className="name">{(item as IFavoriteItem).name}</span>
+            <span className="address">
+              {(item as IFavoriteItem).streetAddress ||
+                (item as IFavoriteItem).lotAddress}
+            </span>
+            <ScoreComponent
+              cleanliness={item.avgCleanliness}
+              amenities={item.avgAmenities}
+              accessibility={item.avgAccessibility}
+            />
+          </div>
+        )}
+        {tabType === 'reviewList' && (
+          <div className="card">
+            {(item as IReviewItem).comment && (
+              <span className="comment">{(item as IReviewItem).comment}</span>
+            )}
+            <ScoreComponent
+              cleanliness={item.avgCleanliness}
+              amenities={item.avgAmenities}
+              accessibility={item.avgAccessibility}
+            />
+            <span className="date">{(item as IReviewItem).updatedAt}</span>
+            <span className="toilet_name">{(item as IReviewItem).name}</span>
+          </div>
+        )}
+      </ItemCardStyle>
       {isModalOpen && (
         <ConfirmModal
           message="정말로 삭제하시겠습니까?"
-          onConfirm={deleteFunction}
-          onCancel={() => {}}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
         />
       )}
-    </ItemCardStyle>
+    </>
   );
 };
 
