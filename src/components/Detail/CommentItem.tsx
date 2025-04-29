@@ -23,7 +23,6 @@ const CommentItem = ({
   removeComment,
 }: CommentItemProps) => {
   const handleClickEdit = () => {
-    console.log(item);
     overlay.open(({ isOpen, unmount }) => {
       return (
         <CommentModal
