@@ -6,6 +6,8 @@ import CommentModal from './CommentModal';
 import ProfileImage from '../Common/ProfileImage';
 import StarRating from '../Common/StarRating';
 import { IRatingItem } from '@/types';
+import { useState } from 'react';
+import ConfirmModal from '../Common/ConfirmModal';
 
 interface CommentItemProps {
   item: ICommentModel;
@@ -22,6 +24,8 @@ const CommentItem = ({
   updateComment,
   removeComment,
 }: CommentItemProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleClickEdit = () => {
     overlay.open(({ isOpen, unmount }) => {
       return (
@@ -37,26 +41,48 @@ const CommentItem = ({
     });
   };
 
+  const handleClickDelete = () => {
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    removeComment(item.id);
+    setIsModalOpen(false);
+  };
+
+  const cancelDelete = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <CommentItemStyle>
-      <ProfileImage src={item.profileImage} size={40} />
-      <div className="content">
-        <div className="info">
-          <div className="nickname">{item.nickname}</div>
-          <div className="date">{item.createdAt}</div>
-          {item.isMine && (
-            <div className="buttons">
-              <button onClick={handleClickEdit}>수정</button>
-              <button onClick={() => removeComment(item.id)}>삭제</button>
-            </div>
-          )}
+    <>
+      <CommentItemStyle>
+        <ProfileImage src={item.profileImage} size={40} />
+        <div className="content">
+          <div className="info">
+            <div className="nickname">{item.nickname}</div>
+            <div className="date">{item.createdAt}</div>
+            {item.isMine && (
+              <div className="buttons">
+                <button onClick={handleClickEdit}>수정</button>
+                <button onClick={handleClickDelete}>삭제</button>
+              </div>
+            )}
+          </div>
+          <div className="star">
+            <StarRating value={item.avgRating} size={15} />
+          </div>
+          <div className="comment">{item.content}</div>
         </div>
-        <div className="star">
-          <StarRating value={item.avgRating} size={15} />
-        </div>
-        <div className="comment">{item.content}</div>
-      </div>
-    </CommentItemStyle>
+      </CommentItemStyle>
+      {isModalOpen && (
+        <ConfirmModal
+          message="정말로 삭제하시겠습니까?"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
+      )}
+    </>
   );
 };
 

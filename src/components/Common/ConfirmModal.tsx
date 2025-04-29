@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
+import ReactDOM from 'react-dom';
 import { Theme } from '@/style/Theme';
 
 interface IConfirmModalProps {
@@ -9,7 +10,7 @@ interface IConfirmModalProps {
 }
 
 const ConfirmModal = ({ message, onConfirm, onCancel }: IConfirmModalProps) => {
-  return (
+  const modalContent = (
     <ConfirmModalStyle>
       <div className="modal_contents">
         <div className="modal_header">
@@ -31,6 +32,8 @@ const ConfirmModal = ({ message, onConfirm, onCancel }: IConfirmModalProps) => {
       </div>
     </ConfirmModalStyle>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 };
 
 export default ConfirmModal;
