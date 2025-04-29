@@ -21,5 +21,6 @@ export const Theme = {
     element: 100,
     sheet: 200,
     overlay: 300,
+    splash: 400,
   },
 };
