@@ -9,7 +9,7 @@ const InfoWindow = () => {
     useSelectedInfo();
 
   const handleClick = (info: IMapMarkersModelToiletItem) => {
-    setSelectedToilet(info);
+    setSelectedToilet(info.id);
     setIsInfoOpened(false);
   };
 

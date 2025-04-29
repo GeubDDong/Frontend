@@ -17,7 +17,7 @@ const ToiletMarker = ({ info }: IToiletMarkerProps) => {
   const markerType: MarkerType = (() => {
     if (
       selectedToilet &&
-      info.toilets.some((item) => item.id === selectedToilet.id)
+      info.toilets.some((item) => item.id === selectedToilet)
     ) {
       return 'selected';
     }
@@ -30,7 +30,7 @@ const ToiletMarker = ({ info }: IToiletMarkerProps) => {
   const handleClick = () => {
     setSelectedMarker(info);
     if (info.toilets.length === 1) {
-      setSelectedToilet(info.toilets[0]);
+      setSelectedToilet(info.toilets[0].id);
       setIsInfoOpened(false);
     } else {
       setIsInfoOpened(true);

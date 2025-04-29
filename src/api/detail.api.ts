@@ -1,6 +1,7 @@
 import requestHandler from '@/api/requestHandler';
 import { useAuthStore } from '@/store/authStore';
 import {
+  ICommentActionResponse,
   ICommentRequest,
   ICommentsResponse,
   ILikeResponse,
@@ -30,18 +31,17 @@ export const addComment = async (
   comment: string,
   ratings: IRatingItem,
 ) => {
-  return requestHandler<unknown, Omit<ICommentRequest, 'id'>>(
-    'post',
-    `/comments/${toiletId}`,
-    {
-      comment,
-      rating: {
-        cleanliness: ratings.cleanliness,
-        amenities: ratings.amenities,
-        accessibility: ratings.accessibility,
-      },
+  return requestHandler<
+    ICommentActionResponse,
+    Omit<ICommentRequest, 'commentId'>
+  >('post', `/comments/${toiletId}`, {
+    comment,
+    rating: {
+      cleanliness: ratings.cleanliness,
+      amenities: ratings.amenities,
+      accessibility: ratings.accessibility,
     },
-  );
+  });
 };
 
 export const updateComment = async (
@@ -50,11 +50,11 @@ export const updateComment = async (
   comment: string,
   ratings: IRatingItem,
 ) => {
-  return requestHandler<unknown, ICommentRequest>(
+  return requestHandler<ICommentActionResponse, ICommentRequest>(
     'put',
     `/comments/${toiletId}`,
     {
-      id: commentId,
+      commentId: commentId,
       comment,
       rating: {
         cleanliness: ratings.cleanliness,
@@ -66,13 +66,15 @@ export const updateComment = async (
 };
 
 export const removeComment = async (toiletId: number, commentId: number) => {
-  return requestHandler('delete', `/comments/${toiletId}/${commentId}`);
+  return requestHandler<ICommentActionResponse>(
+    'delete',
+    `/comments/${toiletId}`,
+    { id: commentId },
+  );
 };
 
 export const fetchLike = async (id: number) => {
-  const url = useAuthStore.getState().user ? '' : '/public';
-
-  return requestHandler<ILikeResponse>('get', `/favorites/${id}${url}`);
+  return requestHandler<ILikeResponse>('get', `/favorites/${id}`);
 };
 
 export const addLike = async (id: number) => {

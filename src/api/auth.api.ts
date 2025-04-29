@@ -17,5 +17,7 @@ export const logout = async () => {
 };
 
 export const refreshToken = async () => {
-  return requestHandler('post', '/auth/refresh');
+  return requestHandler('post', '/auth/refresh', undefined, {
+    refreshAndRetry: false,
+  });
 };

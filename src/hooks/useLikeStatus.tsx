@@ -37,7 +37,7 @@ const useLikeStatus = (toiletId: number | undefined) => {
 
   useEffect(() => {
     loadLikeStatus();
-  }, []);
+  }, [toiletId]);
 
   return {
     isLike,

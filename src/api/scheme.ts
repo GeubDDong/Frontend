@@ -25,7 +25,7 @@ export interface IAuthLoginResponse {
 export interface IUserResponse {
   email: string;
   nickname: string;
-  profile_Image: string;
+  profile_image: string;
 }
 //#endregion
 
@@ -37,7 +37,7 @@ export interface ILikeResponse {
 
 //#region 댓글
 export interface ICommentRequest {
-  id: number;
+  commentId: number;
   comment: string;
   rating: ICommentRatingRequest;
 }
@@ -56,14 +56,24 @@ export interface ICommentItemResponse {
   id: number;
   profile_image: string;
   avg_rating: number;
-  avg_cleanliness: number;
-  avg_amenities: number;
-  avg_accessibility: number;
+  cleanliness: number;
+  amenities: number;
+  accessibility: number;
   nickname: string;
   comment: string;
   updated_at: Date;
   created_at: Date;
   isMine: boolean;
+}
+
+// 댓글 등록, 수정, 삭제시 응답 스키마
+export interface ICommentActionResponse {
+  data: {
+    avg_cleanliness: number;
+    avg_amenities: number;
+    avg_accessibility: number;
+    avg_rating: number;
+  };
 }
 //#endregion
 
@@ -102,5 +112,38 @@ export interface IToiletFacilityResponse {
   cctv: string;
   diaper_changing_station: string;
   reference_date: Date;
+}
+//#endregion
+
+//#region 마이페이지
+export interface IFavoriteResponse {
+  id: number;
+  name: string;
+  street_address: string;
+  lot_address: string;
+  latitude: number;
+  longitude: number;
+  avg_cleanliness: number;
+  avg_amenities: number;
+  avg_accessibility: number;
+}
+
+export interface IReviewResponse {
+  id: number;
+  comment: string;
+  avg_cleanliness: number;
+  avg_amenities: number;
+  avg_accessibility: number;
+  created_at: string;
+  updated_at: string;
+  toilet_id: number;
+  toilet_name: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface IMyPageResponse {
+  favorites: IFavoriteResponse[];
+  reviews: IReviewResponse[];
 }
 //#endregion

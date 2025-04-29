@@ -1,4 +1,4 @@
-import { ICommentsResponse } from '@/api/scheme';
+import { ICommentActionResponse, ICommentsResponse } from '@/api/scheme';
 import { IRatingItem } from '@/types';
 import { formatDateToString } from '@/utils/dateUtil';
 
@@ -14,7 +14,7 @@ export interface ICommentModel {
   isMine: boolean;
 }
 
-class CommentModel {
+export class CommentModel {
   #comments: ICommentModel[];
 
   constructor(commentsData: ICommentsResponse) {
@@ -23,9 +23,9 @@ class CommentModel {
       profileImage: item.profile_image,
       avgRating: item.avg_rating,
       ratings: {
-        cleanliness: item.avg_cleanliness,
-        amenities: item.avg_amenities,
-        accessibility: item.avg_accessibility,
+        cleanliness: item.cleanliness,
+        amenities: item.amenities,
+        accessibility: item.accessibility,
       },
       nickname: item.nickname,
       content: item.comment,
@@ -40,4 +40,26 @@ class CommentModel {
   }
 }
 
-export default CommentModel;
+export interface ICommentActionModel {
+  avgRating: number;
+  ratingItems: IRatingItem;
+}
+
+export class CommentActionModel {
+  #rating: ICommentActionModel;
+
+  constructor(response: ICommentActionResponse) {
+    this.#rating = {
+      avgRating: response.data.avg_rating,
+      ratingItems: {
+        cleanliness: response.data.avg_cleanliness,
+        amenities: response.data.avg_amenities,
+        accessibility: response.data.avg_accessibility,
+      },
+    };
+  }
+
+  get rating() {
+    return this.#rating;
+  }
+}

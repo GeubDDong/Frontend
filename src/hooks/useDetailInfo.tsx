@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { fetchDetailInfo } from '@/api/detail.api';
-import DetailModel, { IToiletDetailModel } from '@/models/detail.model';
+import DetailModel from '@/models/detail.model';
+import useToiletInfoStore from '@/store/toiletInfoStore';
 
 const useDetailInfo = (toiletId: number | undefined) => {
-  const [detailInfo, setDetailInfo] = useState<IToiletDetailModel | null>(null);
+  const { detailInfo, setDetailInfo } = useToiletInfoStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const loadDetailInfo = async () => {
@@ -24,6 +25,7 @@ const useDetailInfo = (toiletId: number | undefined) => {
 
   return {
     detailInfo,
+    setDetailInfo,
     loadDetailInfo,
     isLoading,
   };

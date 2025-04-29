@@ -27,6 +27,8 @@ export interface IFilterItem {
   query: string;
 }
 
+export type TTabType = 'likeList' | 'reviewList';
+
 export interface IRatingItem {
   cleanliness: number;
   amenities: number;
