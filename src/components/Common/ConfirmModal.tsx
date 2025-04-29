@@ -45,7 +45,7 @@ const ConfirmModalStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: ${Theme.zIndex.overlay};
 
   .modal_contents {
     background-color: white;
@@ -71,17 +71,18 @@ const ConfirmModalStyle = styled.div`
     }
     .modal_footer {
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: center;
+      gap: 20px;
       button {
         padding: 8px 16px;
-        border: none;
         cursor: pointer;
-        font-size: 16px;
+        font-size: ${Theme.fontSize.sm};
+        border-radius: 8px;
+        border: 1px solid #e3e3e3;
       }
       .cancel_button {
-        background-color: #f0f0f0;
-        color: #555;
+        background-color: white;
+        color: ${Theme.colors.mainText};
       }
       .confirm_button {
         background-color: ${Theme.colors.primary};
