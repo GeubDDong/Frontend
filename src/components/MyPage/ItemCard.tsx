@@ -1,4 +1,3 @@
-import { removeComment, removeLike } from '@/api/detail.api';
 import useMapInfo from '@/hooks/useMapInfo';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import MyPageModel, { IFavoriteItem, IReviewItem } from '@/models/myPage.model';
@@ -8,9 +7,11 @@ import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import ConfirmModal from '../Common/ConfirmModal';
+import { showToast } from '@/utils/toast';
+import useComments from '@/hooks/useComments';
+import useLikeStatus from '@/hooks/useLikeStatus';
 
 interface IItemCardProps {
   tabType: TTabType;
@@ -35,6 +36,8 @@ const ItemCard = ({
   const { setCenter } = useMapInfo();
   const { setSelectedToilet } = useSelectedInfo();
   const navigate = useNavigate();
+  const { removeComment } = useComments((item as IReviewItem).toiletId);
+  const { removeLike } = useLikeStatus((item as IFavoriteItem).id);
 
   const handleClickCard = () => {
     if (tabType === 'likeList') {
@@ -62,15 +65,12 @@ const ItemCard = ({
     try {
       const newListItemsResponse = listItems.toResponse();
       if (tabType === 'likeList') {
-        await removeLike((item as IFavoriteItem).id);
+        await removeLike();
         newListItemsResponse.favorites = newListItemsResponse.favorites.filter(
           (res) => res.id !== (item as IFavoriteItem).id,
         );
       } else if (tabType === 'reviewList') {
-        await removeComment(
-          (item as IReviewItem).toiletId,
-          (item as IReviewItem).id,
-        );
+        await removeComment((item as IReviewItem).id);
         newListItemsResponse.reviews = newListItemsResponse.reviews.filter(
           (res) => res.id !== (item as IReviewItem).id,
         );
@@ -79,7 +79,7 @@ const ItemCard = ({
       setIsModalOpen(false);
     } catch (error) {
       console.error(error);
-      toast('삭제에 실패하였습니다.', { toastId: 4444 });
+      showToast('error', '삭제에 실패하였습니다.');
       setIsModalOpen(false);
     }
   };
