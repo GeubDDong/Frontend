@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { GlobalStyle } from '@/style/GlobalStyle';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Bounce, ToastContainer } from 'react-toastify';
-import 'react-toastify/ReactToastify.css';
+// import 'react-toastify/ReactToastify.css';
 import BottomTab from './components/Common/BottomTab';
 import routeElements from './routes';
 import useKakaoLoader from './hooks/useKakaoLoader';
@@ -29,11 +29,15 @@ function App() {
         </Router>
       )}
       <ToastContainer
-        position="top-center"
-        limit={1}
+        position="bottom-center"
+        limit={3}
         closeButton={false}
         autoClose={1000}
-        theme="colored"
+        toastStyle={{
+          backgroundColor: '#5e5e5e',
+          color: 'white',
+          borderRadius: '10px',
+        }}
         transition={Bounce}
         hideProgressBar
       />
