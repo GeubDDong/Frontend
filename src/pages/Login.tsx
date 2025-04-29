@@ -1,12 +1,32 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
 import logo from '@/assets/logo.png';
-import kakao from '@/assets/kakao.png';
+import kakao from '@/assets/kakao.svg';
+import google from '@/assets/google.svg';
+import naver from '@/assets/naver.svg';
 import BackButton from '@/components/Common/BackButton';
+import { TLoginProvider } from '@/types';
 
 const Login = () => {
-  const handleClick = () => {
-    window.location.href = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/login/kakao`;
+  const handleClick = (provider: TLoginProvider) => {
+    switch (provider) {
+      case 'kakao':
+        {
+          window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${import.meta.env.VITE_KAKAO_OAUTH_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_OAUTH_REDIRECT_URI}&response_type=code&prompt=login`;
+        }
+        break;
+      case 'google':
+        {
+          window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${import.meta.env.VITE_GOOGLE_OAUTH_API_KEY}&redirect_uri=${import.meta.env.VITE_GOOGLE_OAUTH_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&prompt=select_account`;
+        }
+        break;
+      case 'naver':
+        {
+          const state = Math.random();
+          window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${import.meta.env.VITE_NAVER_OAUTH_API_KEY}&state=${state}&redirect_uri=${import.meta.env.VITE_NAVER_OAUTH_REDIRECT_URI}`;
+        }
+        break;
+    }
   };
 
   return (
@@ -33,7 +53,19 @@ const Login = () => {
               src={kakao}
               alt="kakao_login"
               style={{ cursor: 'pointer' }}
-              onClick={handleClick}
+              onClick={() => handleClick('kakao')}
+            />
+            <img
+              src={google}
+              alt="google_login"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleClick('google')}
+            />
+            <img
+              src={naver}
+              alt="naver_login"
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleClick('naver')}
             />
           </div>
         </div>
@@ -80,6 +112,12 @@ const LoginStyle = styled.div`
     width: 100%;
     font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.subText};
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 `;
 

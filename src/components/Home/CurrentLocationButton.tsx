@@ -1,26 +1,13 @@
 import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
-import useCurrentLocation from '@/hooks/useCurrentLocation';
-import { toast } from 'react-toastify';
-import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
-import useLocationStore from '@/store/locationStore';
+import useMapInfo from '@/hooks/useMapInfo';
 
 const CurrentLocationButton = () => {
-  const setCenter = useLocationStore((state) => state.setCenter);
-  const { getLocation } = useCurrentLocation();
-  const handleClick = async () => {
-    await getLocation()
-      .then((location) => {
-        setCenter(location);
-      })
-      .catch((errorCode) => {
-        toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
-      });
-  };
+  const { getCurrentLocation } = useMapInfo();
 
   return (
-    <CurrentLocationButtonStyle onClick={handleClick}>
+    <CurrentLocationButtonStyle onClick={getCurrentLocation}>
       <FaLocationCrosshairs />
     </CurrentLocationButtonStyle>
   );
@@ -32,7 +19,7 @@ const CurrentLocationButtonStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: ${Theme.zIndex.element};
   cursor: pointer;
 
   width: 45px;

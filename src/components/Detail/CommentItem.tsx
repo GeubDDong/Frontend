@@ -1,87 +1,61 @@
 import { Theme } from '@/style/Theme';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { IoPersonCircle } from 'react-icons/io5';
-import { ICommentItem } from '@/models/detail.model';
-import { formatDateToString } from '@/utils/dateUtil';
-import { fetchComments, removeComment, updateComment } from '@/api/detail.api';
-import { useCurrentToiletInfo } from '@/hooks/useCurrentToiletInfo';
+import { ICommentModel } from '@/models/comment.model';
+import { overlay } from 'overlay-kit';
+import CommentModal from './CommentModal';
+import ProfileImage from '../Common/ProfileImage';
+import StarRating from '../Common/StarRating';
+import { IRatingItem } from '@/types';
 
 interface CommentItemProps {
-  item: ICommentItem;
-  setComments: React.Dispatch<React.SetStateAction<ICommentItem[]>>;
+  item: ICommentModel;
+  updateComment: (
+    id: number,
+    comment: string,
+    ratings: IRatingItem,
+  ) => Promise<void>;
+  removeComment: (id: number) => Promise<void>;
 }
 
-const CommentItem = ({ item, setComments }: CommentItemProps) => {
-  const [edit, setEdit] = useState<boolean>(false);
-  const [editText, setEditText] = useState('');
-  const { toiletId } = useCurrentToiletInfo();
-
-  const handleClickEdit = async () => {
-    setEdit(!edit);
-    setEditText(item.comment);
-  };
-
-  const handleClickDelete = async () => {
-    if (!toiletId) return;
-
-    if (edit) {
-      try {
-        await updateComment(toiletId, { id: item.id, comment: editText });
-
-        const res = await fetchComments(toiletId);
-        if ('comments' in res) {
-          setComments(res.comments.reverse());
-        }
-
-        setEdit(false);
-      } catch (error) {
-        console.error('댓글 수정 실패:', error);
-      }
-    } else {
-      if (!toiletId) return;
-
-      try {
-        await removeComment(toiletId, item.id);
-
-        setComments((prevComments) =>
-          prevComments.filter((comment) => comment.id !== item.id),
-        );
-      } catch (error) {
-        console.error('댓글 삭제 실패:', error);
-      }
-    }
+const CommentItem = ({
+  item,
+  updateComment,
+  removeComment,
+}: CommentItemProps) => {
+  const handleClickEdit = () => {
+    console.log(item);
+    overlay.open(({ isOpen, unmount }) => {
+      return (
+        <CommentModal
+          isOpen={isOpen}
+          onExit={unmount}
+          initialRatings={item.ratings}
+          updateComment={updateComment}
+          commentId={item.id}
+          comment={item.content}
+        />
+      );
+    });
   };
 
   return (
     <CommentItemStyle>
-      <div className="profile">
-        <IoPersonCircle size="3rem" style={{ color: Theme.colors.secondary }} />
-      </div>
+      <ProfileImage src={item.profileImage} size={40} />
       <div className="content">
-        <div className="top">
+        <div className="info">
           <div className="nickname">{item.nickname}</div>
-          <div className="date">{formatDateToString(item.updated_at)}</div>
+          <div className="date">{item.createdAt}</div>
           {item.isMine && (
             <div className="buttons">
-              <button style={{ cursor: 'pointer' }} onClick={handleClickEdit}>
-                {edit ? '취소' : '수정'}
-              </button>
-              <button style={{ cursor: 'pointer' }} onClick={handleClickDelete}>
-                {edit ? '확인' : '삭제'}
-              </button>
+              <button onClick={handleClickEdit}>수정</button>
+              <button onClick={() => removeComment(item.id)}>삭제</button>
             </div>
           )}
         </div>
-        {edit ? (
-          <input
-            type="text"
-            value={editText}
-            onChange={(e) => setEditText(e.target.value)}
-          />
-        ) : (
-          <div className="comment">{item.comment}</div>
-        )}
+        <div className="star">
+          <StarRating value={item.avgRating} size={15} />
+        </div>
+        <div className="comment">{item.content}</div>
       </div>
     </CommentItemStyle>
   );
@@ -90,7 +64,6 @@ const CommentItem = ({ item, setComments }: CommentItemProps) => {
 const CommentItemStyle = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 5px;
 
   .content {
@@ -100,7 +73,7 @@ const CommentItemStyle = styled.div`
     width: 100%;
   }
 
-  .top {
+  .info {
     display: flex;
     gap: 5px;
     align-items: center;
@@ -120,6 +93,7 @@ const CommentItemStyle = styled.div`
     background-color: transparent;
     font-size: ${Theme.fontSize.xs};
     color: ${Theme.colors.subText};
+    cursor: pointer;
   }
 
   .date {

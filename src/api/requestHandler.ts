@@ -1,4 +1,5 @@
-import httpClient from './http';
+import { httpClient, httpClientWithoutRefresh } from './http';
+import { AxiosRequestConfig } from 'axios';
 
 type RequestMethod = 'get' | 'post' | 'put' | 'delete';
 
@@ -6,21 +7,24 @@ const requestHandler = async <T, P = unknown>(
   method: RequestMethod,
   url: string,
   payload?: P,
+  config?: AxiosRequestConfig & { refreshAndRetry?: boolean },
 ): Promise<T> => {
+  const refreshAndRetry = config?.refreshAndRetry ?? true;
   let response;
+  const client = refreshAndRetry ? httpClient : httpClientWithoutRefresh;
 
   switch (method) {
     case 'post':
-      response = await httpClient.post<T>(url, payload);
+      response = await client.post<T>(url, payload, config);
       break;
     case 'get':
-      response = await httpClient.get<T>(url);
+      response = await client.get<T>(url, config);
       break;
     case 'put':
-      response = await httpClient.put<T>(url, payload);
+      response = await client.put<T>(url, payload, config);
       break;
     case 'delete':
-      response = await httpClient.delete<T>(url);
+      response = await client.delete<T>(url, config);
       break;
   }
 

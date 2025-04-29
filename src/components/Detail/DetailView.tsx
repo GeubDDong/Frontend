@@ -2,131 +2,163 @@ import styled from 'styled-components';
 import { Theme } from '@/style/Theme';
 import InfoIcon from './InfoIcon';
 import LikeButton from './LikeButton';
-import { useEffect, useState } from 'react';
-import useToiletInfoStore from '@/store/toiletInfoStore';
 import { StaticMap } from 'react-kakao-maps-sdk';
-import { IToiletDetailInfo } from '@/models/detail.model';
-import { fetchDetailInfo } from '@/api/detail.api';
-import { formatDateToString } from '@/utils/dateUtil';
+import useDetailInfo from '@/hooks/useDetailInfo';
+import { useEffect } from 'react';
+import { FaStar } from 'react-icons/fa';
+import Divider from '../Common/Divider';
+import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai';
+import Rating from './Rating';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
 
 const DetailView = () => {
-  const info = useToiletInfoStore((state) => state.info);
-  const [detailInfo, setDetailInfo] = useState<IToiletDetailInfo | null>(null);
-  const data = detailInfo || info;
+  const { selectedToilet } = useSelectedInfo();
+  const { detailInfo, loadDetailInfo } = useDetailInfo(
+    selectedToilet || undefined,
+  );
 
   useEffect(() => {
-    async function fetchAPI(id: number) {
-      await fetchDetailInfo(id)
-        .then((res) => setDetailInfo(res))
-        .catch((err) => {
-          setDetailInfo(null);
-          console.error(err);
-        });
-    }
-    if (!info || !info.id) return;
-    fetchAPI(info.id);
-  }, []);
+    loadDetailInfo();
+  }, [selectedToilet]);
 
-  if (!data) return null;
   return (
-    <>
-      <DetailViewStyle>
-        <div className="title">
-          <div className="name">{data.name}</div>
-          <div className="like">
-            <LikeButton />
+    <DetailViewStyle>
+      {detailInfo && (
+        <>
+          <div className="basicInfo">
+            <div className="title">
+              <div className="name">{detailInfo.name}</div>
+              <LikeButton />
+            </div>
+            <div className="address">{detailInfo.address}</div>
+            <div className="openHours">{detailInfo.openHour}</div>
+            <div className="rating">
+              <div className="ratingItem">
+                청결도
+                <div className="score">
+                  <FaStar color={Theme.colors.star} />
+                  {detailInfo.ratingItems.cleanliness}
+                </div>
+              </div>
+              <div className="ratingItem">
+                비품상태
+                <div className="score">
+                  <FaStar color={Theme.colors.star} />
+                  {detailInfo.ratingItems.amenities}
+                </div>
+              </div>
+              <div className="ratingItem">
+                접근성
+                <div className="score">
+                  <FaStar color={Theme.colors.star} />
+                  {detailInfo.ratingItems.accessibility}
+                </div>
+              </div>
+            </div>
+            <div className="update">
+              <span>데이터 기준일</span>
+              <span>{detailInfo.facility.referenceDate}</span>
+            </div>
           </div>
-        </div>
-        <div className="address">
-          {data.street_address ? data.street_address : data.lot_address}
-        </div>
-        {detailInfo && (
-          <div className="update">
-            데이터 기준일 {formatDateToString(detailInfo.data_reference_date)}
-          </div>
-        )}
-        <div className="detailInfoIcons">
-          {detailInfo && (
-            <>
+          <Divider>
+            <div className="detailInfoIcons">
               <InfoIcon
-                iconName="clock"
-                active={true}
-                text={detailInfo.open_hour}
-              />
-              <InfoIcon iconName="man" active={true} text="남성용" />
-              <InfoIcon iconName="woman" active={true} text="여성용" />
-              <InfoIcon
-                iconName="children"
-                active={
-                  detailInfo.kids_toilet_female === 'Y' ||
-                  detailInfo.kids_toilet_male === 'Y'
-                }
-                text="어린이 대변기"
+                iconName="man"
+                active={detailInfo.facility.hasMale}
+                text="남성용"
               />
               <InfoIcon
-                iconName="baby"
-                active={detailInfo.diaper_changing_station === 'Y'}
-                text="기저귀 교환대"
+                iconName="woman"
+                active={detailInfo.facility.hasFemale}
+                text="여성용"
               />
               <InfoIcon
                 iconName="wheelchair"
-                active={
-                  detailInfo.disabled_female === 'Y' ||
-                  detailInfo.disabled_male === 'Y'
-                }
-                text="장애인"
+                active={detailInfo.facility.hasDisabledMale}
+                size={1.5}
+                text="장애인 남성용"
+                extra={<AiOutlineMan size="0.9rem" color="white" />}
               />
               <InfoIcon
+                iconName="wheelchair"
+                active={detailInfo.facility.hasDisabledFemale}
+                size={1.5}
+                text="장애인 여성용"
+                extra={<AiOutlineWoman size="0.9rem" color="white" />}
+              />
+              <InfoIcon
+                iconName="children"
+                active={detailInfo.facility.hasKids}
+                text="어린이"
+              />
+              <InfoIcon
+                iconName="baby"
+                active={detailInfo.facility.hasDiaperChangingStation}
+                text="기저귀 교환대"
+              />
+
+              <InfoIcon
                 iconName="cctv"
-                active={detailInfo.cctv === 'Y'}
+                active={detailInfo.facility.hasCCTV}
                 text="CCTV"
               />
               <InfoIcon
                 iconName="bell"
-                active={detailInfo.emergency_bell === 'Y'}
+                active={detailInfo.facility.hasBell}
                 text="비상벨"
               />
-            </>
-          )}
-        </div>
-        <div className="management">
-          <div className="title">관리기관</div>
-          {detailInfo && (
-            <>
-              <span>{detailInfo.management_agency}</span>
-              <span>{detailInfo.phone_number}</span>
-            </>
-          )}
-        </div>
-        <div className="map">
-          {detailInfo && (
-            <StaticMap
-              center={{
-                lat: data.latitude,
-                lng: data.longitude,
-              }}
-              style={{
-                width: '100%',
-                height: '200px',
-              }}
-              level={3}
-              marker
-            />
-          )}
-        </div>
-      </DetailViewStyle>
-    </>
+            </div>
+          </Divider>
+          <Divider>
+            <div className="map">
+              <StaticMap
+                center={{
+                  lat: detailInfo.latitude,
+                  lng: detailInfo.longitude,
+                }}
+                style={{
+                  width: '100%',
+                  height: '200px',
+                }}
+                level={3}
+                marker
+              />
+            </div>
+          </Divider>
+          <Divider>
+            <div className="management">
+              <div className="title">관리기관</div>
+
+              <span>{detailInfo.management.name}</span>
+              <span>{detailInfo.management.phone}</span>
+            </div>
+          </Divider>
+          <Rating
+            total={detailInfo.rating}
+            cleanliness={detailInfo.ratingItems.cleanliness}
+            amenities={detailInfo.ratingItems.amenities}
+            accessibility={detailInfo.ratingItems.accessibility}
+          />
+        </>
+      )}
+    </DetailViewStyle>
   );
 };
 
 const DetailViewStyle = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
+
+  .basicInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
   .title {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .name {
@@ -136,22 +168,45 @@ const DetailViewStyle = styled.div`
   }
 
   .address {
-    margin-top: 10px;
     font-size: ${Theme.fontSize.md};
     color: ${Theme.colors.mainText};
+  }
+
+  .openHours {
+    font-size: ${Theme.fontSize.sm};
+    color: ${Theme.colors.mainText};
+  }
+
+  .rating {
+    display: flex;
+    gap: 16px;
+    font-size: ${Theme.fontSize.sm};
+    color: ${Theme.colors.mainText};
+  }
+
+  .ratingItem {
+    display: flex;
+    gap: 5px;
+  }
+
+  .score {
+    display: flex;
+    gap: 2px;
   }
 
   .update {
     margin-top: 5px;
     font-size: ${Theme.fontSize.sm};
     color: ${Theme.colors.subText};
+    display: flex;
+    gap: 5px;
   }
 
   .detailInfoIcons {
     margin-top: 20px;
     display: grid;
     justify-items: center;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px 0;
   }
 
@@ -159,7 +214,7 @@ const DetailViewStyle = styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-top: 20px;
+    /* margin-top: 20px; */
   }
 
   .management .title {
@@ -174,7 +229,9 @@ const DetailViewStyle = styled.div`
   }
 
   .map {
-    margin-top: 10px;
+    font-size: ${Theme.fontSize.md};
+    color: ${Theme.colors.mainText};
+    font-weight: bold;
   }
 `;
 export default DetailView;

@@ -1,27 +1,47 @@
-import { MapMarker } from 'react-kakao-maps-sdk';
-import useToiletInfoStore from '@/store/toiletInfoStore';
-import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
+import { IMapMarkersModelItem } from '@/models/mapMarkerInfo.model';
+import { CustomMapMarker, MarkerType } from '../Common/CustomMapMarker';
 
 interface IToiletMarkerProps {
-  info: IToiletBasicInfo;
+  info: IMapMarkersModelItem;
 }
 
 const ToiletMarker = ({ info }: IToiletMarkerProps) => {
-  // const selectedToiletDataInfo = useToiletInfoStore((state) => state.info);
-  const setSelectedToiletDataInfo = useToiletInfoStore(
-    (state) => state.setInfo,
-  );
+  const {
+    selectedToilet,
+    setSelectedToilet,
+    setIsInfoOpened,
+    setSelectedMarker,
+  } = useSelectedInfo();
+
+  const markerType: MarkerType = (() => {
+    if (
+      selectedToilet &&
+      info.toilets.some((item) => item.id === selectedToilet)
+    ) {
+      return 'selected';
+    }
+    if (info.toilets.some((item) => item.isLiked)) {
+      return 'liked';
+    }
+    return 'default';
+  })();
+
+  const handleClick = () => {
+    setSelectedMarker(info);
+    if (info.toilets.length === 1) {
+      setSelectedToilet(info.toilets[0].id);
+      setIsInfoOpened(false);
+    } else {
+      setIsInfoOpened(true);
+    }
+  };
+
   return (
-    <MapMarker
-      // image={{
-      //   src: info.liked.like ? locationPin_liked : locationPin_normal,
-      //   size:
-      //     selectedToiletDataInfo && selectedToiletDataInfo.id === info.id
-      //       ? { width: 40, height: 40 }
-      //       : { width: 25, height: 25 },
-      // }}
-      position={{ lat: info.latitude, lng: info.longitude }}
-      onClick={() => setSelectedToiletDataInfo(info)}
+    <CustomMapMarker
+      type={markerType}
+      position={{ lat: info.markerLatitude, lng: info.markerLongitude }}
+      onClick={handleClick}
     />
   );
 };

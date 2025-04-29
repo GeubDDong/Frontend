@@ -6,22 +6,28 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setNickname } from '@/api/auth.api';
 import { NICKNAME_MAX_LENGTH } from '@/constants/common';
+import useAuth from '@/hooks/useAuth';
 
 const ProfileSetup = () => {
   const [value, setValue] = useState('');
   const navigate = useNavigate();
+  const { updateNickname } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.slice(0, NICKNAME_MAX_LENGTH);
     setValue(inputValue);
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (!value) return;
 
-    setNickname({ nickname: value }).then(() => {
+    try {
+      await setNickname({ nickname: value });
+      updateNickname(value);
       navigate('/');
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

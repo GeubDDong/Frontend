@@ -1,112 +1,137 @@
 import { useEffect, useRef, useState } from 'react';
-import { Map } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '@/hooks/useKakaoLoader';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
 import CurrentLocationButton from '@/components/Home/CurrentLocationButton';
-import { IBound, ILocation } from '@/types';
+import { IBound } from '@/types';
 import styled from 'styled-components';
 import MyLocation from '@/components/Home/MyLocation';
-import useLocationStore from '@/store/locationStore';
-import useCurrentLocation from '@/hooks/useCurrentLocation';
-import { toast } from 'react-toastify';
-import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
-import ToiletBasicInfo from '@/components/Home/ToiletBasicInfo';
-import HomeMenuButton from '@/components/Home/HomeMenuButton';
-import { INITIAL_BOUNDS } from '@/constants/initialCoord';
-import { mainToiletInfo } from '@/api/mainToiletInfo.api';
-import { IToiletBasicInfo } from '@/models/toiletBasicInfo.model';
+import ToiletInfo from '@/components/Home/ToiletInfo';
 import ToiletMarker from '@/components/Home/ToiletMarker';
-import useToiletInfoStore from '@/store/toiletInfoStore';
+import useMapInfo from '@/hooks/useMapInfo';
+import BottomSheet from '@/components/Common/BottomSheet';
+import Search from '@/components/Home/Search';
+import {
+  CLUSTERER_ZOOM_LEVEL,
+  MAX_ZOOM_LEVEL,
+  MIN_ZOOM_LEVEL,
+} from '@/constants/initialMapInfo';
+import useSelectedInfo from '@/hooks/useSelectedInfo';
+import InfoWindow from '@/components/Home/InfoWindow';
+import useFilter from '@/hooks/useFilter';
 
 const Home = () => {
-  const mapRef = useRef<kakao.maps.Map>(null);
-  const errorCode = useLocationStore((state) => state.errorCode);
-  const setSelectedToiletDataInfo = useToiletInfoStore(
-    (state) => state.setInfo,
-  );
-  const center = useLocationStore((state) => state.center);
-  const setCenter = useLocationStore((store) => store.setCenter);
-  const { getLocation } = useCurrentLocation();
-  const [bound, setBound] = useState<IBound>({
-    top: INITIAL_BOUNDS.TOP,
-    left: INITIAL_BOUNDS.LEFT,
-    bottom: INITIAL_BOUNDS.BOTTOM,
-    right: INITIAL_BOUNDS.RIGHT,
-  });
-  const [data, setData] = useState<IToiletBasicInfo[]>([]);
+  const mapRef = useRef<kakao.maps.Map | null>(null);
+  const {
+    toiletInfoData,
+    center,
+    zoomLevel,
+    setCenter,
+    setZoomLevel,
+    getToiletInfoData,
+  } = useMapInfo();
+  const {
+    isInfoOpened,
+    selectedToilet,
+    setSelectedToilet,
+    setSelectedMarker,
+    setIsInfoOpened,
+  } = useSelectedInfo();
+  const { filterKeys } = useFilter();
+  const [bound, setBound] = useState<IBound | null>(null);
 
-  useKakaoLoader();
-
-  useEffect(() => {
-    const setInitialLocation = async () => {
-      await getLocation()
-        .then((location) => {
-          setCenter(location);
-        })
-        .catch((errorCode) => {
-          toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
-        });
-    };
-    setInitialLocation();
-  }, []);
+  const getBound = (map: kakao.maps.Map) => {
+    const top = map.getBounds().getNorthEast().getLat();
+    const right = map.getBounds().getNorthEast().getLng();
+    const bottom = map.getBounds().getSouthWest().getLat();
+    const left = map.getBounds().getSouthWest().getLng();
+    setBound({ top, left, bottom, right });
+  };
 
   useEffect(() => {
     if (!mapRef.current) return;
-    const top = mapRef.current.getBounds().getNorthEast().getLat();
-    const right = mapRef.current.getBounds().getNorthEast().getLng();
-    const bottom = mapRef.current.getBounds().getSouthWest().getLat();
-    const left = mapRef.current.getBounds().getSouthWest().getLng();
-    setBound({ top, left, bottom, right });
-  }, [center, mapRef.current]);
+    getBound(mapRef.current);
+  }, [center.latitude, center.longitude, zoomLevel]);
 
   useEffect(() => {
-    async function fetchAPI(center: ILocation, bound: IBound) {
-      await mainToiletInfo(center, bound)
-        .then((data) => {
-          setData(data);
-          setSelectedToiletDataInfo(data[0] || null);
-        })
-        .catch((err) => console.error(err));
+    if (bound === null) return;
+    getToiletInfoData(bound, filterKeys);
+  }, [bound?.bottom, bound?.left, bound?.right, bound?.top, filterKeys]);
+
+  useEffect(() => {
+    if (zoomLevel >= CLUSTERER_ZOOM_LEVEL) {
+      setSelectedMarker(null);
+      setSelectedToilet(null);
     }
-    fetchAPI(center, bound);
-  }, [bound]);
+    setIsInfoOpened(false);
+  }, [zoomLevel]);
 
   const handleIdle = (map: kakao.maps.Map) => {
     const newCenter = map.getCenter();
     const latitude = newCenter.getLat();
     const longitude = newCenter.getLng();
-    const top = map.getBounds().getNorthEast().getLat();
-    const left = map.getBounds().getNorthEast().getLng();
-    const bottom = map.getBounds().getSouthWest().getLat();
-    const right = map.getBounds().getSouthWest().getLng();
-    setCenter({ latitude, longitude });
-    setBound({ top, left, bottom, right });
+    const newZoomLevel = map.getLevel();
+    if (latitude !== center.latitude || longitude !== center.longitude) {
+      setCenter({ latitude, longitude });
+    }
+    if (newZoomLevel !== zoomLevel) {
+      setZoomLevel(newZoomLevel);
+    }
+  };
+
+  const onClusterclick = (
+    _target: kakao.maps.MarkerClusterer,
+    cluster: kakao.maps.Cluster,
+  ) => {
+    const map = mapRef.current;
+    if (!map) return;
+    map.setLevel(zoomLevel - 1, { anchor: cluster.getCenter() });
   };
 
   return (
     <HomeStyle>
-      <ToiletBasicInfo />
       <Map
         id="map"
+        onCreate={(map) => {
+          if (mapRef.current !== map) {
+            mapRef.current = map;
+            getBound(map);
+          }
+        }}
         center={{
-          lat: center.latitude,
-          lng: center.longitude,
+          lat: center.latitude as number,
+          lng: center.longitude as number,
         }}
         style={{
           width: '100%',
           height: '100%',
         }}
-        level={3}
-        ref={mapRef}
+        level={zoomLevel}
         onIdle={handleIdle}
         isPanto={true}
+        minLevel={MIN_ZOOM_LEVEL}
+        maxLevel={MAX_ZOOM_LEVEL}
       >
-        {errorCode === null && <MyLocation />}
-        {data.map((item) => (
-          <ToiletMarker key={item.id} info={item} />
-        ))}
+        <MyLocation />
+        <MarkerClusterer
+          averageCenter={true}
+          minLevel={CLUSTERER_ZOOM_LEVEL}
+          disableClickZoom={true}
+          onClusterclick={onClusterclick}
+        >
+          {toiletInfoData?.mapMarkers.length &&
+            toiletInfoData.mapMarkers.map((item) => (
+              <ToiletMarker
+                key={`${item.markerLatitude},${item.markerLongitude}`}
+                info={item}
+              />
+            ))}
+        </MarkerClusterer>
+        {isInfoOpened && <InfoWindow />}
       </Map>
-      <HomeMenuButton />
+      <Search />
       <CurrentLocationButton />
+      <BottomSheet isOpen={!!selectedToilet}>
+        <ToiletInfo />
+      </BottomSheet>
     </HomeStyle>
   );
 };
