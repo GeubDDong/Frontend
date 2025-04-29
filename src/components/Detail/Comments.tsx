@@ -10,6 +10,8 @@ import useAuth from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import useDetailInfo from '@/hooks/useDetailInfo';
 import { ICommentActionModel } from '@/models/comment.model';
+import { useState } from 'react';
+import ConfirmModal from '../Common/ConfirmModal';
 
 const Comments = () => {
   const { selectedToilet } = useSelectedInfo();
@@ -34,10 +36,11 @@ const Comments = () => {
     useComments(selectedToilet || undefined, updateRating);
   const { isLogin } = useAuth();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = () => {
     if (!isLogin) {
-      navigate('/login');
+      setIsModalOpen(true);
       return;
     }
 
@@ -52,34 +55,53 @@ const Comments = () => {
     });
   };
 
+  const confirm = () => {
+    setIsModalOpen(false);
+    navigate('/login');
+  };
+
+  const cancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <CommentsStyle>
-      <div className="top">
-        <div className="title">
-          <span className="titleName">리뷰</span>
-          <span className="count">{`(${comments.length})`}</span>
+    <>
+      <CommentsStyle>
+        <div className="top">
+          <div className="title">
+            <span className="titleName">리뷰</span>
+            <span className="count">{`(${comments.length})`}</span>
+          </div>
+          <div className="write" onClick={handleClick}>
+            <FaPencilAlt size={'0.9rem'} />
+            리뷰 작성하기
+          </div>
         </div>
-        <div className="write" onClick={handleClick}>
-          <FaPencilAlt size={'0.9rem'} />
-          리뷰 작성하기
+        <div className="comments">
+          {isLoading ? (
+            // TODO: 댓글 로딩중 처리
+            <p>댓글 불러오는 중...</p>
+          ) : (
+            comments.map((item) => (
+              <CommentItem
+                key={item.id}
+                item={item}
+                updateComment={updateComment}
+                removeComment={removeComment}
+              />
+            ))
+          )}
         </div>
-      </div>
-      <div className="comments">
-        {isLoading ? (
-          // TODO: 댓글 로딩중 처리
-          <p>댓글 불러오는 중...</p>
-        ) : (
-          comments.map((item) => (
-            <CommentItem
-              key={item.id}
-              item={item}
-              updateComment={updateComment}
-              removeComment={removeComment}
-            />
-          ))
-        )}
-      </div>
-    </CommentsStyle>
+      </CommentsStyle>
+      {isModalOpen && (
+        <ConfirmModal
+          message="리뷰를 등록하려면 로그인이 필요해요. 
+로그인하시겠어요?"
+          onConfirm={confirm}
+          onCancel={cancel}
+        />
+      )}
+    </>
   );
 };
 

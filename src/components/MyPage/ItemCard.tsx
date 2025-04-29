@@ -111,6 +111,17 @@ const ItemCard = ({
     );
   };
 
+  const getModalMessage = () => {
+    switch (tabType) {
+      case 'likeList':
+        return '이 즐겨찾기를 해제하시겠어요?';
+      case 'reviewList':
+        return '이 리뷰를 삭제하시겠어요?';
+      default:
+        return '이 내용을 삭제하시겠어요?';
+    }
+  };
+
   return (
     <>
       <ItemCardStyle onClick={handleClickCard}>
@@ -146,7 +157,7 @@ const ItemCard = ({
       </ItemCardStyle>
       {isModalOpen && (
         <ConfirmModal
-          message="정말로 삭제하시겠습니까?"
+          message={getModalMessage()}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
         />

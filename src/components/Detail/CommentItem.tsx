@@ -77,7 +77,7 @@ const CommentItem = ({
       </CommentItemStyle>
       {isModalOpen && (
         <ConfirmModal
-          message="정말로 삭제하시겠습니까?"
+          message="이 리뷰를 삭제하시겠어요?"
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
         />

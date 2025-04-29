@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { FaTimes } from 'react-icons/fa';
 import ReactDOM from 'react-dom';
 import { Theme } from '@/style/Theme';
 
@@ -11,13 +10,8 @@ interface IConfirmModalProps {
 
 const ConfirmModal = ({ message, onConfirm, onCancel }: IConfirmModalProps) => {
   const modalContent = (
-    <ConfirmModalStyle>
+    <ConfirmModalStyle onClick={onCancel}>
       <div className="modal_contents">
-        <div className="modal_header">
-          <button className="close_button" onClick={onCancel}>
-            <FaTimes />
-          </button>
-        </div>
         <div className="modal_body">
           <p>{message}</p>
         </div>
@@ -56,21 +50,13 @@ const ConfirmModalStyle = styled.div`
     border-radius: 8px;
     width: 400px;
     max-width: 100%;
-    .modal_header {
-      display: flex;
-      justify-content: flex-end;
-      .close_button {
-        background: none;
-        border: none;
-        font-size: 20px;
-        color: #888888;
-        cursor: pointer;
-      }
-    }
+
     .modal_body {
       text-align: center;
       margin: 20px 0;
-      font-size: 16px;
+      font-size: ${Theme.fontSize.md};
+      white-space: pre-line;
+      line-height: 1.5;
     }
     .modal_footer {
       display: flex;
