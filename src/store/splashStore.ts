@@ -5,11 +5,14 @@ interface ISplashStore {
   setSplashState: (state: boolean) => void;
 }
 
-const useSplashStore = create<ISplashStore>((set) => ({
-  splashState: true,
-  setSplashState: (state) => {
-    set({ splashState: state });
-  },
-}));
+const useSplashStore = create<ISplashStore>((set) => {
+  const hasShownSplash = sessionStorage.getItem('hasShownSplash') === 'true';
+  return {
+    splashState: !hasShownSplash,
+    setSplashState: (state) => {
+      set({ splashState: state });
+    },
+  };
+});
 
 export default useSplashStore;

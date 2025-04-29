@@ -13,6 +13,7 @@ const Splash = () => {
     const unmountTimer = setTimeout(() => setSplashState(false), 2000);
 
     return () => {
+      sessionStorage.setItem('hasShownSplash', 'true');
       clearTimeout(fadeOutTimer);
       clearTimeout(unmountTimer);
     };
