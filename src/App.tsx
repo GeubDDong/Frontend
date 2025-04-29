@@ -6,19 +6,15 @@ import 'react-toastify/ReactToastify.css';
 import useKakaoLoader from './hooks/useKakaoLoader';
 import { OverlayProvider } from 'overlay-kit';
 import RouterComponent from './RouterComponent';
-import useSplash from './hooks/useSplash';
-import Splash from './components/Common/Splash';
 
 function App() {
   const { isKakaoLoaded } = useKakaoLoader();
-  const { splashState } = useSplash();
   const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
       <OverlayProvider />
-      {splashState && <Splash />}
       {isKakaoLoaded && (
         <Router>
           <RouterComponent />
