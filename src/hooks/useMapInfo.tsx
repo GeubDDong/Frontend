@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import useMapInfoStore from '@/store/mapInfoStore';
 import { IBound, TFilterKey } from '@/types';
-import { toast } from 'react-toastify';
 import { GEOLOCATION_ERROR_TOAST_MESSAGE } from '@/constants/errorMessage';
 import { fetchToiletInfo } from '@/api/mainToiletInfo.api';
 import MapMarkersModel from '@/models/mapMarkerInfo.model';
 import useToiletInfoStore from '@/store/toiletInfoStore';
+import { showToast } from '@/utils/toast';
 
 const useMapInfo = () => {
   const toiletInfoData = useToiletInfoStore((state) => state.info);
@@ -42,9 +42,7 @@ const useMapInfo = () => {
     const getCurrentLocationError = (error: GeolocationPositionError) => {
       console.error(error);
       setErrorCode(error.code);
-      toast(GEOLOCATION_ERROR_TOAST_MESSAGE[error.code], {
-        toastId: error.code,
-      });
+      showToast('error', GEOLOCATION_ERROR_TOAST_MESSAGE[error.code]);
       setIsFetchingCurrentLocation(false);
     };
 
@@ -63,7 +61,7 @@ const useMapInfo = () => {
     } else {
       const errorCode = GeolocationPositionError.POSITION_UNAVAILABLE;
       setErrorCode(errorCode);
-      toast(GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode], { toastId: errorCode });
+      showToast('error', GEOLOCATION_ERROR_TOAST_MESSAGE[errorCode]);
       setIsFetchingCurrentLocation(false);
     }
   };

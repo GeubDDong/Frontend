@@ -1,8 +1,8 @@
 import useAuth from '@/hooks/useAuth';
+import { showToast } from '@/utils/toast';
 import { useState } from 'react';
 import { FaSignOutAlt, FaUserAltSlash } from 'react-icons/fa';
 import { IoMdSettings } from 'react-icons/io';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 const UserSetting = () => {
@@ -14,7 +14,7 @@ const UserSetting = () => {
   };
 
   const handleDeleteAccount = () => {
-    toast('준비중인 기능입니다.', { toastId: 9999 });
+    showToast('info', '아직 준비중인 기능이에요.');
   };
   return (
     <UserSettingStyle>

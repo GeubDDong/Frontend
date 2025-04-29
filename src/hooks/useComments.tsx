@@ -12,10 +12,11 @@ import {
   ICommentModel,
 } from '@/models/comment.model';
 import { IRatingItem } from '@/types';
+import { showToast } from '@/utils/toast';
 
 const useComments = (
   toiletId: number | undefined,
-  updateRating: (rating: ICommentActionModel) => void,
+  updateRating?: (rating: ICommentActionModel) => void,
 ) => {
   const [comments, setComments] = useState<ICommentModel[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +46,10 @@ const useComments = (
     try {
       const res = await addComment(toiletId, comment, ratings);
       await loadComments();
-      updateRating(new CommentActionModel(res).rating);
+      if (updateRating) {
+        updateRating(new CommentActionModel(res).rating);
+      }
+      showToast('success', '리뷰를 등록했어요.');
     } catch (error) {
       // TODO: 에러 처리
       console.log(error);
@@ -62,7 +66,10 @@ const useComments = (
     try {
       const res = await updateComment(toiletId, id, comment, ratings);
       await loadComments();
-      updateRating(new CommentActionModel(res).rating);
+      if (updateRating) {
+        updateRating(new CommentActionModel(res).rating);
+      }
+      showToast('success', '리뷰를 수정했어요.');
     } catch (error) {
       // TODO: 에러 처리
       console.log(error);
@@ -75,7 +82,10 @@ const useComments = (
     try {
       const res = await removeComment(toiletId, id);
       setComments((prev) => prev.filter((comment) => comment.id !== id));
-      updateRating(new CommentActionModel(res).rating);
+      if (updateRating) {
+        updateRating(new CommentActionModel(res).rating);
+      }
+      showToast('success', '리뷰를 삭제했어요.');
     } catch (error) {
       // TODO: 에러 처리
       console.log(error);

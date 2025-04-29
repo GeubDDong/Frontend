@@ -1,9 +1,9 @@
 import { Theme } from '@/style/Theme';
+import { showToast } from '@/utils/toast';
 import React from 'react';
 import { FaMapMarkedAlt, FaTrophy } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 
 const BottomTab = () => {
@@ -12,7 +12,7 @@ const BottomTab = () => {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    toast('준비중인 기능입니다.', { toastId: 9999 });
+    showToast('info', '	아직 준비 중인 기능이에요.');
   };
 
   return (
