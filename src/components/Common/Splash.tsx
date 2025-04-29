@@ -50,6 +50,7 @@ const SplashStyle = styled.div<SplashStyleProps>`
 
   img {
     width: 40%;
+    aspect-ratio: 1 / 1;
   }
 
   .title {
