@@ -192,4 +192,10 @@ export const handlers = [
   http.get(new RegExp('/comments/.*'), () => {
     return HttpResponse.json(dummyComments);
   }),
+  http.delete(new RegExp('/favorites/.*'), () => {
+    return HttpResponse.json();
+  }),
+  http.post(new RegExp('/favorites/.*'), () => {
+    return HttpResponse.json();
+  }),
 ];
