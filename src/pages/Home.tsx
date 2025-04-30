@@ -128,7 +128,7 @@ const Home = () => {
         {isInfoOpened && <InfoWindow />}
       </Map>
       <Search />
-      <CurrentLocationButton />
+      <CurrentLocationButton bottomOffset={selectedToilet ? 150 : 50} />
       <BottomSheet isOpen={!!selectedToilet}>
         <ToiletInfo />
       </BottomSheet>

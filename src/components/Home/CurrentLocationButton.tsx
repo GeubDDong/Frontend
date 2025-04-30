@@ -3,11 +3,20 @@ import { Theme } from '@/style/Theme';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 import useMapInfo from '@/hooks/useMapInfo';
 
-const CurrentLocationButton = () => {
+interface CurrentLocationButtonProps {
+  bottomOffset: number;
+}
+
+const CurrentLocationButton = ({
+  bottomOffset,
+}: CurrentLocationButtonProps) => {
   const { getCurrentLocation } = useMapInfo();
 
   return (
-    <CurrentLocationButtonStyle onClick={getCurrentLocation}>
+    <CurrentLocationButtonStyle
+      $bottomOffset={bottomOffset}
+      onClick={getCurrentLocation}
+    >
       <FaLocationCrosshairs />
     </CurrentLocationButtonStyle>
   );
@@ -15,7 +24,7 @@ const CurrentLocationButton = () => {
 
 export default CurrentLocationButton;
 
-const CurrentLocationButtonStyle = styled.div`
+const CurrentLocationButtonStyle = styled.div<{ $bottomOffset: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,7 +38,8 @@ const CurrentLocationButtonStyle = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   position: absolute;
-  bottom: 200px;
+  bottom: ${({ $bottomOffset }) => `${$bottomOffset}px`};
+  transition: bottom 0.3s ease;
   right: 30px;
 
   svg {
