@@ -24,13 +24,7 @@ const CurrentLocationButton = ({
 
 export default CurrentLocationButton;
 
-const CurrentLocationButtonStyle = styled.div.attrs<{ $bottomOffset: number }>(
-  (props) => ({
-    style: {
-      bottom: `${props.$bottomOffset}px`,
-    },
-  }),
-)`
+const CurrentLocationButtonStyle = styled.div<{ $bottomOffset: number }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,7 +38,8 @@ const CurrentLocationButtonStyle = styled.div.attrs<{ $bottomOffset: number }>(
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   position: absolute;
-  transition: 'height 0.3s ease-in-out';
+  bottom: ${({ $bottomOffset }) => `${$bottomOffset}px`};
+  transition: bottom 0.3s ease;
   right: 30px;
 
   svg {

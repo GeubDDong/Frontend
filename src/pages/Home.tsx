@@ -37,7 +37,7 @@ const Home = () => {
   } = useSelectedInfo();
   const { filterKeys } = useFilter();
   const [bound, setBound] = useState<IBound | null>(null);
-  const [bottomSheetHeight, setBottomSheetHeight] = useState(0);
+
   const getBound = (map: kakao.maps.Map) => {
     const top = map.getBounds().getNorthEast().getLat();
     const right = map.getBounds().getNorthEast().getLng();
@@ -128,13 +128,8 @@ const Home = () => {
         {isInfoOpened && <InfoWindow />}
       </Map>
       <Search />
-      <CurrentLocationButton
-        bottomOffset={selectedToilet ? bottomSheetHeight + 15 : 50}
-      />
-      <BottomSheet
-        isOpen={!!selectedToilet}
-        onHeightChange={(h) => setBottomSheetHeight(h)}
-      >
+      <CurrentLocationButton bottomOffset={selectedToilet ? 150 : 50} />
+      <BottomSheet isOpen={!!selectedToilet}>
         <ToiletInfo />
       </BottomSheet>
     </HomeStyle>
