@@ -12,9 +12,18 @@ if (import.meta.env.VITE_ENV === 'develop') {
     );
   });
 } else {
-  createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-      <App />
-    </StrictMode>,
-  );
+  createRoot(document.getElementById('root')!).render(<App />);
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(
+      (registration) => {
+        console.log('Service worker registered:', registration);
+      },
+      (error) => {
+        console.error('Service worker registration failed:', error);
+      },
+    );
+  });
 }
