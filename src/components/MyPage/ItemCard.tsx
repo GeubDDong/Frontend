@@ -95,17 +95,17 @@ const ItemCard = ({
   }: IScoreComponentProps) => {
     return (
       <div className="score">
-        <span>
+        <span className="score_item">
           청결도 <FaStar className="score_icon" />
-          {cleanliness}
+          {cleanliness ? cleanliness : 0}
         </span>
-        <span>
+        <span className="score_item">
           비품 관리 <FaStar className="score_icon" />
-          {amenities}
+          {amenities ? amenities : 0}
         </span>
-        <span>
+        <span className="score_item">
           접근성 <FaStar className="score_icon" />
-          {accessibility}
+          {accessibility ? accessibility : 0}
         </span>
       </div>
     );
@@ -199,8 +199,13 @@ const ItemCardStyle = styled.div`
       display: flex;
       align-items: center;
       gap: 12px;
-      .score_icon {
-        color: ${Theme.colors.star};
+      .score_item {
+        display: flex;
+        align-items: center;
+        .score_icon {
+          margin-left: 4px;
+          color: ${Theme.colors.star};
+        }
       }
     }
   }
