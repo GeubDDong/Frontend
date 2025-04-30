@@ -12,8 +12,8 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: 'GeubDdong',
-        short_name: 'GeubDdong',
+        name: 'GeubDDong',
+        short_name: 'GeubDDong',
         start_url: '/',
         display: 'standalone',
         background_color: '#ffffff',
