@@ -120,6 +120,7 @@ const ModalWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: ${Theme.zIndex.overlay};
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
