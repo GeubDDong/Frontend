@@ -28,6 +28,8 @@ function App() {
           backgroundColor: '#5e5e5e',
           color: 'white',
           borderRadius: '10px',
+          marginBottom: '70px',
+          maxWidth: '90%',
         }}
         transition={Bounce}
         hideProgressBar
