@@ -1,4 +1,4 @@
-# Project GuebDDong - Frontend
+# Project GeubDDong - Frontend
 ## Getting Started (시작하기)
 ```bash
 npm install

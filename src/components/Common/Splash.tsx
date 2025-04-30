@@ -22,7 +22,7 @@ const Splash = () => {
   return (
     <SplashStyle $isVisible={isVisible}>
       <img src={logo} alt="logo" />
-      <span className="title">GuebDDong</span>
+      <span className="title">GeubDDong</span>
       <span className="content">사용자 위치 기반 공공 화장실 지도 서비스</span>
     </SplashStyle>
   );
