@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown } from 'react-icons/io';
 import useBottomSheet from '@/hooks/useBottomSheet';
@@ -7,9 +7,14 @@ import { Theme } from '@/style/Theme';
 interface BottomSheetProps {
   isOpen: boolean;
   children: React.ReactNode;
+  onHeightChange?: (height: number) => void;
 }
 
-const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
+const BottomSheet = ({
+  isOpen,
+  children,
+  onHeightChange,
+}: BottomSheetProps) => {
   const { isExpanded, setIsExpanded } = useBottomSheet();
   const MIN_HEIGHT = 135;
   const MAX_HEIGHT = window.innerHeight;
@@ -121,6 +126,10 @@ const BottomSheet = ({ isOpen, children }: BottomSheetProps) => {
 
     expand();
   };
+
+  useEffect(() => {
+    onHeightChange?.(height);
+  }, [height]);
 
   return (
     <BottomSheetStyle
