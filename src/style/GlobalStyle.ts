@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
   #root {
     width: 100vw;
     min-width: 300px;
-    max-width: 767px;
+    max-width: 600px;
     height: 100svh;
     margin: 0 auto;
     position: relative;
