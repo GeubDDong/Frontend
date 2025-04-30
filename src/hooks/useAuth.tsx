@@ -2,6 +2,7 @@ import { login, logout } from '@/api/auth.api';
 import AuthUserModel from '@/models/auth.model';
 import { useAuthStore } from '@/store/authStore';
 import { TLoginProvider } from '@/types';
+import { showToast } from '@/utils/toast';
 import { useNavigate } from 'react-router-dom';
 
 const useAuth = () => {
@@ -14,6 +15,7 @@ const useAuth = () => {
       const res = await login(provider, code);
       setUser(new AuthUserModel(res).user);
       navigate('/');
+      showToast('success', '로그인 성공!');
     } catch (error) {
       console.error('로그인 실패:', error);
     }
@@ -24,6 +26,7 @@ const useAuth = () => {
       await logout();
       setUser(null);
       navigate('/');
+      showToast('success', '로그아웃되었습니다.');
     } catch (error) {
       console.error('로그아웃 실패:', error);
     }

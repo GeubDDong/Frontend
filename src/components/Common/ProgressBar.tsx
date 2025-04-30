@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface ProgressBarProps {
   label?: string;
   value: number;
-  score?: number;
+  score?: string;
   color: string;
 }
 

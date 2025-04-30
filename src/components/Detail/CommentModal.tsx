@@ -27,9 +27,9 @@ const CommentModal = ({
   commentId,
 }: CommentModalProps) => {
   const [ratings, setRatings] = useState<IRatingItem>({
-    cleanliness: 0,
-    amenities: 0,
-    accessibility: 0,
+    cleanliness: 5,
+    amenities: 5,
+    accessibility: 5,
   });
 
   const [currentComment, setCurrentComment] = useState('');

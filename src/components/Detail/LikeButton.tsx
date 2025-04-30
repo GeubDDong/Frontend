@@ -5,19 +5,31 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import styled from 'styled-components';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import ConfirmModal from '../Common/ConfirmModal';
 
 const LikeButton = () => {
   const { isLogin } = useAuth();
   const { selectedToilet } = useSelectedInfo();
   const { isLike, toggleLike } = useLikeStatus(selectedToilet || undefined);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = async () => {
     if (!isLogin) {
-      navigate('/login');
+      setIsModalOpen(true);
       return;
     }
     toggleLike();
+  };
+
+  const confirm = () => {
+    setIsModalOpen(false);
+    navigate('/login');
+  };
+
+  const cancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -50,6 +62,14 @@ const LikeButton = () => {
           />
         )}
       </LikeButtonStyle>
+      {isModalOpen && (
+        <ConfirmModal
+          message="즐겨찾기에 추가하려면 로그인이 필요해요.
+          로그인하시겠어요?"
+          onConfirm={confirm}
+          onCancel={cancel}
+        />
+      )}
     </>
   );
 };

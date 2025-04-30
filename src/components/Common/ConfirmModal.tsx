@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FaTimes } from 'react-icons/fa';
+import ReactDOM from 'react-dom';
 import { Theme } from '@/style/Theme';
 
 interface IConfirmModalProps {
@@ -9,14 +9,9 @@ interface IConfirmModalProps {
 }
 
 const ConfirmModal = ({ message, onConfirm, onCancel }: IConfirmModalProps) => {
-  return (
-    <ConfirmModalStyle>
+  const modalContent = (
+    <ConfirmModalStyle onClick={onCancel}>
       <div className="modal_contents">
-        <div className="modal_header">
-          <button className="close_button" onClick={onCancel}>
-            <FaTimes />
-          </button>
-        </div>
         <div className="modal_body">
           <p>{message}</p>
         </div>
@@ -31,6 +26,8 @@ const ConfirmModal = ({ message, onConfirm, onCancel }: IConfirmModalProps) => {
       </div>
     </ConfirmModalStyle>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 };
 
 export default ConfirmModal;
@@ -45,7 +42,7 @@ const ConfirmModalStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: ${Theme.zIndex.overlay};
 
   .modal_contents {
     background-color: white;
@@ -53,35 +50,28 @@ const ConfirmModalStyle = styled.div`
     border-radius: 8px;
     width: 400px;
     max-width: 100%;
-    .modal_header {
-      display: flex;
-      justify-content: flex-end;
-      .close_button {
-        background: none;
-        border: none;
-        font-size: 20px;
-        color: #888888;
-        cursor: pointer;
-      }
-    }
+
     .modal_body {
       text-align: center;
       margin: 20px 0;
-      font-size: 16px;
+      font-size: ${Theme.fontSize.md};
+      white-space: pre-line;
+      line-height: 1.5;
     }
     .modal_footer {
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: center;
+      gap: 20px;
       button {
         padding: 8px 16px;
-        border: none;
         cursor: pointer;
-        font-size: 16px;
+        font-size: ${Theme.fontSize.sm};
+        border-radius: 8px;
+        border: 1px solid #e3e3e3;
       }
       .cancel_button {
-        background-color: #f0f0f0;
-        color: #555;
+        background-color: white;
+        color: ${Theme.colors.mainText};
       }
       .confirm_button {
         background-color: ${Theme.colors.primary};

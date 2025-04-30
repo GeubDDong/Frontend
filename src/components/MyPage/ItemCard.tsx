@@ -1,4 +1,3 @@
-import { removeComment, removeLike } from '@/api/detail.api';
 import useMapInfo from '@/hooks/useMapInfo';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
 import MyPageModel, { IFavoriteItem, IReviewItem } from '@/models/myPage.model';
@@ -8,9 +7,12 @@ import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import ConfirmModal from '../Common/ConfirmModal';
+import { showToast } from '@/utils/toast';
+import useComments from '@/hooks/useComments';
+import useLikeStatus from '@/hooks/useLikeStatus';
+import { formatRating } from '@/utils/format';
 
 interface IItemCardProps {
   tabType: TTabType;
@@ -35,6 +37,8 @@ const ItemCard = ({
   const { setCenter } = useMapInfo();
   const { setSelectedToilet } = useSelectedInfo();
   const navigate = useNavigate();
+  const { removeComment } = useComments((item as IReviewItem).toiletId);
+  const { removeLike } = useLikeStatus((item as IFavoriteItem).id);
 
   const handleClickCard = () => {
     if (tabType === 'likeList') {
@@ -62,15 +66,12 @@ const ItemCard = ({
     try {
       const newListItemsResponse = listItems.toResponse();
       if (tabType === 'likeList') {
-        await removeLike((item as IFavoriteItem).id);
+        await removeLike();
         newListItemsResponse.favorites = newListItemsResponse.favorites.filter(
           (res) => res.id !== (item as IFavoriteItem).id,
         );
       } else if (tabType === 'reviewList') {
-        await removeComment(
-          (item as IReviewItem).toiletId,
-          (item as IReviewItem).id,
-        );
+        await removeComment((item as IReviewItem).id);
         newListItemsResponse.reviews = newListItemsResponse.reviews.filter(
           (res) => res.id !== (item as IReviewItem).id,
         );
@@ -79,7 +80,7 @@ const ItemCard = ({
       setIsModalOpen(false);
     } catch (error) {
       console.error(error);
-      toast('삭제에 실패하였습니다.', { toastId: 4444 });
+      showToast('error', '삭제에 실패하였습니다.');
       setIsModalOpen(false);
     }
   };
@@ -95,20 +96,31 @@ const ItemCard = ({
   }: IScoreComponentProps) => {
     return (
       <div className="score">
-        <span>
+        <span className="score_item">
           청결도 <FaStar className="score_icon" />
-          {cleanliness}
+          {cleanliness ? formatRating(cleanliness) : 0}
         </span>
-        <span>
+        <span className="score_item">
           비품 관리 <FaStar className="score_icon" />
-          {amenities}
+          {amenities ? formatRating(amenities) : 0}
         </span>
-        <span>
+        <span className="score_item">
           접근성 <FaStar className="score_icon" />
-          {accessibility}
+          {accessibility ? formatRating(accessibility) : 0}
         </span>
       </div>
     );
+  };
+
+  const getModalMessage = () => {
+    switch (tabType) {
+      case 'likeList':
+        return '이 즐겨찾기를 해제하시겠어요?';
+      case 'reviewList':
+        return '이 리뷰를 삭제하시겠어요?';
+      default:
+        return '이 내용을 삭제하시겠어요?';
+    }
   };
 
   return (
@@ -146,7 +158,7 @@ const ItemCard = ({
       </ItemCardStyle>
       {isModalOpen && (
         <ConfirmModal
-          message="정말로 삭제하시겠습니까?"
+          message={getModalMessage()}
           onConfirm={confirmDelete}
           onCancel={cancelDelete}
         />
@@ -188,8 +200,15 @@ const ItemCardStyle = styled.div`
       display: flex;
       align-items: center;
       gap: 12px;
-      .score_icon {
-        color: ${Theme.colors.star};
+      .score_item {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        .score_icon {
+          margin-left: 4px;
+          color: ${Theme.colors.star};
+        }
       }
     }
   }
