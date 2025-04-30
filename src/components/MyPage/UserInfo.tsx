@@ -1,9 +1,9 @@
 import useAuth from '@/hooks/useAuth';
-import { FaUser } from 'react-icons/fa';
 import { FaPencil } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import UserSetting from './UserSetting';
+import ProfileImage from '../Common/ProfileImage';
 
 const UserInfo = () => {
   const { user } = useAuth();
@@ -11,17 +11,7 @@ const UserInfo = () => {
     <UserInfoStyle>
       <div className="profile_image_area">
         <UserSetting />
-        <div className="profile_image_container">
-          {user!.profileImage ? (
-            <img
-              src={user?.profileImage}
-              alt="profileImage"
-              className="profile_image"
-            />
-          ) : (
-            <FaUser className="profile_svg" />
-          )}
-        </div>
+        <ProfileImage src={user!.profileImage} alt="profile_image" size={90} />
       </div>
       <div className="user_info_area">
         <div className="user_nickname_container">
