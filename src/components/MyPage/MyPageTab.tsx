@@ -54,6 +54,7 @@ const MyPageTabStyle = styled.div`
       justify-content: center;
       align-items: center;
       margin-bottom: 8px;
+      cursor: pointer;
 
       .tab {
         display: flex;
