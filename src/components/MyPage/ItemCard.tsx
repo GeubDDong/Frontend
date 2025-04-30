@@ -12,6 +12,7 @@ import ConfirmModal from '../Common/ConfirmModal';
 import { showToast } from '@/utils/toast';
 import useComments from '@/hooks/useComments';
 import useLikeStatus from '@/hooks/useLikeStatus';
+import { formatRating } from '@/utils/format';
 
 interface IItemCardProps {
   tabType: TTabType;
@@ -97,15 +98,15 @@ const ItemCard = ({
       <div className="score">
         <span className="score_item">
           청결도 <FaStar className="score_icon" />
-          {cleanliness ? cleanliness : 0}
+          {cleanliness ? formatRating(cleanliness) : 0}
         </span>
         <span className="score_item">
           비품 관리 <FaStar className="score_icon" />
-          {amenities ? amenities : 0}
+          {amenities ? formatRating(amenities) : 0}
         </span>
         <span className="score_item">
           접근성 <FaStar className="score_icon" />
-          {accessibility ? accessibility : 0}
+          {accessibility ? formatRating(accessibility) : 0}
         </span>
       </div>
     );
@@ -202,6 +203,8 @@ const ItemCardStyle = styled.div`
       .score_item {
         display: flex;
         align-items: center;
+        gap: 2px;
+
         .score_icon {
           margin-left: 4px;
           color: ${Theme.colors.star};

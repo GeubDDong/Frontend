@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import ProgressBar from '../Common/ProgressBar';
 import { Theme } from '@/style/Theme';
 import Star from '../Common/Star';
+import { formatRating } from '@/utils/format';
 
 interface RatingProps {
   total: number;
@@ -21,7 +22,7 @@ const Rating = ({
       <div className="total">
         <Star status="fill" size={35} />
         <div className="rate">
-          <span className="score">{total}</span>
+          <span className="score">{formatRating(total)}</span>
           <span className="outOf">/5</span>
         </div>
       </div>
@@ -29,19 +30,19 @@ const Rating = ({
         <ProgressBar
           label="청결도"
           value={(cleanliness / 5) * 100}
-          score={cleanliness}
+          score={formatRating(cleanliness)}
           color={Theme.colors.star}
         />
         <ProgressBar
           label="비품상태"
           value={(amenities / 5) * 100}
-          score={amenities}
+          score={formatRating(amenities)}
           color={Theme.colors.star}
         />
         <ProgressBar
           label="접근성"
           value={(accessibility / 5) * 100}
-          score={accessibility}
+          score={formatRating(accessibility)}
           color={Theme.colors.star}
         />
       </div>

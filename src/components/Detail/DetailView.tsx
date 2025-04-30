@@ -10,6 +10,7 @@ import Divider from '../Common/Divider';
 import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai';
 import Rating from './Rating';
 import useSelectedInfo from '@/hooks/useSelectedInfo';
+import { formatRating } from '@/utils/format';
 
 const DetailView = () => {
   const { selectedToilet } = useSelectedInfo();
@@ -37,21 +38,21 @@ const DetailView = () => {
                 청결도
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.ratingItems.cleanliness}
+                  {formatRating(detailInfo.ratingItems.cleanliness)}
                 </div>
               </div>
               <div className="ratingItem">
                 비품상태
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.ratingItems.amenities}
+                  {formatRating(detailInfo.ratingItems.amenities)}
                 </div>
               </div>
               <div className="ratingItem">
                 접근성
                 <div className="score">
                   <FaStar color={Theme.colors.star} />
-                  {detailInfo.ratingItems.accessibility}
+                  {formatRating(detailInfo.ratingItems.accessibility)}
                 </div>
               </div>
             </div>

@@ -105,9 +105,9 @@ const dummyToiletInfo2: IToiletDetailResponse = {
   latitude: 36.528533,
   longitude: 127.371124,
   open_hour: '09:00~18:00',
-  avg_cleanliness: 3.5,
+  avg_cleanliness: 0,
   avg_amenities: 3.5,
-  avg_accessibility: 5.0,
+  avg_accessibility: 5,
   avg_rating: 4.0,
   management: {
     name: '세종특별자치시 부강면',
