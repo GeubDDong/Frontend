@@ -204,6 +204,7 @@ const ItemCardStyle = styled.div`
         display: flex;
         align-items: center;
         gap: 2px;
+        font-size: 12px;
 
         .score_icon {
           margin-left: 4px;
