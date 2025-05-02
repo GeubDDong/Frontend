@@ -15,7 +15,8 @@ const LikeButton = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClick = async () => {
+  const handleClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!isLogin) {
       setIsModalOpen(true);
       return;
